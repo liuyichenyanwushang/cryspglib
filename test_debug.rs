@@ -1,3 +1,5 @@
+extern crate rspglib;
+
 use rspglib::cell::Cell;
 use rspglib::mathfunc::mat_copy_matrix_d3;
 use rspglib::primitive::Primitive;
@@ -70,20 +72,7 @@ fn test_get_lattice_symmetry() {
 
     if lat_sym.size == 0 {
         println!("get_lattice_symmetry returned size 0!");
-        // Let's check what collect_lattice_symmetry returns
-        test_collect_lattice_symmetry();
+        // Lattice symmetry detection failed
     }
-}
-
-fn test_collect_lattice_symmetry() {
-    use rspglib::mathfunc::{Mat3, Mat3I};
-    use rspglib::symmetry::collect_lattice_symmetry;
-
-    println!("\nTesting collect_lattice_symmetry directly...");
-    let lattice = [[1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0]];
-
-    let mut rotations = [[[0; 3]; 3]; 192];
-    let size = collect_lattice_symmetry(&mut rotations, &lattice, 1e-5, -1.0);
-    println!("collect_lattice_symmetry returned size: {}", size);
 }
 

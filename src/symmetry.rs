@@ -591,7 +591,7 @@ fn get_space_group_operations(
     Some(symmetry)
 }
 
-fn get_lattice_symmetry(cell: &Cell, symprec: f64, angle_symprec: f64) -> PointSymmetry {
+pub fn get_lattice_symmetry(cell: &Cell, symprec: f64, angle_symprec: f64) -> PointSymmetry {
     debug::debug_print(format_args!("get_lattice_symmetry:\n"));
 
     let mut lattice_sym = PointSymmetry::new(0); // Initially empty
