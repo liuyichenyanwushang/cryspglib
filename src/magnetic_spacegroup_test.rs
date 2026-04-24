@@ -349,6 +349,230 @@ mod tests {
     }
 
     // ====================================================================
+    // 反铁磁测试: 2个Co在 [0,0,0] 和 [0.5,0.5,0.5], 磁矩沿 [111] 相反
+    // ====================================================================
+
+    /// 对反铁磁构型计算 timerev 标记。
+    /// positions: 原子分数坐标
+    /// moments: 每个原子的磁矩方向（已归一化）
+    /// ops: 晶体的对称操作
+    ///
+    /// 对每个操作 (R|t):
+    ///   p'_i = R·pos_i + t (mod 1) → 寻找对应的原子 j
+    ///   m'_i = det(R)·R·moment_i (轴矢量变换)
+    ///   若 m'_i = moment_j → timerev=0; 若 m'_i = -moment_j → timerev=1
+    ///   全部原子必须一致
+    fn compute_timerev_afm(
+        positions: &[Vec3],
+        moments: &[Vec3],
+        ops: &[(Mat3I, Vec3)],
+    ) -> Vec<i32> {
+        let n_atoms = positions.len();
+        let symprec_local = 1e-5;
+
+        // 对每个操作
+        ops.iter()
+            .map(|(rot, trans)| {
+                let det = mat_get_determinant_i3(rot);
+                let mut global_timerev: Option<i32> = None;
+
+                for i in 0..n_atoms {
+                    // 1. 新位置
+                    let mut p_new = [0.0f64; 3];
+                    for j in 0..3 {
+                        p_new[j] = (rot[j][0] as f64 * positions[i][0]
+                            + rot[j][1] as f64 * positions[i][1]
+                            + rot[j][2] as f64 * positions[i][2]
+                            + trans[j])
+                            % 1.0;
+                        if p_new[j] < 0.0 {
+                            p_new[j] += 1.0;
+                        }
+                    }
+
+                    // 2. 寻找哪个原子在 p_new
+                    let mut atom_j = None;
+                    for (j, pos) in positions.iter().enumerate() {
+                        let mut diff = 0.0;
+                        for k in 0..3 {
+                            let mut d = p_new[k] - pos[k];
+                            d -= (d * 1e5).round() / 1e5;
+                            d -= d.round();
+                            diff += d.abs();
+                        }
+                        if diff < symprec_local * 10.0 {
+                            atom_j = Some(j);
+                            break;
+                        }
+                    }
+                    let j = match atom_j {
+                        Some(j) => j,
+                        None => return -1, // 没有原子在这个位置 → 不是磁对称操作
+                    };
+
+                    // 3. 变换磁矩: m' = det(R) * R * m
+                    let mut m_new = [0.0f64; 3];
+                    for k in 0..3 {
+                        m_new[k] = (det as f64)
+                            * (rot[k][0] as f64 * moments[i][0]
+                                + rot[k][1] as f64 * moments[i][1]
+                                + rot[k][2] as f64 * moments[i][2]);
+                    }
+
+                    // 4. 判断 timerev
+                    let preserved = (m_new[0] - moments[j][0]).abs() < symprec_local
+                        && (m_new[1] - moments[j][1]).abs() < symprec_local
+                        && (m_new[2] - moments[j][2]).abs() < symprec_local;
+                    let reversed = (m_new[0] + moments[j][0]).abs() < symprec_local
+                        && (m_new[1] + moments[j][1]).abs() < symprec_local
+                        && (m_new[2] + moments[j][2]).abs() < symprec_local;
+
+                    let this_tr = if preserved {
+                        0
+                    } else if reversed {
+                        1
+                    } else {
+                        return -1; // 磁矩变换不匹配
+                    };
+
+                    // 所有原子必须一致
+                    match global_timerev {
+                        Some(tr) if tr != this_tr => return -1,
+                        _ => global_timerev = Some(this_tr),
+                    }
+                }
+
+                global_timerev.unwrap_or(-1)
+            })
+            .collect()
+    }
+
+    #[test]
+    fn test_co_afm_111_cubic() {
+        // 简单立方晶格, 2个Co原子在 [0,0,0] 和 [0.5,0.5,0.5]
+        // 磁矩沿 [111] 相反 (反铁磁):
+        //   Co_0 at [0,0,0]: moment [1,1,1]
+        //   Co_1 at [0.5,0.5,0.5]: moment [-1,-1,-1]
+        //
+        // 物理预期:
+        //   非磁: Co 原子相同 → 体心位置原点+体心 → 原胞含2个同种原子
+        //   实际空间群取决于 spglib 是否能找到更小的原胞
+        let lattice = cubic_lattice();
+        let norm_111 = (3.0f64).sqrt();
+
+        // --- 构建 Cell ---
+        let mut cell = crate::cell::Cell::new(2, crate::cell::TensorRank::NoSpin);
+        cell.set_cell(
+            &lattice,
+            &[[0.0, 0.0, 0.0], [0.5, 0.5, 0.5]],
+            &[27, 27], // Co = 27
+        );
+        cell.aperiodic_axis = None;
+
+        // --- 1. 非磁空间群 ---
+        let primitive = crate::primitive::prm_get_primitive(&cell, SYMPREC, -1.0)
+            .expect("Primitive search failed");
+        let spg = crate::spacegroup::spa_search_spacegroup(&primitive, 0, SYMPREC, -1.0)
+            .expect("Space group search failed");
+        eprintln!(
+            "AFM Co: non-magnetic spg #{}, hall={}, symbol='{}'",
+            spg.number,
+            spg.hall_number,
+            spg.international_short.trim()
+        );
+
+        // 两个相同 Co 原子在 [0,0,0]和[0.5,0.5,0.5] → BCC → Im-3m (#229)
+        assert_eq!(spg.number, 229, "AFM Co: Im-3m (#229)");
+
+        // --- 获取晶体对称操作 ---
+        let prim_cell = primitive.cell.as_ref().expect("Primitive cell exists");
+        let n_prim = prim_cell.size;
+        eprintln!("  primitive cell has {} atoms", n_prim);
+
+        // 获取原胞的对称操作
+        let symmetry = crate::symmetry::sym_get_operation(prim_cell, SYMPREC, -1.0)
+            .expect("sym_get_operation failed");
+        let n_sym = symmetry.size;
+        let crystal_ops: Vec<(Mat3I, Vec3)> = (0..n_sym)
+            .map(|i| (symmetry.rot[i], symmetry.trans[i]))
+            .collect();
+        eprintln!("  {} symmetry operations in primitive cell", n_sym);
+
+        // 使用原胞的原子位置和磁矩
+        // Im-3m 的原胞是菱面体, 1 个原子
+        let prim_positions: Vec<Vec3> = (0..n_prim)
+            .map(|i| prim_cell.position[i])
+            .collect();
+        // 对原胞中的原子分配磁矩：基于原子在常规晶胞中的位置
+        // [0,0,0] → +[111], [0.5,0.5,0.5] → -[111]
+        let prim_moments: Vec<Vec3> = prim_positions
+            .iter()
+            .map(|pos| {
+                // 用距离判断原点附近
+                let d0 = (pos[0] - 0.0).abs() + (pos[1] - 0.0).abs() + (pos[2] - 0.0).abs();
+                let d1 = (pos[0] - 1.0).abs() + (pos[1] - 1.0).abs() + (pos[2] - 1.0).abs();
+                if d0.min(d1) < 0.1 {
+                    [1.0 / norm_111, 1.0 / norm_111, 1.0 / norm_111]
+                } else {
+                    [-1.0 / norm_111, -1.0 / norm_111, -1.0 / norm_111]
+                }
+            })
+            .collect();
+        eprintln!("  primitive positions: {:?}", prim_positions);
+        eprintln!("  primitive moments: {:?}", prim_moments);
+
+        let tr_afm = compute_timerev_afm(&prim_positions, &prim_moments, &crystal_ops);
+        let n_valid = tr_afm.iter().filter(|&&t| t != -1).count();
+        let n_ord = tr_afm.iter().filter(|&&t| t == 0).count();
+        let n_anti = tr_afm.iter().filter(|&&t| t == 1).count();
+        eprintln!(
+            "AFM [111]: {} valid ops ({} ordinary + {} anti) out of {}",
+            n_valid, n_ord, n_anti, n_sym
+        );
+
+        // 验证恒等存在且为 ordinary
+        assert_eq!(tr_afm[0], 0, "Identity must preserve AFM [111]");
+        assert!(n_valid > 0, "Some ops must be valid for AFM [111]");
+
+        // --- 3. 构建磁对称操作并识别 ---
+        let valid_indices: Vec<usize> = tr_afm
+            .iter()
+            .cloned()
+            .enumerate()
+            .filter(|(_, t)| *t != -1)
+            .map(|(i, _)| i)
+            .collect();
+        let mag_sym = {
+            let n = valid_indices.len();
+            let mut sym = MagneticSymmetry::new(n);
+            for (j, &i) in valid_indices.iter().enumerate() {
+                sym.rot[j] = crystal_ops[i].0;
+                sym.trans[j] = crystal_ops[i].1;
+                sym.timerev[j] = tr_afm[i];
+            }
+            sym
+        };
+
+        let ds = crate::magnetic_spacegroup::msg_identify_magnetic_space_group_type(
+            &lattice, &mag_sym, SYMPREC,
+        );
+        match ds {
+            Some(ds) => {
+                let mt = msgdb_get_magnetic_spacegroup_type(ds.uni_number);
+                eprintln!(
+                    "AFM [111]: uni={}, type={}, number={}, bns='{}'",
+                    ds.uni_number, ds.msg_type, mt.number, mt.bns_number.trim()
+                );
+                assert_eq!(ds.msg_type, mt.type_);
+                eprintln!("AFM [111] magnetic identification SUCCEEDED");
+            }
+            None => {
+                eprintln!("AFM [111]: no matching MSG in database");
+            }
+        }
+    }
+
+    // ====================================================================
     // 公共 API 测试: spg_get_magnetic_spacegroup_type_from_symmetry
     // ====================================================================
 
