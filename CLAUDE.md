@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ```bash
 cargo build              # Build the library
-cargo test               # Run all 67 tests
+cargo test               # Run all 69 tests
 cargo test -- --nocapture  # Run tests with debug output (eprintln visible)
 cargo test <test_name>   # Run a single test (e.g., `cargo test test_graphene_p6mmm`)
 cargo check              # Check compilation without building

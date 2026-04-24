@@ -876,4 +876,104 @@ Direct
         );
         assert!(result.is_none());
     }
+
+    // ====================================================================
+    // FCC 反铁磁: 面心立方, 最近邻 AFM, 沿 [001] 和 [111]
+    // ====================================================================
+
+    #[test]
+    fn test_fcc_afm_001() {
+        // FCC 晶格, 4 个原子, 最近邻 AFM 沿 [001]
+        //   [0,0,0]   ↑ [0,0,1]
+        //   [0.5,0.5,0] ↓ [0,0,-1]
+        //   [0.5,0,0.5] ↓ [0,0,-1]
+        //   [0,0.5,0.5] ↑ [0,0,1]
+        let positions = [
+            [0.0, 0.0, 0.0],
+            [0.5, 0.5, 0.0],
+            [0.5, 0.0, 0.5],
+            [0.0, 0.5, 0.5],
+        ];
+
+        let poscar = format!("\
+FCC AFM [001]
+1.0
+1.0 0.0 0.0
+0.0 1.0 0.0
+0.0 0.0 1.0
+Fe
+4
+Direct
+0.0 0.0 0.0 0.0 0.0 1.0
+0.5 0.5 0.0 0.0 0.0 -1.0
+0.5 0.0 0.5 0.0 0.0 -1.0
+0.0 0.5 0.5 0.0 0.0 1.0
+");
+        let (lattice, read_pos, types, moments) =
+            crate::spg_read_structure(&poscar).expect("FCC POSCAR parse failed");
+        let moments = moments.expect("FCC moments expected");
+
+        // 验证 POSCAR 解析正确
+        for i in 0..4 {
+            assert!((read_pos[i][0] - positions[i][0]).abs() < 1e-5);
+            assert!((read_pos[i][1] - positions[i][1]).abs() < 1e-5);
+            assert!((read_pos[i][2] - positions[i][2]).abs() < 1e-5);
+        }
+
+        let result = crate::spg_get_magnetic_dataset(
+            &lattice, &read_pos, &types, Some(&moments), SYMPREC,
+        )
+        .expect("FCC AFM [001] analysis failed");
+
+        let output = crate::spg_format_magnetic_symmetry(&result);
+        eprintln!("{}", output);
+
+        // 4 个同种原子 FCC → 原胞 1 原子 → Fm-3m (#225)
+        assert_eq!(result.spacegroup_number, 225, "FCC non-mag: Fm-3m (#225)");
+        assert!(result.num_operations > 0, "Should have symmetry ops");
+    }
+
+    #[test]
+    fn test_fcc_afm_111() {
+        // FCC 晶格, 4 个原子, 最近邻 AFM 沿 [111]
+        //   [0,0,0]   ↑ [1,1,1]
+        //   [0.5,0.5,0] ↓ [-1,-1,-1]
+        //   [0.5,0,0.5] ↑ [1,1,1]
+        //   [0,0.5,0.5] ↓ [-1,-1,-1]
+        let n = (3.0f64).sqrt();
+        let poscar = format!("\
+FCC AFM [111]
+1.0
+1.0 0.0 0.0
+0.0 1.0 0.0
+0.0 0.0 1.0
+Fe
+4
+Direct
+0.0 0.0 0.0  {:.5} {:.5} {:.5}
+0.5 0.5 0.0  {:.5} {:.5} {:.5}
+0.5 0.0 0.5  {:.5} {:.5} {:.5}
+0.0 0.5 0.5  {:.5} {:.5} {:.5}
+",
+            1.0/n, 1.0/n, 1.0/n,
+            -1.0/n, -1.0/n, -1.0/n,
+            1.0/n, 1.0/n, 1.0/n,
+            -1.0/n, -1.0/n, -1.0/n,
+        );
+        let (lattice, positions, types, moments) =
+            crate::spg_read_structure(&poscar).expect("FCC AFM [111] POSCAR parse failed");
+        let moments = moments.expect("FCC [111] moments expected");
+
+        let result = crate::spg_get_magnetic_dataset(
+            &lattice, &positions, &types, Some(&moments), SYMPREC,
+        )
+        .expect("FCC AFM [111] analysis failed");
+
+        let output = crate::spg_format_magnetic_symmetry(&result);
+        eprintln!("{}", output);
+
+        // 4 个同种原子 FCC → 原胞 1 原子 → Fm-3m (#225)
+        assert_eq!(result.spacegroup_number, 225, "FCC non-mag: Fm-3m (#225)");
+        assert!(result.num_operations > 0);
+    }
 }
