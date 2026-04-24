@@ -26,6 +26,8 @@ pub mod kpoint;
 pub mod magnetic_spacegroup;
 pub mod mathfunc;
 pub mod msg_database;
+#[cfg(test)]
+pub mod magnetic_spacegroup_test;
 pub mod niggli;
 pub mod overlap;
 pub mod pointgroup;

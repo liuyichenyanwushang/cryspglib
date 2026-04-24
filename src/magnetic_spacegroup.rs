@@ -16,6 +16,7 @@ use crate::msg_database::{
 use crate::primitive::prm_get_primitive_symmetry;
 use crate::refinement::ref_find_similar_bravais_lattice;
 use crate::spacegroup::{spa_copy_spacegroup, spa_search_spacegroup_with_symmetry, Spacegroup};
+use crate::spg_database::spgdb_get_spacegroup_type;
 use crate::symmetry::{MagneticSymmetry, Symmetry};
 
 const MAX_DENOMINATOR: f64 = 100.0;
@@ -33,13 +34,34 @@ pub struct MagneticDataset {
 /// 识别磁性空间群类型。
 ///
 /// 给定晶格和磁性对称操作，返回识别出的磁性数据集。
+/// 如果标准路径失败（磁对称性为非完整空间群），在 `parent_hall_number` 提供时
+/// 使用非磁母空间群的 Hall 编号作为 fallback。
 pub fn msg_identify_magnetic_space_group_type(
     lattice: &Mat3,
     magnetic_symmetry: &MagneticSymmetry,
     symprec: f64,
 ) -> Option<MagneticDataset> {
+    msg_identify_with_parent_hall(lattice, magnetic_symmetry, None, symprec)
+}
+
+/// 与 [`msg_identify_magnetic_space_group_type`] 相同，但可指定非磁母空间群的
+/// Hall 编号作为 fallback，适用于磁对称性显著低于母空间群的场景。
+pub fn msg_identify_with_parent_hall(
+    lattice: &Mat3,
+    magnetic_symmetry: &MagneticSymmetry,
+    parent_hall_number: Option<i32>,
+    symprec: f64,
+) -> Option<MagneticDataset> {
+    // 标准路径: 从磁对称性中提取 FSG/XSG 并搜索空间群
     let (ref_sg, changed_symmetry, mut tmat, mut shift, msgtype_num) =
-        get_reference_space_group(magnetic_symmetry, symprec)?;
+        match get_reference_space_group(magnetic_symmetry, symprec) {
+            Some(result) => result,
+            None => {
+                // 标准路径失败 → 尝试 fallback（用母空间群的 Hall 编号）
+                let hall_number = parent_hall_number?;
+                build_fallback_reference(lattice, magnetic_symmetry, hall_number, symprec)?
+            }
+        };
 
     let hall_number = ref_sg.hall_number;
     debug::debug_print(format_args!("Search UNI number over between...\n"));
@@ -57,7 +79,6 @@ pub fn msg_identify_magnetic_space_group_type(
         if msgtype_db.type_ != msgtype_num {
             continue;
         }
-
         let msg_uni = msgdb_get_spacegroup_operations(uni_number, hall_number)?;
         if msg_uni.size != changed_symmetry.size {
             continue;
@@ -99,7 +120,7 @@ pub fn msg_identify_magnetic_space_group_type(
         return None;
     }
 
-    let msgtype = msgdb_get_magnetic_spacegroup_type(best_uni);
+    let _msgtype = msgdb_get_magnetic_spacegroup_type(best_uni);
     let mut ret = MagneticDataset {
         uni_number: best_uni,
         msg_type: best_msg_type,
@@ -152,6 +173,97 @@ fn get_reference_space_group(
     spa_copy_spacegroup(&mut ref_sg_copy, ref_sg);
 
     Some((ref_sg_copy, changed_symmetry, tmat, shift, msgtype_num))
+}
+
+/// Fallback when `get_reference_space_group` fails.
+/// 使用提供的非磁 Hall 编号构建参考空间群，绕过空间群搜索。
+fn build_fallback_reference(
+    lattice: &Mat3,
+    magnetic_symmetry: &MagneticSymmetry,
+    parent_hall_number: i32,
+    symprec: f64,
+) -> Option<(Spacegroup, MagneticSymmetry, Mat3, Vec3, i32)> {
+    // 1. 提取 FSG/XSG symmetry (只取操作，不搜索空间群)
+    let sym_fsg = extract_symmetry(magnetic_symmetry, true, symprec)?;
+    let sym_xsg = extract_symmetry(magnetic_symmetry, false, symprec)?;
+
+    // 2. 确定磁性类型
+    let msgtype_num =
+        get_magnetic_space_group_type(magnetic_symmetry, sym_fsg.size, sym_xsg.size)?;
+
+    // 3. 用非磁 Hall 编号构建参考 Spacegroup
+    let spg_type = spgdb_get_spacegroup_type(parent_hall_number);
+    let mut ref_sg = Spacegroup::new();
+    ref_sg.hall_number = parent_hall_number;
+    ref_sg.number = spg_type.number;
+    ref_sg.pointgroup_number = spg_type.pointgroup_number;
+    ref_sg.schoenflies = spg_type.schoenflies;
+    ref_sg.hall_symbol = spg_type.hall_symbol;
+    ref_sg.international = spg_type.international;
+    ref_sg.international_long = spg_type.international_full;
+    ref_sg.international_short = spg_type.international_short;
+    ref_sg.choice = spg_type.choice;
+    mat_copy_matrix_d3(&mut ref_sg.bravais_lattice, lattice);
+    // origin_shift 保持为 [0;3]（默认值）
+
+    // 4. 计算 changed_symmetry: 将磁对称性变换到参考设置
+    let tmat = mat_inverse_matrix_d3(&ref_sg.bravais_lattice, 0.0)?;
+    let shift = ref_sg.origin_shift;
+    let changed_symmetry =
+        get_distinct_changed_magnetic_symmetry(&tmat, &shift, magnetic_symmetry)?;
+
+    // 5. 复制 ref_sg 用于返回
+    let mut ref_sg_copy = Spacegroup::new();
+    spa_copy_spacegroup(&mut ref_sg_copy, &ref_sg);
+
+    Some((ref_sg_copy, changed_symmetry, tmat, shift, msgtype_num))
+}
+
+/// 从磁性对称操作中提取普通对称操作（不搜索空间群）。
+/// `ignore_time_reversal=true` → FSG (所有操作)
+/// `ignore_time_reversal=false` → XSG (仅 timerev=0)
+fn extract_symmetry(
+    magnetic_symmetry: &MagneticSymmetry,
+    ignore_time_reversal: bool,
+    symprec: f64,
+) -> Option<Symmetry> {
+    let identity: Mat3I = [[1, 0, 0], [0, 1, 0], [0, 0, 1]];
+    let num_sym_msg = magnetic_symmetry.size;
+
+    // Check if MSG is type-II
+    let is_type2 = magnetic_symmetry
+        .rot
+        .iter()
+        .zip(magnetic_symmetry.trans.iter())
+        .zip(magnetic_symmetry.timerev.iter())
+        .any(|((rot, trans), &timerev)| {
+            mat_check_identity_matrix_i3(&identity, rot)
+                && trans[0].abs() < symprec
+                && trans[1].abs() < symprec
+                && trans[2].abs() < symprec
+                && timerev == 1
+        });
+
+    let mut sym = Symmetry::new(num_sym_msg);
+    let mut num_sym = 0;
+    for i in 0..num_sym_msg {
+        if !ignore_time_reversal && magnetic_symmetry.timerev[i] == 1 {
+            continue;
+        }
+        if is_type2 && magnetic_symmetry.timerev[i] == 1 {
+            continue;
+        }
+        sym.rot[num_sym] = magnetic_symmetry.rot[i];
+        sym.trans[num_sym] = magnetic_symmetry.trans[i];
+        num_sym += 1;
+    }
+    sym.size = num_sym;
+
+    if num_sym == 0 {
+        None
+    } else {
+        Some(sym)
+    }
 }
 
 /// Get family space group (FSG) and its symmetry.
@@ -223,10 +335,29 @@ fn get_space_group_with_magnetic_symmetry(
 
     // Get primitive symmetry: (a, b, c) = (a_prim, b_prim, c_prim) @ tmat
     let mut tmat = [[0.0; 3]; 3];
-    let prim_sym = prm_get_primitive_symmetry(&mut tmat, &sym, symprec)?;
+    let prim_sym = match prm_get_primitive_symmetry(&mut tmat, &sym, symprec) {
+        Some(ps) => ps,
+        None => {
+            debug::debug_print(format_args!(
+                "get_space_group_with_magnetic_symmetry: prm_get_primitive_symmetry failed (n_sym={})\n",
+                num_sym
+            ));
+            return None;
+        }
+    };
 
     // Search space group with primitive symmetry and unit lattice
-    let mut spacegroup = spa_search_spacegroup_with_symmetry(&prim_sym, &unit_lat, symprec)?;
+    let mut spacegroup = match spa_search_spacegroup_with_symmetry(&prim_sym, &unit_lat, symprec) {
+        Some(sg) => sg,
+        None => {
+            // Fallback: try direct Hall matching by point group
+            debug::debug_print(format_args!(
+                "get_space_group_with_magnetic_symmetry: trying fallback (n_prim={}, n_sym={})\n",
+                prim_sym.size, num_sym
+            ));
+            find_spacegroup_by_symmetry(&sym, &unit_lat, symprec)?
+        }
+    };
 
     // Refine bravais lattice and origin_shift
     ref_find_similar_bravais_lattice(&mut spacegroup, symprec);

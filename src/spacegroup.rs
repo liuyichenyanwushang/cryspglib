@@ -650,7 +650,7 @@ fn change_basis_monocli(
     true
 }
 
-fn get_initial_conventional_symmetry(
+pub(crate) fn get_initial_conventional_symmetry(
     centering: Centering,
     tmat: &Mat3,
     symmetry: &Symmetry,
@@ -716,7 +716,7 @@ fn get_conventional_symmetry(
     Some(symmetry)
 }
 
-fn get_centering(correction_mat: &mut Mat3, tmat: &Mat3I, laue: Laue) -> Centering {
+pub(crate) fn get_centering(correction_mat: &mut Mat3, tmat: &Mat3I, laue: Laue) -> Centering {
     mat_copy_matrix_d3(correction_mat, &IDENTITY);
     let det = mat_get_determinant_i3(tmat).abs();
     debug::debug_print(format_args!("laue class: {:?}\n", laue));
