@@ -367,82 +367,93 @@ mod tests {
         moments: &[Vec3],
         ops: &[(Mat3I, Vec3)],
     ) -> Vec<i32> {
-        let n_atoms = positions.len();
-        let symprec_local = 1e-5;
+        let snap = |x: f64| (x * 2.0).round() / 2.0;
+        // 预计算每个位置的 snap
+        let snapped_pos: Vec<[f64; 3]> = positions
+            .iter()
+            .map(|p| [snap(p[0]), snap(p[1]), snap(p[2])])
+            .collect();
 
-        // 对每个操作
         ops.iter()
             .map(|(rot, trans)| {
                 let det = mat_get_determinant_i3(rot);
-                let mut global_timerev: Option<i32> = None;
+                let mut global_tr: Option<i32> = None;
 
-                for i in 0..n_atoms {
-                    // 1. 新位置
-                    let mut p_new = [0.0f64; 3];
-                    for j in 0..3 {
-                        p_new[j] = (rot[j][0] as f64 * positions[i][0]
-                            + rot[j][1] as f64 * positions[i][1]
-                            + rot[j][2] as f64 * positions[i][2]
-                            + trans[j])
-                            % 1.0;
-                        if p_new[j] < 0.0 {
-                            p_new[j] += 1.0;
-                        }
-                    }
+                for i in 0..positions.len() {
+                    // 1. 新位置 → snap 到 0.5 网格
+                    let p_new = [
+                        snap(
+                            (rot[0][0] as f64 * positions[i][0]
+                                + rot[0][1] as f64 * positions[i][1]
+                                + rot[0][2] as f64 * positions[i][2]
+                                + trans[0])
+                            .rem_euclid(1.0),
+                        ),
+                        snap(
+                            (rot[1][0] as f64 * positions[i][0]
+                                + rot[1][1] as f64 * positions[i][1]
+                                + rot[1][2] as f64 * positions[i][2]
+                                + trans[1])
+                            .rem_euclid(1.0),
+                        ),
+                        snap(
+                            (rot[2][0] as f64 * positions[i][0]
+                                + rot[2][1] as f64 * positions[i][1]
+                                + rot[2][2] as f64 * positions[i][2]
+                                + trans[2])
+                            .rem_euclid(1.0),
+                        ),
+                    ];
 
-                    // 2. 寻找哪个原子在 p_new
-                    let mut atom_j = None;
-                    for (j, pos) in positions.iter().enumerate() {
-                        let mut diff = 0.0;
-                        for k in 0..3 {
-                            let mut d = p_new[k] - pos[k];
-                            d -= (d * 1e5).round() / 1e5;
-                            d -= d.round();
-                            diff += d.abs();
-                        }
-                        if diff < symprec_local * 10.0 {
-                            atom_j = Some(j);
-                            break;
-                        }
-                    }
-                    let j = match atom_j {
+                    // 2. 匹配原子
+                    let j = match snapped_pos.iter().position(|sp| {
+                        (sp[0] - p_new[0]).abs() < 0.01
+                            && (sp[1] - p_new[1]).abs() < 0.01
+                            && (sp[2] - p_new[2]).abs() < 0.01
+                    }) {
                         Some(j) => j,
-                        None => return -1, // 没有原子在这个位置 → 不是磁对称操作
+                        None => return -1,
                     };
 
-                    // 3. 变换磁矩: m' = det(R) * R * m
-                    let mut m_new = [0.0f64; 3];
-                    for k in 0..3 {
-                        m_new[k] = (det as f64)
-                            * (rot[k][0] as f64 * moments[i][0]
-                                + rot[k][1] as f64 * moments[i][1]
-                                + rot[k][2] as f64 * moments[i][2]);
-                    }
+                    // 3. 变换磁矩: m' = det(R) * R * m (轴矢量)
+                    let m_new = [
+                        (det as f64)
+                            * (rot[0][0] as f64 * moments[i][0]
+                                + rot[0][1] as f64 * moments[i][1]
+                                + rot[0][2] as f64 * moments[i][2]),
+                        (det as f64)
+                            * (rot[1][0] as f64 * moments[i][0]
+                                + rot[1][1] as f64 * moments[i][1]
+                                + rot[1][2] as f64 * moments[i][2]),
+                        (det as f64)
+                            * (rot[2][0] as f64 * moments[i][0]
+                                + rot[2][1] as f64 * moments[i][1]
+                                + rot[2][2] as f64 * moments[i][2]),
+                    ];
 
                     // 4. 判断 timerev
-                    let preserved = (m_new[0] - moments[j][0]).abs() < symprec_local
-                        && (m_new[1] - moments[j][1]).abs() < symprec_local
-                        && (m_new[2] - moments[j][2]).abs() < symprec_local;
-                    let reversed = (m_new[0] + moments[j][0]).abs() < symprec_local
-                        && (m_new[1] + moments[j][1]).abs() < symprec_local
-                        && (m_new[2] + moments[j][2]).abs() < symprec_local;
+                    let preserved = (m_new[0] - moments[j][0]).abs() < 1e-5
+                        && (m_new[1] - moments[j][1]).abs() < 1e-5
+                        && (m_new[2] - moments[j][2]).abs() < 1e-5;
+                    let reversed = (m_new[0] + moments[j][0]).abs() < 1e-5
+                        && (m_new[1] + moments[j][1]).abs() < 1e-5
+                        && (m_new[2] + moments[j][2]).abs() < 1e-5;
 
                     let this_tr = if preserved {
                         0
                     } else if reversed {
                         1
                     } else {
-                        return -1; // 磁矩变换不匹配
+                        return -1;
                     };
 
-                    // 所有原子必须一致
-                    match global_timerev {
+                    match global_tr {
                         Some(tr) if tr != this_tr => return -1,
-                        _ => global_timerev = Some(this_tr),
+                        _ => global_tr = Some(this_tr),
                     }
                 }
 
-                global_timerev.unwrap_or(-1)
+                global_tr.unwrap_or(-1)
             })
             .collect()
     }
@@ -568,6 +579,136 @@ mod tests {
             }
             None => {
                 eprintln!("AFM [111]: no matching MSG in database");
+            }
+        }
+    }
+
+    // ====================================================================
+    // 复杂 AFM: 8原子在简单立方晶格, 相邻磁矩相反, [111]和[001]交替
+    // ====================================================================
+
+    #[test]
+    fn test_complex_afm_8atom_cubic() {
+        // 简单立方晶格, 8个原子在角上 (2×2×2 网格)
+        // 非磁: 8个同种原子 → 原胞1个原子 → Pm-3m (#221)
+        // 磁矩: 相邻原子磁矩相反
+        //   偶 parity (i+j+k even) → [1,1,1]
+        //   奇 parity (i+j+k odd)  → [0,0,1]
+        let lattice = cubic_lattice();
+        let norm_111 = (3.0f64).sqrt();
+
+        let positions = [
+            [0.0, 0.0, 0.0],
+            [0.5, 0.0, 0.0],
+            [0.0, 0.5, 0.0],
+            [0.5, 0.5, 0.0],
+            [0.0, 0.0, 0.5],
+            [0.5, 0.0, 0.5],
+            [0.0, 0.5, 0.5],
+            [0.5, 0.5, 0.5],
+        ];
+        // --- 1. 非磁空间群 ---
+        let mut cell = crate::cell::Cell::new(8, crate::cell::TensorRank::NoSpin);
+        cell.set_cell(&lattice, &positions, &[27; 8]); // 全部 Co
+        cell.aperiodic_axis = None;
+
+        let primitive = crate::primitive::prm_get_primitive(&cell, SYMPREC, -1.0)
+            .expect("Primitive search failed");
+        let spg = crate::spacegroup::spa_search_spacegroup(&primitive, 0, SYMPREC, -1.0)
+            .expect("Space group search failed");
+        eprintln!(
+            "8-atom AFM: non-magnetic spg #{}, hall={}",
+            spg.number, spg.hall_number
+        );
+        // 8个同种原子 → 原胞1个原子 → Pm-3m (#221)
+        assert_eq!(spg.number, 221, "8-atom: Pm-3m (#221)");
+
+        // --- 2. 用数据库操作进行磁分析 ---
+        // 由于原胞只有1个原子, 无法区分8个不同的磁矩
+        // 用 Hall 497 (Pm-3m) 的 96 个常规晶胞操作进行磁对称分析
+        let ops = pm3m_ops();
+        eprintln!("  using {} database ops for magnetic analysis", ops.len());
+
+        // [111] AFM: even [1,1,1], odd [-1,-1,-1]
+        let moments_111 = [
+            [1.0 / norm_111, 1.0 / norm_111, 1.0 / norm_111],
+            [-1.0 / norm_111, -1.0 / norm_111, -1.0 / norm_111],
+            [-1.0 / norm_111, -1.0 / norm_111, -1.0 / norm_111],
+            [1.0 / norm_111, 1.0 / norm_111, 1.0 / norm_111],
+            [-1.0 / norm_111, -1.0 / norm_111, -1.0 / norm_111],
+            [1.0 / norm_111, 1.0 / norm_111, 1.0 / norm_111],
+            [1.0 / norm_111, 1.0 / norm_111, 1.0 / norm_111],
+            [-1.0 / norm_111, -1.0 / norm_111, -1.0 / norm_111],
+        ];
+        // [001] AFM: even [0,0,1], odd [0,0,-1]
+        let moments_001 = [
+            [0.0, 0.0, 1.0],
+            [0.0, 0.0, -1.0],
+            [0.0, 0.0, -1.0],
+            [0.0, 0.0, 1.0],
+            [0.0, 0.0, -1.0],
+            [0.0, 0.0, 1.0],
+            [0.0, 0.0, 1.0],
+            [0.0, 0.0, -1.0],
+        ];
+
+        for (label, moments) in [("[111] AFM", &moments_111), ("[001] AFM", &moments_001)] {
+            let tr = compute_timerev_afm(&positions, moments, &ops);
+            let n_valid = tr.iter().filter(|&&t| t != -1).count();
+            let n_ord = tr.iter().filter(|&&t| t == 0).count();
+            let n_anti = tr.iter().filter(|&&t| t == 1).count();
+
+            eprintln!(
+                "  {}: {} valid + {} invalid ({} ordinary, {} anti)",
+                label, n_valid, ops.len() - n_valid, n_ord, n_anti
+            );
+
+            // 找到恒等操作并验证
+            let id_idx = ops.iter().position(|(r, _)| {
+                r[0][0] == 1 && r[0][1] == 0 && r[0][2] == 0
+                    && r[1][0] == 0 && r[1][1] == 1 && r[1][2] == 0
+                    && r[2][0] == 0 && r[2][1] == 0 && r[2][2] == 1
+            });
+            if let Some(idx) = id_idx {
+                assert_eq!(tr[idx], 0, "{}: identity must be ordinary", label);
+            }
+            assert!(n_valid > 0, "{}: some ops must be valid", label);
+
+            // --- 磁群识别 ---
+            if n_valid > 0 {
+                let valid_indices: Vec<usize> = tr
+                    .iter()
+                    .cloned()
+                    .enumerate()
+                    .filter(|(_, t)| *t != -1)
+                    .map(|(i, _)| i)
+                    .collect();
+                let mag_sym = {
+                    let n = valid_indices.len();
+                    let mut sym = MagneticSymmetry::new(n);
+                    for (j, &i) in valid_indices.iter().enumerate() {
+                        sym.rot[j] = ops[i].0;
+                        sym.trans[j] = ops[i].1;
+                        sym.timerev[j] = tr[i];
+                    }
+                    sym
+                };
+                let ds = crate::magnetic_spacegroup::msg_identify_magnetic_space_group_type(
+                    &lattice, &mag_sym, SYMPREC,
+                );
+                match ds {
+                    Some(ds) => {
+                        let mt = msgdb_get_magnetic_spacegroup_type(ds.uni_number);
+                        eprintln!(
+                            "    {} result: uni={}, type={}, number={}, bns='{}'",
+                            label, ds.uni_number, ds.msg_type, mt.number, mt.bns_number.trim()
+                        );
+                        assert_eq!(ds.msg_type, mt.type_);
+                    }
+                    None => {
+                        eprintln!("    {}: no matching MSG in database", label);
+                    }
+                }
             }
         }
     }
