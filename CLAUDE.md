@@ -6,7 +6,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ```bash
 cargo build              # Build the library
-cargo test               # Run all 69 tests
+cargo test               # Run all 69 tests (magnetic: ~24 end-to-end)
+cargo test test_fcc -- --nocapture  # FCC FM 测试（含已知 bug 的原始输出）
 cargo test -- --nocapture  # Run tests with debug output (eprintln visible)
 cargo test <test_name>   # Run a single test (e.g., `cargo test test_graphene_p6mmm`)
 cargo check              # Check compilation without building
@@ -153,7 +154,7 @@ Magnetic space group tests in `magnetic_spacegroup_test.rs`:
 
 ## Magnetic Space Group Status
 
-Magnetic space group identification is fully functional for configurations where the magnetic symmetry retains all parent space group operations (with time-reversal flags).
+Magnetic space group identification is fully functional for direct magnetic symmetry analysis.
 
 ### Implemented Components
 
@@ -162,13 +163,37 @@ Magnetic space group identification is fully functional for configurations where
 | `convert_msgdb.py` | ~200 | Python script to auto-convert C data arrays to Rust static data |
 | `msg_database_gen.rs` | **28,319** | Generated static arrays (6 arrays: 1652 MSG types, 531 Hall mappings, 76683 encoded operations, etc.) |
 | `msg_database.rs` | ~120 | Database query functions |
-| `magnetic_spacegroup.rs` | ~500 | Magnetic identification pipeline: FSG/XSG extraction, type classification (1-4), database matching |
-| `magnetic_spacegroup_test.rs` | ~200 | 10 tests covering Type-1/2/3 identification via Pm-3m |
-| `lib.rs` public API | ~60 | `SpglibMagneticSpacegroupType`, `spg_get_magnetic_spacegroup_type`, `spg_get_magnetic_spacegroup_type_from_symmetry` |
+| `magnetic_spacegroup.rs` | ~500 | Magnetic identification pipeline: FSG/XSG extraction, type classification (1-4), database matching, auto-detect lower-symmetry parent |
+| `magnetic_spacegroup_test.rs` | ~600 | 24 tests: Type-1/2/3, Fe/Cu AFM, FCC FM, end-to-end, edge cases |
+| `spin.rs` | ~650 | Magnetic symmetry from site tensors (`spn_get_operations_with_site_tensors`) |
+| `lib.rs` public API | ~400 | `SpglibMagneticSymmetry`, `spg_get_magnetic_dataset`, `spg_read_structure`, `spg_format_magnetic_symmetry` |
+
+### Public API: End-to-End Pipeline
+
+```rust
+/// 从晶格 + 原子位置 + 磁矩分析磁空间群和对称操作。
+pub fn spg_get_magnetic_dataset(
+    lattice: &Mat3,
+    positions: &[Vec3],
+    types: &[i32],
+    magnetic_moments: Option<&[[f64; 3]]>,  // None = 非磁
+    symprec: f64,
+) -> Option<SpglibMagneticSymmetry>;
+
+/// 从类似 POSCAR 的格式解析结构。
+pub fn spg_read_structure(data: &str) -> Option<(Mat3, Vec<Vec3>, Vec<i32>, Option<Vec<[f64; 3]>>)>;
+
+/// 格式化输出（类似 phonopy --symmetry 风格）。
+pub fn spg_format_magnetic_symmetry(result: &SpglibMagneticSymmetry) -> String;
+```
+
+管线流程:
+1. `prm_get_primitive` + `spa_search_spacegroup` → 非磁空间群
+2. `sym_get_operation` → 非磁对称操作
+3. `spn_get_operations_with_site_tensors` → 磁对称操作（含 timerev 标记）
+4. `msg_identify_magnetic_space_group_type` → 磁空间群 UNI + BNS 符号
 
 ### Database Architecture
-
-The magnetic space group database stores operations using a three-level indexing scheme:
 
 ```
 HALL_MAPPING[hall_number] → [min_uni, max_uni]        # Hall → UNI range
@@ -177,99 +202,55 @@ OPERATION_INDEX[uni][offset] → [count, start]           # UNI → operation in
 ```
 
 Each operation in `MAGNETIC_SYMMETRY_OPERATIONS` is a single i32 encoding:
-- Rotation matrix (base-3, 3^9 = 19683 values)
-- Translation vector (base-12, 12^3 = 1728 values)
-- Time-reversal flag (34012224 = 3^9 × 12^3, timerev = encoded / 34012224)
+- Rotation matrix (base-3) + translation vector (base-12) + time-reversal flag
 
-**Critical: every MSG entry stores ALL parent space group operations** with timerev flags.
-No entry ever stores a reduced operation set. For example, all Type-3 variants of Pm-3m (#221) under Hall 517 (UNI 1596-1598) have 96 encoded operations
-(= 48 rotations × 2 for centering), with 48 timerev=0 and 48 timerev=1.
+### Verified Test Cases (69 tests)
 
-### Verified Magnetic Types
+| Test | Structure | Non-mag Spg | Magnetic Result |
+|------|-----------|------------|----------------|
+| Type-1/2/3 (database ops) | Pm-3m hall 517 | #221 | UNI 1594-1598 |
+| Fe [1,0,0] body center | 1 atom @ SC body center | Pm-3m (#221) | P4/mmm (#123), Type-3 |
+| Fe [1,1,1] body center | 1 atom @ SC body center | Pm-3m (#221) | R-3m (#166), UNI=1331 |
+| Co AFM [111] BCC | 2 atoms BCC | Im-3m (#229) | R-3m (#166), UNI=1331 |
+| 8-atom AFM [111] | 8 atoms SC | Pm-3m (#221) | 24 ops (collinear AFM) |
+| 8-atom AFM [001] | 8 atoms SC | Pm-3m (#221) | 32 ops (z-axis collinear AFM) |
+| FCC FM [001] | 4 atoms FCC | Fm-3m (#225) | Type-4, 4 ops, UNI=0 |
+| FCC FM [111] | 4 atoms FCC | Fm-3m (#225) | Type-4, 4 ops, UNI=0 |
+| End-to-end POSCAR | Fe SC body center | Pm-3m (#221) | 16 ops, Type-3 |
+| End-to-end POSCAR AFM | Fe BCC AFM | Im-3m (#229) | R-3m, UNI=1331 |
 
-| Type | Description | Example | UNI |
-|------|-------------|---------|-----|
-| 1 | Ordinary (no time reversal) | Pm-3m (#221) | 1524 / 1594 |
-| 2 | Grey / paramagnetic (pure 1') | Pm-3m (#221) | 1525 / 1595 |
-| 3 | Black-white (proper/improper) | Pm-3m (#221) | 1526 / 1596-1598 |
+### Known Issue: `spn_get_operations_with_site_tensors` Base Mismatch
 
-### Known Limitation: Symmetry-Reduced Magnetic Configurations
+**问题描述**: `spn_get_operations_with_site_tensors` 接收的「非磁对称操作」来自**原胞**
+（`sym_get_operation` on primitive cell），但这些操作是在原胞的晶格基（如 FCC 的菱面体基）
+下的整数旋转矩阵。而函数内部的原子位置匹配 (`apply_symmetry_to_position`) 直接用这些
+旋转矩阵去映射**常规晶胞**（如 FCC 的立方基）的原子坐标分数——基矢不同导致位置映射失败。
 
-The standard magnetic identification pipeline (`msg_identify_magnetic_space_group_type`) only works for
-magnetic configurations where ALL parent symmetry operations are either ordinary (timerev=0) or
-anti (timerev=1). It cannot handle configurations where the magnetic moment reduces the number
-of valid symmetry operations below the parent space group's full set.
+**影响**: 对面心/体心等非常规原胞（BCC、FCC 等），`spn_get_operations_with_site_tensors`
+只能找到少量磁对称操作（如 FCC 铁磁只有 4 个），因为大多数操作的位置映射不正确。
 
-**Concrete example**: Fe at simple cubic body center [0.5,0.5,0.5] with moment along [1,0,0]:
-- Parent (non-magnetic): Pm-3m (#221), 48 symmetry operations
-- Moment [1,0,0]: only 16 of the 48 ops preserve or reverse the moment (8 ordinary, 8 anti)
-- The remaining 32 ops are not symmetries of the magnetic structure at all
-- The pipeline receives only 16 ops → FSG=16, XSG=8 → Type-3 classification
-- But no database entry under Hall 517 has 16 ops (all entries use 48 or 96)
-- Result: `None` (no matching magnetic space group)
+**具体表现 (FCC FM [001])**:
+- 非磁: Fm-3m (#225)，常规晶胞 4 原子，原胞 1 原子
+- `sym_get_operation` → 48 个原胞对称操作（菱面体基）
+- `spn_get_operations_with_site_tensors`: 用这 48 个操作去匹配 4 个立方基原子的磁矩
+- 位置匹配无法正确对应 → 只保留 4 个有效操作 → Type-4
+- 实际上 FCC 铁磁应有更多对称操作
 
-This is NOT a code bug — it is a fundamental limitation of the Litvin magnetic space group
-database and the spglib identification algorithm.
-
-#### C Code Comparison
-
-The original C spglib (`src_c/magnetic_spacegroup.txt`) has the **same limitation** and is
-**strictly worse**:
-
-1. **C line 112-113**: Explicit TODO that was never implemented:
-   ```c
-   /* TODO(shinohara): add option to specify hall_number in searching
-    * space-group type */
-   ```
-
-2. **C line 593-596**: NULL pointer dereference (crash) on reduced symmetry:
-   ```c
-   *spacegroup = spa_search_spacegroup_with_symmetry(prim_sym, unit_lat, symprec);
-   ref_find_similar_bravais_lattice(*spacegroup, symprec);  // CRASH when NULL
-   ```
-
-3. **C line 615-617**: NULL check is too late, never reached:
-   ```c
-   if (spacegroup == NULL) { return NULL; }  // dead code
-   ```
-
-The Rust implementation improves on C by:
-- Returning `Option` (graceful `None` instead of crash)
-- Providing `msg_identify_with_parent_hall` fallback that uses non-magnetic parent Hall number
-- Proper error propagation throughout the pipeline
-
-#### To Fully Support Arbitrary Magnetic Moments
-
-Handling [1,0,0] / [1,1,1] Fe correctly requires re-indexing the crystal in the lower crystal
-system (tetragonal or trigonal) determined by the magnetic symmetry, then looking up magnetic
-variants of that lower-symmetry parent. This is an extension beyond what C spglib provides,
-and would require:
-
-1. Detecting the effective point group from the reduced magnetic symmetry
-2. Computing a transformation matrix to the standard orientation of that crystal system
-3. Transforming the lattice and atomic positions accordingly
-4. Re-running space group identification on the transformed structure
-5. Looking up magnetic variants of the identified lower-symmetry space group
-
-None of the existing tests cover this case — `test_fe_center_cubic_magnetic` verifies the
-symmetry analysis counts (8 ordinary + 8 anti for [1,0,0], 6+6 for [1,1,1]) but
-gracefully accepts that no database match exists.
-
-### API: `msg_identify_with_parent_hall`
-
+**根因**: `spin.rs` 中 `get_operations` 函数的原子位置循环:
 ```rust
-pub fn msg_identify_with_parent_hall(
-    lattice: &Mat3,
-    magnetic_symmetry: &MagneticSymmetry,
-    parent_hall_number: Option<i32>,  // Non-magnetic parent Hall number
-    symprec: f64,
-) -> Option<MagneticDataset>
+// rot 来自原胞（如菱面体基），position 来自常规晶胞（立方基）
+apply_symmetry_to_position(&mut pos, &cell.position[j],
+    &sym_nonspin.rot[i], &sym_nonspin.trans[i]);  // 基矢不匹配
 ```
 
-When `parent_hall_number` is `Some(hall)`, the pipeline builds a reference spacegroup from
-that Hall number directly (bypassing the space group search from magnetic symmetry).
-This is useful when the non-magnetic parent is known but the magnetic symmetry is reduced.
-The fallback still uses FSG/XSG extraction from the magnetic symmetry for type classification.
+**修复方向**: 将原胞旋转矩阵转换到常规晶胞基后，用转换后的矩阵进行位置匹配：
+```rust
+// 先用 lattice 将旋转从原胞基转到笛卡尔，再转到常规晶胞基
+let rot_conventional = convert_to_conventional_basis(sym_nonspin.rot[i], lattice, prim_lattice);
+apply_symmetry_to_position(&mut pos, &cell.position[j], &rot_conventional, &trans);
+```
+
+**当前状态**: ❌ 未修复 → 影响 BCC/FCC 等非常规原胞的磁对称操作数
 
 ## Notes
 
