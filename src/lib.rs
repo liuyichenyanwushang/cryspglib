@@ -784,9 +784,8 @@ pub fn spg_get_magnetic_dataset(
     let spg = crate::spacegroup::spa_search_spacegroup(&primitive, 0, symprec, -1.0)?;
     let hall_number = spg.hall_number;
 
-    // --- 2. 非磁对称操作 ---
-    let prim_cell = primitive.cell.as_ref()?;
-    let nonspin_sym = crate::symmetry::sym_get_operation(prim_cell, symprec, -1.0)?;
+    // --- 2. 非磁对称操作 (用常规晶胞获取, 保证基矢正确) ---
+    let nonspin_sym = crate::symmetry::sym_get_operation(&cell, symprec, -1.0)?;
 
     if !has_mag {
         // 无磁矩: 只返回非磁结果
@@ -863,7 +862,27 @@ pub fn spg_get_magnetic_dataset(
             let mt = crate::msg_database::msgdb_get_magnetic_spacegroup_type(ds.uni_number);
             (ds.uni_number, mt.type_, mt.bns_number.to_string(), mt.og_number.to_string())
         }
-        None => (0, final_mag_sym.size as i32, String::new(), String::new()),
+        None => {
+            // 未匹配 DB 条目, 从 FSG/XSG 计算磁类型
+            let sym_all = crate::magnetic_spacegroup::extract_symmetry(
+                &final_mag_sym, true, symprec,
+            );
+            let sym_ord = crate::magnetic_spacegroup::extract_symmetry(
+                &final_mag_sym, false, symprec,
+            );
+            let fallback_type = match (sym_all, sym_ord) {
+                (Some(fsg), Some(xsg)) => {
+                    let n_fsg = fsg.size;
+                    let n_xsg = xsg.size;
+                    let n_msg = final_mag_sym.size;
+                    if n_fsg == n_xsg {
+                        if n_msg == n_fsg { 1 } else if n_msg == 2 * n_fsg { 2 } else { 0 }
+                    } else if n_fsg == 2 * n_xsg { 3 } else { 0 }
+                }
+                _ => 0,
+            };
+            (0, fallback_type, String::new(), String::new())
+        }
     };
 
     let spg_type = crate::spg_database::spgdb_get_spacegroup_type(hall_number);

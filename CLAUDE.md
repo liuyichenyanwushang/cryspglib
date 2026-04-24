@@ -250,7 +250,13 @@ let rot_conventional = convert_to_conventional_basis(sym_nonspin.rot[i], lattice
 apply_symmetry_to_position(&mut pos, &cell.position[j], &rot_conventional, &trans);
 ```
 
-**当前状态**: ❌ 未修复 → 影响 BCC/FCC 等非常规原胞的磁对称操作数
+**修复**: `spg_get_magnetic_dataset` 中改用常规晶胞 (`sym_get_operation(&cell)`) 
+获取对称操作而非原胞 (`sym_get_operation(prim_cell)`)，确保旋转矩阵在正确基下。
+
+**FCC FM [001]**: 64 ops (vs 之前 4 ops), **FCC FM [111]**: 48 ops (vs 之前 4 ops)
+两个都正确分类为 Type-3。
+
+**当前状态**: ✅ 已修复
 
 ## Notes
 

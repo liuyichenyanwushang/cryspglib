@@ -225,7 +225,7 @@ fn build_fallback_reference(
 /// 从磁性对称操作中提取普通对称操作（不搜索空间群）。
 /// `ignore_time_reversal=true` → FSG (所有操作)
 /// `ignore_time_reversal=false` → XSG (仅 timerev=0)
-fn extract_symmetry(
+pub(crate) fn extract_symmetry(
     magnetic_symmetry: &MagneticSymmetry,
     ignore_time_reversal: bool,
     symprec: f64,
