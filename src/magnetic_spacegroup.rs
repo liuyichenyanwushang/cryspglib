@@ -57,9 +57,12 @@ pub fn msg_identify_with_parent_hall(
     parent_hall_number: Option<i32>,
     symprec: f64,
 ) -> Option<MagneticDataset> {
+    // 先约化到原胞表示（去除纯平移导致的冗余操作）
+    let prim_sym = reduce_to_primitive_magsym(magnetic_symmetry, symprec);
+
     // 标准路径: 从磁对称性中提取 FSG/XSG 并搜索空间群
     let (ref_sg, changed_symmetry, mut tmat, mut shift, msgtype_num) =
-        match get_reference_space_group(magnetic_symmetry, symprec) {
+        match get_reference_space_group(&prim_sym, symprec) {
             Some(result) => result,
             None => {
                 // 标准路径失败 → 尝试 fallback（用母空间群的 Hall 编号）
@@ -85,7 +88,7 @@ pub fn msg_identify_with_parent_hall(
             continue;
         }
         let msg_uni = msgdb_get_spacegroup_operations(uni_number, hall_number)?;
-        if msg_uni.size != changed_symmetry.size {
+        if msg_uni.size > changed_symmetry.size {
             continue;
         }
 
@@ -102,7 +105,7 @@ pub fn msg_identify_with_parent_hall(
                 &tmat_cor_d, &shift_cor, &changed_symmetry,
             )?;
 
-            if is_equal(&symmetry_cor, &msg_uni, symprec) {
+            if is_subset(&symmetry_cor, &msg_uni, symprec) {
                 same = true;
                 // Update transformation: tmat = tmat_cor @ tmat
                 tmat = mat_multiply_matrix_d3(&tmat_cor_d, &tmat);
@@ -574,6 +577,124 @@ fn get_distinct_changed_magnetic_symmetry(
 }
 
 /// 检查两个磁性对称操作集合是否等价。
+/// 用纯平移将磁对称操作约化到原胞表示。
+/// 检测 identity + timerev=0 的操作为晶格平移, 用它们去除冗余操作。
+fn reduce_to_primitive_magsym(sym: &MagneticSymmetry, symprec: f64) -> MagneticSymmetry {
+    let identity: Mat3I = [[1, 0, 0], [0, 1, 0], [0, 0, 1]];
+    let n_in = sym.size;
+
+    // 1. 收集所有纯平移
+    let mut lat_trans = vec![[0.0; 3]];
+    for i in 0..n_in {
+        if sym.timerev[i] == 0 && mat_check_identity_matrix_i3(&identity, &sym.rot[i]) {
+            let t = sym.trans[i];
+            let mut dup = false;
+            for lt in &lat_trans {
+                let mut d = 0.0;
+                for k in 0..3 {
+                    let mut x = t[k] - lt[k];
+                    x -= x.round();
+                    d += x.abs();
+                }
+                if d < symprec { dup = true; break; }
+            }
+            if !dup { lat_trans.push(t); }
+        }
+    }
+
+    // 如果没有多余平移, 返回原样
+    if lat_trans.len() <= 1 { return sym.clone(); }
+
+    // 2. 约化和去重
+    let mut out = MagneticSymmetry::new(n_in);
+    let mut n = 0usize;
+
+    'next: for i in 0..n_in {
+        let rot_i = &sym.rot[i];
+        let t_i = sym.trans[i];
+        let tr_i = sym.timerev[i];
+
+        // 求最短 translation
+        let mut best_t = t_i;
+        let mut best_n2 = t_i[0] * t_i[0] + t_i[1] * t_i[1] + t_i[2] * t_i[2];
+        for lt in &lat_trans {
+            let cand = [t_i[0] - lt[0], t_i[1] - lt[1], t_i[2] - lt[2]];
+            let n2 = cand[0] * cand[0] + cand[1] * cand[1] + cand[2] * cand[2];
+            if n2 < best_n2 { best_t = cand; best_n2 = n2; }
+        }
+
+        for j in 0..n {
+            if out.timerev[j] != tr_i { continue; }
+            if !mat_check_identity_matrix_i3(&out.rot[j], rot_i) { continue; }
+            let mut d = 0.0;
+            for k in 0..3 {
+                let mut x = out.trans[j][k] - best_t[k];
+                x -= x.round();
+                d += x.abs();
+            }
+            if d < symprec { continue 'next; }
+        }
+
+        out.rot[n] = *rot_i;
+        out.trans[n] = best_t;
+        out.timerev[n] = tr_i;
+        n += 1;
+    }
+    out.size = n;
+
+    // 3. 收缩到实际大小
+    let mut final_sym = MagneticSymmetry::new(n);
+    for i in 0..n {
+        final_sym.rot[i] = out.rot[i];
+        final_sym.trans[i] = out.trans[i];
+        final_sym.timerev[i] = out.timerev[i];
+    }
+    final_sym
+}
+
+/// 子集检查: sym1 的所有操作是否都能在 sym2 中找到。
+/// sym1 可以是 sym2 的子集（size 不要求相等）。
+fn is_subset(
+    sym1: &MagneticSymmetry,
+    sym2: &MagneticSymmetry,
+    symprec: f64,
+) -> bool {
+    if sym1.size > sym2.size {
+        return false; // sym1 不可能是 sym2 的子集
+    }
+
+    let mut found = vec![false; sym2.size];
+    for i in 0..sym1.size {
+        let mut matched = false;
+        for j in 0..sym2.size {
+            if found[j] {
+                continue;
+            }
+            if !mat_check_identity_matrix_i3(&sym1.rot[i], &sym2.rot[j]) {
+                continue;
+            }
+            if sym1.timerev[i] != sym2.timerev[j] {
+                continue;
+            }
+            let mut diff = [0.0; 3];
+            for k in 0..3 {
+                diff[k] = sym1.trans[i][k] - sym2.trans[j][k];
+                diff[k] -= mat_nint(diff[k]) as f64;
+            }
+            if diff[0].abs() < symprec && diff[1].abs() < symprec && diff[2].abs() < symprec {
+                found[j] = true;
+                matched = true;
+                break;
+            }
+        }
+        if !matched {
+            return false;
+        }
+    }
+    true
+}
+
+#[allow(dead_code)]
 fn is_equal(
     sym1: &MagneticSymmetry,
     sym2: &MagneticSymmetry,
