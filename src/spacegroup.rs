@@ -401,7 +401,7 @@ fn get_spacegroup(
     origin_shift: &Vec3,
     conv_lattice: &Mat3,
 ) -> Option<Spacegroup> {
-    let spg_type = spgdb_get_spacegroup_type(hall_number)?;
+    let spg_type = spgdb_get_spacegroup_type(hall_number);
 
     let mut spacegroup = Spacegroup::new();
     mat_copy_matrix_d3(&mut spacegroup.bravais_lattice, conv_lattice);

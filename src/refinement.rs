@@ -144,12 +144,8 @@ fn get_wyckoff_positions(
     }
 
     // Check symmetry breaking by unusual multiplicity of primitive cell
-    let operation_index = crate::spg_database::spgdb_get_operation_index(spacegroup.hall_number);
-    let num_prim_sym = if let Some(op_idx) = operation_index {
-        op_idx[0] / ((bravais.size / primitive.size) as i32)
-    } else {
-        0
-    };
+    let (op_count, _) = crate::spg_database::spgdb_get_operation_index(spacegroup.hall_number);
+    let num_prim_sym = op_count as i32 / ((bravais.size / primitive.size) as i32);
 
     if cell.size * num_prim_sym as usize != symmetry.size * primitive.size {
         set_equivalent_atoms_broken_symmetry(

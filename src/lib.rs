@@ -1175,7 +1175,7 @@ fn get_schoenflies(
 
 /// 获取 Hall 编号对应的 Centering。
 fn get_centering(hall_number: i32) -> Option<Centering> {
-    spgdb_get_spacegroup_type(hall_number).map(|spgtype| spgtype.centering)
+    Some(spgdb_get_spacegroup_type(hall_number).centering)
 }
 
 /// 从对称操作获取 Hall 编号。
@@ -1216,8 +1216,7 @@ fn get_spacegroup_type(hall_number: i32) -> Result<SpglibSpacegroupType, SpglibE
         return Err(SpglibError::SpacegroupSearchFailed);
     }
 
-    let spgtype = spgdb_get_spacegroup_type(hall_number)
-        .ok_or(SpglibError::SpacegroupSearchFailed)?;
+    let spgtype = spgdb_get_spacegroup_type(hall_number);
     let pointgroup = ptg_get_pointgroup(spgtype.pointgroup_number);
 
     Ok(SpglibSpacegroupType {

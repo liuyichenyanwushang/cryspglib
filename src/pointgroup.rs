@@ -1,5 +1,6 @@
 // pointgroup.rs
 
+use crate::cell::AperiodicAxis;
 use crate::debug;
 use crate::mathfunc::{
     Mat3I, mat_add_matrix_i3, mat_check_identity_matrix_i3, mat_copy_matrix_i3,
@@ -372,7 +373,7 @@ static ROT_AXES: [[i32; 3]; NUM_ROT_AXES] = [
 pub fn ptg_get_transformation_matrix(
     transform_mat: &mut Mat3I,
     rotations: &[Mat3I],
-    aperiodic_axis: i32,
+    aperiodic_axis: Option<AperiodicAxis>,
 ) -> Pointgroup {
     debug::debug_print(format_args!("ptg_get_transformation_matrix:\n"));
 
@@ -380,7 +381,7 @@ pub fn ptg_get_transformation_matrix(
 
     let pg_num = get_pointgroup_number_by_rotations(rotations);
 
-    if pg_num > 0 && (aperiodic_axis == -1 || pg_num < 28) {
+    if pg_num > 0 && (aperiodic_axis.is_none() || pg_num < 28) {
         let pointgroup = ptg_get_pointgroup(pg_num);
         let pointsym = ptg_get_pointsymmetry(rotations);
         let mut axes = [0; 3];
@@ -509,7 +510,7 @@ fn get_rotation_type(rot: &Mat3I) -> i32 {
     }
 }
 
-fn get_axes(axes: &mut [usize; 3], laue: Laue, pointsym: &PointSymmetry, aperiodic_axis: i32) {
+fn get_axes(axes: &mut [usize; 3], laue: Laue, pointsym: &PointSymmetry, aperiodic_axis: Option<AperiodicAxis>) {
     match laue {
         Laue::Laue1 => {
             axes[0] = 0;
@@ -517,14 +518,14 @@ fn get_axes(axes: &mut [usize; 3], laue: Laue, pointsym: &PointSymmetry, aperiod
             axes[2] = 2;
         }
         Laue::Laue2M => {
-            if aperiodic_axis == -1 {
+            if aperiodic_axis.is_none() {
                 laue2m(axes, pointsym);
             } else {
-                layer_laue2m(axes, pointsym, aperiodic_axis);
+                layer_laue2m(axes, pointsym, aperiodic_axis.map(|a| a.axis_index() as i32).unwrap_or(-1));
             }
         }
         Laue::LaueMMM => {
-            lauennn(axes, pointsym, 2, aperiodic_axis);
+            lauennn(axes, pointsym, 2, aperiodic_axis.map(|a| a.axis_index() as i32).unwrap_or(-1));
         }
         Laue::Laue4M | Laue::Laue4MMM => {
             laue_one_axis(axes, pointsym, 4);

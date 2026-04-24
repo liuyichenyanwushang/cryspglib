@@ -41,7 +41,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Error,
         pointgroup_number: 0,
-    }
+    },
     RawSpacegroupType {
         number: 1,
         schoenflies: "C1^1  ",
@@ -52,7 +52,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 1,
-    }
+    },
     RawSpacegroupType {
         number: 2,
         schoenflies: "Ci^1  ",
@@ -63,7 +63,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 2,
-    }
+    },
     RawSpacegroupType {
         number: 3,
         schoenflies: "C2^1  ",
@@ -74,7 +74,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "b    ",
         centering: Centering::Primitive,
         pointgroup_number: 3,
-    }
+    },
     RawSpacegroupType {
         number: 3,
         schoenflies: "C2^1  ",
@@ -85,7 +85,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "c    ",
         centering: Centering::Primitive,
         pointgroup_number: 3,
-    }
+    },
     RawSpacegroupType {
         number: 3,
         schoenflies: "C2^1  ",
@@ -96,7 +96,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "a    ",
         centering: Centering::Primitive,
         pointgroup_number: 3,
-    }
+    },
     RawSpacegroupType {
         number: 4,
         schoenflies: "C2^2  ",
@@ -107,7 +107,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "b    ",
         centering: Centering::Primitive,
         pointgroup_number: 3,
-    }
+    },
     RawSpacegroupType {
         number: 4,
         schoenflies: "C2^2  ",
@@ -118,7 +118,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "c    ",
         centering: Centering::Primitive,
         pointgroup_number: 3,
-    }
+    },
     RawSpacegroupType {
         number: 4,
         schoenflies: "C2^2  ",
@@ -129,7 +129,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "a    ",
         centering: Centering::Primitive,
         pointgroup_number: 3,
-    }
+    },
     RawSpacegroupType {
         number: 5,
         schoenflies: "C2^3  ",
@@ -140,7 +140,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "b1   ",
         centering: Centering::CFace,
         pointgroup_number: 3,
-    }
+    },
     RawSpacegroupType {
         number: 5,
         schoenflies: "C2^3  ",
@@ -151,7 +151,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "b2   ",
         centering: Centering::AFace,
         pointgroup_number: 3,
-    }
+    },
     RawSpacegroupType {
         number: 5,
         schoenflies: "C2^3  ",
@@ -162,7 +162,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "b3   ",
         centering: Centering::Body,
         pointgroup_number: 3,
-    }
+    },
     RawSpacegroupType {
         number: 5,
         schoenflies: "C2^3  ",
@@ -173,7 +173,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "c1   ",
         centering: Centering::AFace,
         pointgroup_number: 3,
-    }
+    },
     RawSpacegroupType {
         number: 5,
         schoenflies: "C2^3  ",
@@ -184,7 +184,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "c2   ",
         centering: Centering::Primitive,
         pointgroup_number: 3,
-    }
+    },
     RawSpacegroupType {
         number: 5,
         schoenflies: "C2^3  ",
@@ -195,7 +195,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "c3   ",
         centering: Centering::Body,
         pointgroup_number: 3,
-    }
+    },
     RawSpacegroupType {
         number: 5,
         schoenflies: "C2^3  ",
@@ -206,7 +206,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "a1   ",
         centering: Centering::Primitive,
         pointgroup_number: 3,
-    }
+    },
     RawSpacegroupType {
         number: 5,
         schoenflies: "C2^3  ",
@@ -217,7 +217,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "a2   ",
         centering: Centering::CFace,
         pointgroup_number: 3,
-    }
+    },
     RawSpacegroupType {
         number: 5,
         schoenflies: "C2^3  ",
@@ -228,7 +228,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "a3   ",
         centering: Centering::Body,
         pointgroup_number: 3,
-    }
+    },
     RawSpacegroupType {
         number: 6,
         schoenflies: "Cs^1  ",
@@ -239,7 +239,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "b    ",
         centering: Centering::Primitive,
         pointgroup_number: 4,
-    }
+    },
     RawSpacegroupType {
         number: 6,
         schoenflies: "Cs^1  ",
@@ -250,7 +250,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "c    ",
         centering: Centering::Primitive,
         pointgroup_number: 4,
-    }
+    },
     RawSpacegroupType {
         number: 6,
         schoenflies: "Cs^1  ",
@@ -261,7 +261,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "a    ",
         centering: Centering::Primitive,
         pointgroup_number: 4,
-    }
+    },
     RawSpacegroupType {
         number: 7,
         schoenflies: "Cs^2  ",
@@ -272,7 +272,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "b1   ",
         centering: Centering::Primitive,
         pointgroup_number: 4,
-    }
+    },
     RawSpacegroupType {
         number: 7,
         schoenflies: "Cs^2  ",
@@ -283,7 +283,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "b2   ",
         centering: Centering::Primitive,
         pointgroup_number: 4,
-    }
+    },
     RawSpacegroupType {
         number: 7,
         schoenflies: "Cs^2  ",
@@ -294,7 +294,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "b3   ",
         centering: Centering::Primitive,
         pointgroup_number: 4,
-    }
+    },
     RawSpacegroupType {
         number: 7,
         schoenflies: "Cs^2  ",
@@ -305,7 +305,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "c1   ",
         centering: Centering::Primitive,
         pointgroup_number: 4,
-    }
+    },
     RawSpacegroupType {
         number: 7,
         schoenflies: "Cs^2  ",
@@ -316,7 +316,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "c2   ",
         centering: Centering::Primitive,
         pointgroup_number: 4,
-    }
+    },
     RawSpacegroupType {
         number: 7,
         schoenflies: "Cs^2  ",
@@ -327,7 +327,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "c3   ",
         centering: Centering::Primitive,
         pointgroup_number: 4,
-    }
+    },
     RawSpacegroupType {
         number: 7,
         schoenflies: "Cs^2  ",
@@ -338,7 +338,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "a1   ",
         centering: Centering::Primitive,
         pointgroup_number: 4,
-    }
+    },
     RawSpacegroupType {
         number: 7,
         schoenflies: "Cs^2  ",
@@ -349,7 +349,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "a2   ",
         centering: Centering::Primitive,
         pointgroup_number: 4,
-    }
+    },
     RawSpacegroupType {
         number: 7,
         schoenflies: "Cs^2  ",
@@ -360,7 +360,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "a3   ",
         centering: Centering::Primitive,
         pointgroup_number: 4,
-    }
+    },
     RawSpacegroupType {
         number: 8,
         schoenflies: "Cs^3  ",
@@ -371,7 +371,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "b1   ",
         centering: Centering::CFace,
         pointgroup_number: 4,
-    }
+    },
     RawSpacegroupType {
         number: 8,
         schoenflies: "Cs^3  ",
@@ -382,7 +382,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "b2   ",
         centering: Centering::AFace,
         pointgroup_number: 4,
-    }
+    },
     RawSpacegroupType {
         number: 8,
         schoenflies: "Cs^3  ",
@@ -393,7 +393,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "b3   ",
         centering: Centering::Body,
         pointgroup_number: 4,
-    }
+    },
     RawSpacegroupType {
         number: 8,
         schoenflies: "Cs^3  ",
@@ -404,7 +404,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "c1   ",
         centering: Centering::AFace,
         pointgroup_number: 4,
-    }
+    },
     RawSpacegroupType {
         number: 8,
         schoenflies: "Cs^3  ",
@@ -415,7 +415,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "c2   ",
         centering: Centering::Primitive,
         pointgroup_number: 4,
-    }
+    },
     RawSpacegroupType {
         number: 8,
         schoenflies: "Cs^3  ",
@@ -426,7 +426,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "c3   ",
         centering: Centering::Body,
         pointgroup_number: 4,
-    }
+    },
     RawSpacegroupType {
         number: 8,
         schoenflies: "Cs^3  ",
@@ -437,7 +437,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "a1   ",
         centering: Centering::Primitive,
         pointgroup_number: 4,
-    }
+    },
     RawSpacegroupType {
         number: 8,
         schoenflies: "Cs^3  ",
@@ -448,7 +448,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "a2   ",
         centering: Centering::CFace,
         pointgroup_number: 4,
-    }
+    },
     RawSpacegroupType {
         number: 8,
         schoenflies: "Cs^3  ",
@@ -459,7 +459,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "a3   ",
         centering: Centering::Body,
         pointgroup_number: 4,
-    }
+    },
     RawSpacegroupType {
         number: 9,
         schoenflies: "Cs^4  ",
@@ -470,7 +470,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "b1   ",
         centering: Centering::CFace,
         pointgroup_number: 4,
-    }
+    },
     RawSpacegroupType {
         number: 9,
         schoenflies: "Cs^4  ",
@@ -481,7 +481,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "b2   ",
         centering: Centering::AFace,
         pointgroup_number: 4,
-    }
+    },
     RawSpacegroupType {
         number: 9,
         schoenflies: "Cs^4  ",
@@ -492,7 +492,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "b3   ",
         centering: Centering::Body,
         pointgroup_number: 4,
-    }
+    },
     RawSpacegroupType {
         number: 9,
         schoenflies: "Cs^4  ",
@@ -503,7 +503,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "-b1  ",
         centering: Centering::AFace,
         pointgroup_number: 4,
-    }
+    },
     RawSpacegroupType {
         number: 9,
         schoenflies: "Cs^4  ",
@@ -514,7 +514,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "-b2  ",
         centering: Centering::CFace,
         pointgroup_number: 4,
-    }
+    },
     RawSpacegroupType {
         number: 9,
         schoenflies: "Cs^4  ",
@@ -525,7 +525,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "-b3  ",
         centering: Centering::Body,
         pointgroup_number: 4,
-    }
+    },
     RawSpacegroupType {
         number: 9,
         schoenflies: "Cs^4  ",
@@ -536,7 +536,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "c1   ",
         centering: Centering::AFace,
         pointgroup_number: 4,
-    }
+    },
     RawSpacegroupType {
         number: 9,
         schoenflies: "Cs^4  ",
@@ -547,7 +547,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "c2   ",
         centering: Centering::Primitive,
         pointgroup_number: 4,
-    }
+    },
     RawSpacegroupType {
         number: 9,
         schoenflies: "Cs^4  ",
@@ -558,7 +558,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "c3   ",
         centering: Centering::Body,
         pointgroup_number: 4,
-    }
+    },
     RawSpacegroupType {
         number: 9,
         schoenflies: "Cs^4  ",
@@ -569,7 +569,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "-c1  ",
         centering: Centering::Primitive,
         pointgroup_number: 4,
-    }
+    },
     RawSpacegroupType {
         number: 9,
         schoenflies: "Cs^4  ",
@@ -580,7 +580,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "-c2  ",
         centering: Centering::AFace,
         pointgroup_number: 4,
-    }
+    },
     RawSpacegroupType {
         number: 9,
         schoenflies: "Cs^4  ",
@@ -591,7 +591,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "-c3  ",
         centering: Centering::Body,
         pointgroup_number: 4,
-    }
+    },
     RawSpacegroupType {
         number: 9,
         schoenflies: "Cs^4  ",
@@ -602,7 +602,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "a1   ",
         centering: Centering::Primitive,
         pointgroup_number: 4,
-    }
+    },
     RawSpacegroupType {
         number: 9,
         schoenflies: "Cs^4  ",
@@ -613,7 +613,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "a2   ",
         centering: Centering::CFace,
         pointgroup_number: 4,
-    }
+    },
     RawSpacegroupType {
         number: 9,
         schoenflies: "Cs^4  ",
@@ -624,7 +624,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "a3   ",
         centering: Centering::Body,
         pointgroup_number: 4,
-    }
+    },
     RawSpacegroupType {
         number: 9,
         schoenflies: "Cs^4  ",
@@ -635,7 +635,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "-a1  ",
         centering: Centering::CFace,
         pointgroup_number: 4,
-    }
+    },
     RawSpacegroupType {
         number: 9,
         schoenflies: "Cs^4  ",
@@ -646,7 +646,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "-a2  ",
         centering: Centering::Primitive,
         pointgroup_number: 4,
-    }
+    },
     RawSpacegroupType {
         number: 9,
         schoenflies: "Cs^4  ",
@@ -657,7 +657,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "-a3  ",
         centering: Centering::Body,
         pointgroup_number: 4,
-    }
+    },
     RawSpacegroupType {
         number: 10,
         schoenflies: "C2h^1 ",
@@ -668,7 +668,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "b    ",
         centering: Centering::Primitive,
         pointgroup_number: 5,
-    }
+    },
     RawSpacegroupType {
         number: 10,
         schoenflies: "C2h^1 ",
@@ -679,7 +679,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "c    ",
         centering: Centering::Primitive,
         pointgroup_number: 5,
-    }
+    },
     RawSpacegroupType {
         number: 10,
         schoenflies: "C2h^1 ",
@@ -690,7 +690,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "a    ",
         centering: Centering::Primitive,
         pointgroup_number: 5,
-    }
+    },
     RawSpacegroupType {
         number: 11,
         schoenflies: "C2h^2 ",
@@ -701,7 +701,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "b    ",
         centering: Centering::Primitive,
         pointgroup_number: 5,
-    }
+    },
     RawSpacegroupType {
         number: 11,
         schoenflies: "C2h^2 ",
@@ -712,7 +712,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "c    ",
         centering: Centering::Primitive,
         pointgroup_number: 5,
-    }
+    },
     RawSpacegroupType {
         number: 11,
         schoenflies: "C2h^2 ",
@@ -723,7 +723,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "a    ",
         centering: Centering::Primitive,
         pointgroup_number: 5,
-    }
+    },
     RawSpacegroupType {
         number: 12,
         schoenflies: "C2h^3 ",
@@ -734,7 +734,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "b1   ",
         centering: Centering::CFace,
         pointgroup_number: 5,
-    }
+    },
     RawSpacegroupType {
         number: 12,
         schoenflies: "C2h^3 ",
@@ -745,7 +745,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "b2   ",
         centering: Centering::AFace,
         pointgroup_number: 5,
-    }
+    },
     RawSpacegroupType {
         number: 12,
         schoenflies: "C2h^3 ",
@@ -756,7 +756,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "b3   ",
         centering: Centering::Body,
         pointgroup_number: 5,
-    }
+    },
     RawSpacegroupType {
         number: 12,
         schoenflies: "C2h^3 ",
@@ -767,7 +767,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "c1   ",
         centering: Centering::AFace,
         pointgroup_number: 5,
-    }
+    },
     RawSpacegroupType {
         number: 12,
         schoenflies: "C2h^3 ",
@@ -778,7 +778,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "c2   ",
         centering: Centering::Primitive,
         pointgroup_number: 5,
-    }
+    },
     RawSpacegroupType {
         number: 12,
         schoenflies: "C2h^3 ",
@@ -789,7 +789,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "c3   ",
         centering: Centering::Body,
         pointgroup_number: 5,
-    }
+    },
     RawSpacegroupType {
         number: 12,
         schoenflies: "C2h^3 ",
@@ -800,7 +800,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "a1   ",
         centering: Centering::Primitive,
         pointgroup_number: 5,
-    }
+    },
     RawSpacegroupType {
         number: 12,
         schoenflies: "C2h^3 ",
@@ -811,7 +811,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "a2   ",
         centering: Centering::CFace,
         pointgroup_number: 5,
-    }
+    },
     RawSpacegroupType {
         number: 12,
         schoenflies: "C2h^3 ",
@@ -822,7 +822,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "a3   ",
         centering: Centering::Body,
         pointgroup_number: 5,
-    }
+    },
     RawSpacegroupType {
         number: 13,
         schoenflies: "C2h^4 ",
@@ -833,7 +833,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "b1   ",
         centering: Centering::Primitive,
         pointgroup_number: 5,
-    }
+    },
     RawSpacegroupType {
         number: 13,
         schoenflies: "C2h^4 ",
@@ -844,7 +844,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "b2   ",
         centering: Centering::Primitive,
         pointgroup_number: 5,
-    }
+    },
     RawSpacegroupType {
         number: 13,
         schoenflies: "C2h^4 ",
@@ -855,7 +855,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "b3   ",
         centering: Centering::Primitive,
         pointgroup_number: 5,
-    }
+    },
     RawSpacegroupType {
         number: 13,
         schoenflies: "C2h^4 ",
@@ -866,7 +866,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "c1   ",
         centering: Centering::Primitive,
         pointgroup_number: 5,
-    }
+    },
     RawSpacegroupType {
         number: 13,
         schoenflies: "C2h^4 ",
@@ -877,7 +877,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "c2   ",
         centering: Centering::Primitive,
         pointgroup_number: 5,
-    }
+    },
     RawSpacegroupType {
         number: 13,
         schoenflies: "C2h^4 ",
@@ -888,7 +888,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "c3   ",
         centering: Centering::Primitive,
         pointgroup_number: 5,
-    }
+    },
     RawSpacegroupType {
         number: 13,
         schoenflies: "C2h^4 ",
@@ -899,7 +899,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "a1   ",
         centering: Centering::Primitive,
         pointgroup_number: 5,
-    }
+    },
     RawSpacegroupType {
         number: 13,
         schoenflies: "C2h^4 ",
@@ -910,7 +910,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "a2   ",
         centering: Centering::Primitive,
         pointgroup_number: 5,
-    }
+    },
     RawSpacegroupType {
         number: 13,
         schoenflies: "C2h^4 ",
@@ -921,7 +921,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "a3   ",
         centering: Centering::Primitive,
         pointgroup_number: 5,
-    }
+    },
     RawSpacegroupType {
         number: 14,
         schoenflies: "C2h^5 ",
@@ -932,7 +932,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "b1   ",
         centering: Centering::Primitive,
         pointgroup_number: 5,
-    }
+    },
     RawSpacegroupType {
         number: 14,
         schoenflies: "C2h^5 ",
@@ -943,7 +943,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "b2   ",
         centering: Centering::Primitive,
         pointgroup_number: 5,
-    }
+    },
     RawSpacegroupType {
         number: 14,
         schoenflies: "C2h^5 ",
@@ -954,7 +954,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "b3   ",
         centering: Centering::Primitive,
         pointgroup_number: 5,
-    }
+    },
     RawSpacegroupType {
         number: 14,
         schoenflies: "C2h^5 ",
@@ -965,7 +965,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "c1   ",
         centering: Centering::Primitive,
         pointgroup_number: 5,
-    }
+    },
     RawSpacegroupType {
         number: 14,
         schoenflies: "C2h^5 ",
@@ -976,7 +976,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "c2   ",
         centering: Centering::Primitive,
         pointgroup_number: 5,
-    }
+    },
     RawSpacegroupType {
         number: 14,
         schoenflies: "C2h^5 ",
@@ -987,7 +987,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "c3   ",
         centering: Centering::Primitive,
         pointgroup_number: 5,
-    }
+    },
     RawSpacegroupType {
         number: 14,
         schoenflies: "C2h^5 ",
@@ -998,7 +998,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "a1   ",
         centering: Centering::Primitive,
         pointgroup_number: 5,
-    }
+    },
     RawSpacegroupType {
         number: 14,
         schoenflies: "C2h^5 ",
@@ -1009,7 +1009,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "a2   ",
         centering: Centering::Primitive,
         pointgroup_number: 5,
-    }
+    },
     RawSpacegroupType {
         number: 14,
         schoenflies: "C2h^5 ",
@@ -1020,7 +1020,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "a3   ",
         centering: Centering::Primitive,
         pointgroup_number: 5,
-    }
+    },
     RawSpacegroupType {
         number: 15,
         schoenflies: "C2h^6 ",
@@ -1031,7 +1031,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "b1   ",
         centering: Centering::CFace,
         pointgroup_number: 5,
-    }
+    },
     RawSpacegroupType {
         number: 15,
         schoenflies: "C2h^6 ",
@@ -1042,7 +1042,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "b2   ",
         centering: Centering::AFace,
         pointgroup_number: 5,
-    }
+    },
     RawSpacegroupType {
         number: 15,
         schoenflies: "C2h^6 ",
@@ -1053,7 +1053,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "b3   ",
         centering: Centering::Body,
         pointgroup_number: 5,
-    }
+    },
     RawSpacegroupType {
         number: 15,
         schoenflies: "C2h^6 ",
@@ -1064,7 +1064,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "-b1  ",
         centering: Centering::AFace,
         pointgroup_number: 5,
-    }
+    },
     RawSpacegroupType {
         number: 15,
         schoenflies: "C2h^6 ",
@@ -1075,7 +1075,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "-b2  ",
         centering: Centering::CFace,
         pointgroup_number: 5,
-    }
+    },
     RawSpacegroupType {
         number: 15,
         schoenflies: "C2h^6 ",
@@ -1086,7 +1086,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "-b3  ",
         centering: Centering::Body,
         pointgroup_number: 5,
-    }
+    },
     RawSpacegroupType {
         number: 15,
         schoenflies: "C2h^6 ",
@@ -1097,7 +1097,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "c1   ",
         centering: Centering::AFace,
         pointgroup_number: 5,
-    }
+    },
     RawSpacegroupType {
         number: 15,
         schoenflies: "C2h^6 ",
@@ -1108,7 +1108,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "c2   ",
         centering: Centering::Primitive,
         pointgroup_number: 5,
-    }
+    },
     RawSpacegroupType {
         number: 15,
         schoenflies: "C2h^6 ",
@@ -1119,7 +1119,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "c3   ",
         centering: Centering::Body,
         pointgroup_number: 5,
-    }
+    },
     RawSpacegroupType {
         number: 15,
         schoenflies: "C2h^6 ",
@@ -1130,7 +1130,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "-c1  ",
         centering: Centering::Primitive,
         pointgroup_number: 5,
-    }
+    },
     RawSpacegroupType {
         number: 15,
         schoenflies: "C2h^6 ",
@@ -1141,7 +1141,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "-c2  ",
         centering: Centering::AFace,
         pointgroup_number: 5,
-    }
+    },
     RawSpacegroupType {
         number: 15,
         schoenflies: "C2h^6 ",
@@ -1152,7 +1152,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "-c3  ",
         centering: Centering::Body,
         pointgroup_number: 5,
-    }
+    },
     RawSpacegroupType {
         number: 15,
         schoenflies: "C2h^6 ",
@@ -1163,7 +1163,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "a1   ",
         centering: Centering::Primitive,
         pointgroup_number: 5,
-    }
+    },
     RawSpacegroupType {
         number: 15,
         schoenflies: "C2h^6 ",
@@ -1174,7 +1174,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "a2   ",
         centering: Centering::CFace,
         pointgroup_number: 5,
-    }
+    },
     RawSpacegroupType {
         number: 15,
         schoenflies: "C2h^6 ",
@@ -1185,7 +1185,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "a3   ",
         centering: Centering::Body,
         pointgroup_number: 5,
-    }
+    },
     RawSpacegroupType {
         number: 15,
         schoenflies: "C2h^6 ",
@@ -1196,7 +1196,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "-a1  ",
         centering: Centering::CFace,
         pointgroup_number: 5,
-    }
+    },
     RawSpacegroupType {
         number: 15,
         schoenflies: "C2h^6 ",
@@ -1207,7 +1207,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "-a2  ",
         centering: Centering::Primitive,
         pointgroup_number: 5,
-    }
+    },
     RawSpacegroupType {
         number: 15,
         schoenflies: "C2h^6 ",
@@ -1218,7 +1218,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "-a3  ",
         centering: Centering::Body,
         pointgroup_number: 5,
-    }
+    },
     RawSpacegroupType {
         number: 16,
         schoenflies: "D2^1  ",
@@ -1229,7 +1229,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 6,
-    }
+    },
     RawSpacegroupType {
         number: 17,
         schoenflies: "D2^2  ",
@@ -1240,7 +1240,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 6,
-    }
+    },
     RawSpacegroupType {
         number: 17,
         schoenflies: "D2^2  ",
@@ -1251,7 +1251,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "cab  ",
         centering: Centering::Primitive,
         pointgroup_number: 6,
-    }
+    },
     RawSpacegroupType {
         number: 17,
         schoenflies: "D2^2  ",
@@ -1262,7 +1262,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "bca  ",
         centering: Centering::Primitive,
         pointgroup_number: 6,
-    }
+    },
     RawSpacegroupType {
         number: 18,
         schoenflies: "D2^3  ",
@@ -1273,7 +1273,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 6,
-    }
+    },
     RawSpacegroupType {
         number: 18,
         schoenflies: "D2^3  ",
@@ -1284,7 +1284,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "cab  ",
         centering: Centering::Primitive,
         pointgroup_number: 6,
-    }
+    },
     RawSpacegroupType {
         number: 18,
         schoenflies: "D2^3  ",
@@ -1295,7 +1295,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "bca  ",
         centering: Centering::Primitive,
         pointgroup_number: 6,
-    }
+    },
     RawSpacegroupType {
         number: 19,
         schoenflies: "D2^4  ",
@@ -1306,7 +1306,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 6,
-    }
+    },
     RawSpacegroupType {
         number: 20,
         schoenflies: "D2^5  ",
@@ -1317,7 +1317,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::CFace,
         pointgroup_number: 6,
-    }
+    },
     RawSpacegroupType {
         number: 20,
         schoenflies: "D2^5  ",
@@ -1328,7 +1328,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "cab  ",
         centering: Centering::AFace,
         pointgroup_number: 6,
-    }
+    },
     RawSpacegroupType {
         number: 20,
         schoenflies: "D2^5  ",
@@ -1339,7 +1339,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "bca  ",
         centering: Centering::Primitive,
         pointgroup_number: 6,
-    }
+    },
     RawSpacegroupType {
         number: 21,
         schoenflies: "D2^6  ",
@@ -1350,7 +1350,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::CFace,
         pointgroup_number: 6,
-    }
+    },
     RawSpacegroupType {
         number: 21,
         schoenflies: "D2^6  ",
@@ -1361,7 +1361,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "cab  ",
         centering: Centering::AFace,
         pointgroup_number: 6,
-    }
+    },
     RawSpacegroupType {
         number: 21,
         schoenflies: "D2^6  ",
@@ -1372,7 +1372,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "bca  ",
         centering: Centering::Primitive,
         pointgroup_number: 6,
-    }
+    },
     RawSpacegroupType {
         number: 22,
         schoenflies: "D2^7  ",
@@ -1383,7 +1383,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Face,
         pointgroup_number: 6,
-    }
+    },
     RawSpacegroupType {
         number: 23,
         schoenflies: "D2^8  ",
@@ -1394,7 +1394,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Body,
         pointgroup_number: 6,
-    }
+    },
     RawSpacegroupType {
         number: 24,
         schoenflies: "D2^9  ",
@@ -1405,7 +1405,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Body,
         pointgroup_number: 6,
-    }
+    },
     RawSpacegroupType {
         number: 25,
         schoenflies: "C2v^1 ",
@@ -1416,7 +1416,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 7,
-    }
+    },
     RawSpacegroupType {
         number: 25,
         schoenflies: "C2v^1 ",
@@ -1427,7 +1427,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "cab  ",
         centering: Centering::Primitive,
         pointgroup_number: 7,
-    }
+    },
     RawSpacegroupType {
         number: 25,
         schoenflies: "C2v^1 ",
@@ -1438,7 +1438,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "bca  ",
         centering: Centering::Primitive,
         pointgroup_number: 7,
-    }
+    },
     RawSpacegroupType {
         number: 26,
         schoenflies: "C2v^2 ",
@@ -1449,7 +1449,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 7,
-    }
+    },
     RawSpacegroupType {
         number: 26,
         schoenflies: "C2v^2 ",
@@ -1460,7 +1460,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "ba-c ",
         centering: Centering::Primitive,
         pointgroup_number: 7,
-    }
+    },
     RawSpacegroupType {
         number: 26,
         schoenflies: "C2v^2 ",
@@ -1471,7 +1471,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "cab  ",
         centering: Centering::Primitive,
         pointgroup_number: 7,
-    }
+    },
     RawSpacegroupType {
         number: 26,
         schoenflies: "C2v^2 ",
@@ -1482,7 +1482,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "-cba ",
         centering: Centering::Primitive,
         pointgroup_number: 7,
-    }
+    },
     RawSpacegroupType {
         number: 26,
         schoenflies: "C2v^2 ",
@@ -1493,7 +1493,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "bca  ",
         centering: Centering::Primitive,
         pointgroup_number: 7,
-    }
+    },
     RawSpacegroupType {
         number: 26,
         schoenflies: "C2v^2 ",
@@ -1504,7 +1504,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "a-cb ",
         centering: Centering::Primitive,
         pointgroup_number: 7,
-    }
+    },
     RawSpacegroupType {
         number: 27,
         schoenflies: "C2v^3 ",
@@ -1515,7 +1515,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 7,
-    }
+    },
     RawSpacegroupType {
         number: 27,
         schoenflies: "C2v^3 ",
@@ -1526,7 +1526,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "cab  ",
         centering: Centering::Primitive,
         pointgroup_number: 7,
-    }
+    },
     RawSpacegroupType {
         number: 27,
         schoenflies: "C2v^3 ",
@@ -1537,7 +1537,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "bca  ",
         centering: Centering::Primitive,
         pointgroup_number: 7,
-    }
+    },
     RawSpacegroupType {
         number: 28,
         schoenflies: "C2v^4 ",
@@ -1548,7 +1548,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 7,
-    }
+    },
     RawSpacegroupType {
         number: 28,
         schoenflies: "C2v^4 ",
@@ -1559,7 +1559,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "ba-c ",
         centering: Centering::Primitive,
         pointgroup_number: 7,
-    }
+    },
     RawSpacegroupType {
         number: 28,
         schoenflies: "C2v^4 ",
@@ -1570,7 +1570,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "cab  ",
         centering: Centering::Primitive,
         pointgroup_number: 7,
-    }
+    },
     RawSpacegroupType {
         number: 28,
         schoenflies: "C2v^4 ",
@@ -1581,7 +1581,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "-cba ",
         centering: Centering::Primitive,
         pointgroup_number: 7,
-    }
+    },
     RawSpacegroupType {
         number: 28,
         schoenflies: "C2v^4 ",
@@ -1592,7 +1592,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "bca  ",
         centering: Centering::Primitive,
         pointgroup_number: 7,
-    }
+    },
     RawSpacegroupType {
         number: 28,
         schoenflies: "C2v^4 ",
@@ -1603,7 +1603,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "a-cb ",
         centering: Centering::Primitive,
         pointgroup_number: 7,
-    }
+    },
     RawSpacegroupType {
         number: 29,
         schoenflies: "C2v^5 ",
@@ -1614,7 +1614,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 7,
-    }
+    },
     RawSpacegroupType {
         number: 29,
         schoenflies: "C2v^5 ",
@@ -1625,7 +1625,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "ba-c ",
         centering: Centering::Primitive,
         pointgroup_number: 7,
-    }
+    },
     RawSpacegroupType {
         number: 29,
         schoenflies: "C2v^5 ",
@@ -1636,7 +1636,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "cab  ",
         centering: Centering::Primitive,
         pointgroup_number: 7,
-    }
+    },
     RawSpacegroupType {
         number: 29,
         schoenflies: "C2v^5 ",
@@ -1647,7 +1647,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "-cba ",
         centering: Centering::Primitive,
         pointgroup_number: 7,
-    }
+    },
     RawSpacegroupType {
         number: 29,
         schoenflies: "C2v^5 ",
@@ -1658,7 +1658,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "bca  ",
         centering: Centering::Primitive,
         pointgroup_number: 7,
-    }
+    },
     RawSpacegroupType {
         number: 29,
         schoenflies: "C2v^5 ",
@@ -1669,7 +1669,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "a-cb ",
         centering: Centering::Primitive,
         pointgroup_number: 7,
-    }
+    },
     RawSpacegroupType {
         number: 30,
         schoenflies: "C2v^6 ",
@@ -1680,7 +1680,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 7,
-    }
+    },
     RawSpacegroupType {
         number: 30,
         schoenflies: "C2v^6 ",
@@ -1691,7 +1691,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "ba-c ",
         centering: Centering::Primitive,
         pointgroup_number: 7,
-    }
+    },
     RawSpacegroupType {
         number: 30,
         schoenflies: "C2v^6 ",
@@ -1702,7 +1702,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "cab  ",
         centering: Centering::Primitive,
         pointgroup_number: 7,
-    }
+    },
     RawSpacegroupType {
         number: 30,
         schoenflies: "C2v^6 ",
@@ -1713,7 +1713,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "-cba ",
         centering: Centering::Primitive,
         pointgroup_number: 7,
-    }
+    },
     RawSpacegroupType {
         number: 30,
         schoenflies: "C2v^6 ",
@@ -1724,7 +1724,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "bca  ",
         centering: Centering::Primitive,
         pointgroup_number: 7,
-    }
+    },
     RawSpacegroupType {
         number: 30,
         schoenflies: "C2v^6 ",
@@ -1735,7 +1735,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "a-cb ",
         centering: Centering::Primitive,
         pointgroup_number: 7,
-    }
+    },
     RawSpacegroupType {
         number: 31,
         schoenflies: "C2v^7 ",
@@ -1746,7 +1746,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 7,
-    }
+    },
     RawSpacegroupType {
         number: 31,
         schoenflies: "C2v^7 ",
@@ -1757,7 +1757,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "ba-c ",
         centering: Centering::Primitive,
         pointgroup_number: 7,
-    }
+    },
     RawSpacegroupType {
         number: 31,
         schoenflies: "C2v^7 ",
@@ -1768,7 +1768,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "cab  ",
         centering: Centering::Primitive,
         pointgroup_number: 7,
-    }
+    },
     RawSpacegroupType {
         number: 31,
         schoenflies: "C2v^7 ",
@@ -1779,7 +1779,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "-cba ",
         centering: Centering::Primitive,
         pointgroup_number: 7,
-    }
+    },
     RawSpacegroupType {
         number: 31,
         schoenflies: "C2v^7 ",
@@ -1790,7 +1790,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "bca  ",
         centering: Centering::Primitive,
         pointgroup_number: 7,
-    }
+    },
     RawSpacegroupType {
         number: 31,
         schoenflies: "C2v^7 ",
@@ -1801,7 +1801,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "a-cb ",
         centering: Centering::Primitive,
         pointgroup_number: 7,
-    }
+    },
     RawSpacegroupType {
         number: 32,
         schoenflies: "C2v^8 ",
@@ -1812,7 +1812,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 7,
-    }
+    },
     RawSpacegroupType {
         number: 32,
         schoenflies: "C2v^8 ",
@@ -1823,7 +1823,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "cab  ",
         centering: Centering::Primitive,
         pointgroup_number: 7,
-    }
+    },
     RawSpacegroupType {
         number: 32,
         schoenflies: "C2v^8 ",
@@ -1834,7 +1834,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "bca  ",
         centering: Centering::Primitive,
         pointgroup_number: 7,
-    }
+    },
     RawSpacegroupType {
         number: 33,
         schoenflies: "C2v^9 ",
@@ -1845,7 +1845,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 7,
-    }
+    },
     RawSpacegroupType {
         number: 33,
         schoenflies: "C2v^9 ",
@@ -1856,7 +1856,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "ba-c ",
         centering: Centering::Primitive,
         pointgroup_number: 7,
-    }
+    },
     RawSpacegroupType {
         number: 33,
         schoenflies: "C2v^9 ",
@@ -1867,7 +1867,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "cab  ",
         centering: Centering::Primitive,
         pointgroup_number: 7,
-    }
+    },
     RawSpacegroupType {
         number: 33,
         schoenflies: "C2v^9 ",
@@ -1878,7 +1878,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "-cba ",
         centering: Centering::Primitive,
         pointgroup_number: 7,
-    }
+    },
     RawSpacegroupType {
         number: 33,
         schoenflies: "C2v^9 ",
@@ -1889,7 +1889,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "bca  ",
         centering: Centering::Primitive,
         pointgroup_number: 7,
-    }
+    },
     RawSpacegroupType {
         number: 33,
         schoenflies: "C2v^9 ",
@@ -1900,7 +1900,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "a-cb ",
         centering: Centering::Primitive,
         pointgroup_number: 7,
-    }
+    },
     RawSpacegroupType {
         number: 34,
         schoenflies: "C2v^10",
@@ -1911,7 +1911,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 7,
-    }
+    },
     RawSpacegroupType {
         number: 34,
         schoenflies: "C2v^10",
@@ -1922,7 +1922,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "cab  ",
         centering: Centering::Primitive,
         pointgroup_number: 7,
-    }
+    },
     RawSpacegroupType {
         number: 34,
         schoenflies: "C2v^10",
@@ -1933,7 +1933,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "bca  ",
         centering: Centering::Primitive,
         pointgroup_number: 7,
-    }
+    },
     RawSpacegroupType {
         number: 35,
         schoenflies: "C2v^11",
@@ -1944,7 +1944,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::CFace,
         pointgroup_number: 7,
-    }
+    },
     RawSpacegroupType {
         number: 35,
         schoenflies: "C2v^11",
@@ -1955,7 +1955,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "cab  ",
         centering: Centering::AFace,
         pointgroup_number: 7,
-    }
+    },
     RawSpacegroupType {
         number: 35,
         schoenflies: "C2v^11",
@@ -1966,7 +1966,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "bca  ",
         centering: Centering::Primitive,
         pointgroup_number: 7,
-    }
+    },
     RawSpacegroupType {
         number: 36,
         schoenflies: "C2v^12",
@@ -1977,7 +1977,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::CFace,
         pointgroup_number: 7,
-    }
+    },
     RawSpacegroupType {
         number: 36,
         schoenflies: "C2v^12",
@@ -1988,7 +1988,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "ba-c ",
         centering: Centering::CFace,
         pointgroup_number: 7,
-    }
+    },
     RawSpacegroupType {
         number: 36,
         schoenflies: "C2v^12",
@@ -1999,7 +1999,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "cab  ",
         centering: Centering::AFace,
         pointgroup_number: 7,
-    }
+    },
     RawSpacegroupType {
         number: 36,
         schoenflies: "C2v^12",
@@ -2010,7 +2010,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "-cba ",
         centering: Centering::AFace,
         pointgroup_number: 7,
-    }
+    },
     RawSpacegroupType {
         number: 36,
         schoenflies: "C2v^12",
@@ -2021,7 +2021,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "bca  ",
         centering: Centering::Primitive,
         pointgroup_number: 7,
-    }
+    },
     RawSpacegroupType {
         number: 36,
         schoenflies: "C2v^12",
@@ -2032,7 +2032,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "a-cb ",
         centering: Centering::Primitive,
         pointgroup_number: 7,
-    }
+    },
     RawSpacegroupType {
         number: 37,
         schoenflies: "C2v^13",
@@ -2043,7 +2043,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::CFace,
         pointgroup_number: 7,
-    }
+    },
     RawSpacegroupType {
         number: 37,
         schoenflies: "C2v^13",
@@ -2054,7 +2054,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "cab  ",
         centering: Centering::AFace,
         pointgroup_number: 7,
-    }
+    },
     RawSpacegroupType {
         number: 37,
         schoenflies: "C2v^13",
@@ -2065,7 +2065,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "bca  ",
         centering: Centering::Primitive,
         pointgroup_number: 7,
-    }
+    },
     RawSpacegroupType {
         number: 38,
         schoenflies: "C2v^14",
@@ -2076,7 +2076,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::AFace,
         pointgroup_number: 7,
-    }
+    },
     RawSpacegroupType {
         number: 38,
         schoenflies: "C2v^14",
@@ -2087,7 +2087,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "ba-c ",
         centering: Centering::Primitive,
         pointgroup_number: 7,
-    }
+    },
     RawSpacegroupType {
         number: 38,
         schoenflies: "C2v^14",
@@ -2098,7 +2098,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "cab  ",
         centering: Centering::Primitive,
         pointgroup_number: 7,
-    }
+    },
     RawSpacegroupType {
         number: 38,
         schoenflies: "C2v^14",
@@ -2109,7 +2109,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "-cba ",
         centering: Centering::CFace,
         pointgroup_number: 7,
-    }
+    },
     RawSpacegroupType {
         number: 38,
         schoenflies: "C2v^14",
@@ -2120,7 +2120,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "bca  ",
         centering: Centering::CFace,
         pointgroup_number: 7,
-    }
+    },
     RawSpacegroupType {
         number: 38,
         schoenflies: "C2v^14",
@@ -2131,7 +2131,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "a-cb ",
         centering: Centering::AFace,
         pointgroup_number: 7,
-    }
+    },
     RawSpacegroupType {
         number: 39,
         schoenflies: "C2v^15",
@@ -2142,7 +2142,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::AFace,
         pointgroup_number: 7,
-    }
+    },
     RawSpacegroupType {
         number: 39,
         schoenflies: "C2v^15",
@@ -2153,7 +2153,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "ba-c ",
         centering: Centering::Primitive,
         pointgroup_number: 7,
-    }
+    },
     RawSpacegroupType {
         number: 39,
         schoenflies: "C2v^15",
@@ -2164,7 +2164,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "cab  ",
         centering: Centering::Primitive,
         pointgroup_number: 7,
-    }
+    },
     RawSpacegroupType {
         number: 39,
         schoenflies: "C2v^15",
@@ -2175,7 +2175,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "-cba ",
         centering: Centering::CFace,
         pointgroup_number: 7,
-    }
+    },
     RawSpacegroupType {
         number: 39,
         schoenflies: "C2v^15",
@@ -2186,7 +2186,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "bca  ",
         centering: Centering::CFace,
         pointgroup_number: 7,
-    }
+    },
     RawSpacegroupType {
         number: 39,
         schoenflies: "C2v^15",
@@ -2197,7 +2197,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "a-cb ",
         centering: Centering::AFace,
         pointgroup_number: 7,
-    }
+    },
     RawSpacegroupType {
         number: 40,
         schoenflies: "C2v^16",
@@ -2208,7 +2208,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::AFace,
         pointgroup_number: 7,
-    }
+    },
     RawSpacegroupType {
         number: 40,
         schoenflies: "C2v^16",
@@ -2219,7 +2219,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "ba-c ",
         centering: Centering::Primitive,
         pointgroup_number: 7,
-    }
+    },
     RawSpacegroupType {
         number: 40,
         schoenflies: "C2v^16",
@@ -2230,7 +2230,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "cab  ",
         centering: Centering::Primitive,
         pointgroup_number: 7,
-    }
+    },
     RawSpacegroupType {
         number: 40,
         schoenflies: "C2v^16",
@@ -2241,7 +2241,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "-cba ",
         centering: Centering::CFace,
         pointgroup_number: 7,
-    }
+    },
     RawSpacegroupType {
         number: 40,
         schoenflies: "C2v^16",
@@ -2252,7 +2252,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "bca  ",
         centering: Centering::CFace,
         pointgroup_number: 7,
-    }
+    },
     RawSpacegroupType {
         number: 40,
         schoenflies: "C2v^16",
@@ -2263,7 +2263,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "a-cb ",
         centering: Centering::AFace,
         pointgroup_number: 7,
-    }
+    },
     RawSpacegroupType {
         number: 41,
         schoenflies: "C2v^17",
@@ -2274,7 +2274,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::AFace,
         pointgroup_number: 7,
-    }
+    },
     RawSpacegroupType {
         number: 41,
         schoenflies: "C2v^17",
@@ -2285,7 +2285,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "ba-c ",
         centering: Centering::Primitive,
         pointgroup_number: 7,
-    }
+    },
     RawSpacegroupType {
         number: 41,
         schoenflies: "C2v^17",
@@ -2296,7 +2296,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "cab  ",
         centering: Centering::Primitive,
         pointgroup_number: 7,
-    }
+    },
     RawSpacegroupType {
         number: 41,
         schoenflies: "C2v^17",
@@ -2307,7 +2307,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "-cba ",
         centering: Centering::CFace,
         pointgroup_number: 7,
-    }
+    },
     RawSpacegroupType {
         number: 41,
         schoenflies: "C2v^17",
@@ -2318,7 +2318,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "bca  ",
         centering: Centering::CFace,
         pointgroup_number: 7,
-    }
+    },
     RawSpacegroupType {
         number: 41,
         schoenflies: "C2v^17",
@@ -2329,7 +2329,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "a-cb ",
         centering: Centering::AFace,
         pointgroup_number: 7,
-    }
+    },
     RawSpacegroupType {
         number: 42,
         schoenflies: "C2v^18",
@@ -2340,7 +2340,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Face,
         pointgroup_number: 7,
-    }
+    },
     RawSpacegroupType {
         number: 42,
         schoenflies: "C2v^18",
@@ -2351,7 +2351,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "cab  ",
         centering: Centering::Face,
         pointgroup_number: 7,
-    }
+    },
     RawSpacegroupType {
         number: 42,
         schoenflies: "C2v^18",
@@ -2362,7 +2362,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "bca  ",
         centering: Centering::Face,
         pointgroup_number: 7,
-    }
+    },
     RawSpacegroupType {
         number: 43,
         schoenflies: "C2v^19",
@@ -2373,7 +2373,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Face,
         pointgroup_number: 7,
-    }
+    },
     RawSpacegroupType {
         number: 43,
         schoenflies: "C2v^19",
@@ -2384,7 +2384,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "cab  ",
         centering: Centering::Face,
         pointgroup_number: 7,
-    }
+    },
     RawSpacegroupType {
         number: 43,
         schoenflies: "C2v^19",
@@ -2395,7 +2395,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "bca  ",
         centering: Centering::Face,
         pointgroup_number: 7,
-    }
+    },
     RawSpacegroupType {
         number: 44,
         schoenflies: "C2v^20",
@@ -2406,7 +2406,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Body,
         pointgroup_number: 7,
-    }
+    },
     RawSpacegroupType {
         number: 44,
         schoenflies: "C2v^20",
@@ -2417,7 +2417,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "cab  ",
         centering: Centering::Body,
         pointgroup_number: 7,
-    }
+    },
     RawSpacegroupType {
         number: 44,
         schoenflies: "C2v^20",
@@ -2428,7 +2428,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "bca  ",
         centering: Centering::Body,
         pointgroup_number: 7,
-    }
+    },
     RawSpacegroupType {
         number: 45,
         schoenflies: "C2v^21",
@@ -2439,7 +2439,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Body,
         pointgroup_number: 7,
-    }
+    },
     RawSpacegroupType {
         number: 45,
         schoenflies: "C2v^21",
@@ -2450,7 +2450,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "cab  ",
         centering: Centering::Body,
         pointgroup_number: 7,
-    }
+    },
     RawSpacegroupType {
         number: 45,
         schoenflies: "C2v^21",
@@ -2461,7 +2461,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "bca  ",
         centering: Centering::Body,
         pointgroup_number: 7,
-    }
+    },
     RawSpacegroupType {
         number: 46,
         schoenflies: "C2v^22",
@@ -2472,7 +2472,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Body,
         pointgroup_number: 7,
-    }
+    },
     RawSpacegroupType {
         number: 46,
         schoenflies: "C2v^22",
@@ -2483,7 +2483,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "ba-c ",
         centering: Centering::Body,
         pointgroup_number: 7,
-    }
+    },
     RawSpacegroupType {
         number: 46,
         schoenflies: "C2v^22",
@@ -2494,7 +2494,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "cab  ",
         centering: Centering::Body,
         pointgroup_number: 7,
-    }
+    },
     RawSpacegroupType {
         number: 46,
         schoenflies: "C2v^22",
@@ -2505,7 +2505,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "-cba ",
         centering: Centering::Body,
         pointgroup_number: 7,
-    }
+    },
     RawSpacegroupType {
         number: 46,
         schoenflies: "C2v^22",
@@ -2516,7 +2516,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "bca  ",
         centering: Centering::Body,
         pointgroup_number: 7,
-    }
+    },
     RawSpacegroupType {
         number: 46,
         schoenflies: "C2v^22",
@@ -2527,7 +2527,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "a-cb ",
         centering: Centering::Body,
         pointgroup_number: 7,
-    }
+    },
     RawSpacegroupType {
         number: 47,
         schoenflies: "D2h^1 ",
@@ -2538,7 +2538,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 8,
-    }
+    },
     RawSpacegroupType {
         number: 48,
         schoenflies: "D2h^2 ",
@@ -2549,7 +2549,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "1    ",
         centering: Centering::Primitive,
         pointgroup_number: 8,
-    }
+    },
     RawSpacegroupType {
         number: 48,
         schoenflies: "D2h^2 ",
@@ -2560,7 +2560,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "2    ",
         centering: Centering::Primitive,
         pointgroup_number: 8,
-    }
+    },
     RawSpacegroupType {
         number: 49,
         schoenflies: "D2h^3 ",
@@ -2571,7 +2571,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 8,
-    }
+    },
     RawSpacegroupType {
         number: 49,
         schoenflies: "D2h^3 ",
@@ -2582,7 +2582,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "cab  ",
         centering: Centering::Primitive,
         pointgroup_number: 8,
-    }
+    },
     RawSpacegroupType {
         number: 49,
         schoenflies: "D2h^3 ",
@@ -2593,7 +2593,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "bca  ",
         centering: Centering::Primitive,
         pointgroup_number: 8,
-    }
+    },
     RawSpacegroupType {
         number: 50,
         schoenflies: "D2h^4 ",
@@ -2604,7 +2604,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "1    ",
         centering: Centering::Primitive,
         pointgroup_number: 8,
-    }
+    },
     RawSpacegroupType {
         number: 50,
         schoenflies: "D2h^4 ",
@@ -2615,7 +2615,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "2    ",
         centering: Centering::Primitive,
         pointgroup_number: 8,
-    }
+    },
     RawSpacegroupType {
         number: 50,
         schoenflies: "D2h^4 ",
@@ -2626,7 +2626,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "1cab ",
         centering: Centering::Primitive,
         pointgroup_number: 8,
-    }
+    },
     RawSpacegroupType {
         number: 50,
         schoenflies: "D2h^4 ",
@@ -2637,7 +2637,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "2cab ",
         centering: Centering::Primitive,
         pointgroup_number: 8,
-    }
+    },
     RawSpacegroupType {
         number: 50,
         schoenflies: "D2h^4 ",
@@ -2648,7 +2648,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "1bca ",
         centering: Centering::Primitive,
         pointgroup_number: 8,
-    }
+    },
     RawSpacegroupType {
         number: 50,
         schoenflies: "D2h^4 ",
@@ -2659,7 +2659,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "2bca ",
         centering: Centering::Primitive,
         pointgroup_number: 8,
-    }
+    },
     RawSpacegroupType {
         number: 51,
         schoenflies: "D2h^5 ",
@@ -2670,7 +2670,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 8,
-    }
+    },
     RawSpacegroupType {
         number: 51,
         schoenflies: "D2h^5 ",
@@ -2681,7 +2681,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "ba-c ",
         centering: Centering::Primitive,
         pointgroup_number: 8,
-    }
+    },
     RawSpacegroupType {
         number: 51,
         schoenflies: "D2h^5 ",
@@ -2692,7 +2692,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "cab  ",
         centering: Centering::Primitive,
         pointgroup_number: 8,
-    }
+    },
     RawSpacegroupType {
         number: 51,
         schoenflies: "D2h^5 ",
@@ -2703,7 +2703,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "-cba ",
         centering: Centering::Primitive,
         pointgroup_number: 8,
-    }
+    },
     RawSpacegroupType {
         number: 51,
         schoenflies: "D2h^5 ",
@@ -2714,7 +2714,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "bca  ",
         centering: Centering::Primitive,
         pointgroup_number: 8,
-    }
+    },
     RawSpacegroupType {
         number: 51,
         schoenflies: "D2h^5 ",
@@ -2725,7 +2725,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "a-cb ",
         centering: Centering::Primitive,
         pointgroup_number: 8,
-    }
+    },
     RawSpacegroupType {
         number: 52,
         schoenflies: "D2h^6 ",
@@ -2736,7 +2736,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 8,
-    }
+    },
     RawSpacegroupType {
         number: 52,
         schoenflies: "D2h^6 ",
@@ -2747,7 +2747,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "ba-c ",
         centering: Centering::Primitive,
         pointgroup_number: 8,
-    }
+    },
     RawSpacegroupType {
         number: 52,
         schoenflies: "D2h^6 ",
@@ -2758,7 +2758,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "cab  ",
         centering: Centering::Primitive,
         pointgroup_number: 8,
-    }
+    },
     RawSpacegroupType {
         number: 52,
         schoenflies: "D2h^6 ",
@@ -2769,7 +2769,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "-cba ",
         centering: Centering::Primitive,
         pointgroup_number: 8,
-    }
+    },
     RawSpacegroupType {
         number: 52,
         schoenflies: "D2h^6 ",
@@ -2780,7 +2780,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "bca  ",
         centering: Centering::Primitive,
         pointgroup_number: 8,
-    }
+    },
     RawSpacegroupType {
         number: 52,
         schoenflies: "D2h^6 ",
@@ -2791,7 +2791,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "a-cb ",
         centering: Centering::Primitive,
         pointgroup_number: 8,
-    }
+    },
     RawSpacegroupType {
         number: 53,
         schoenflies: "D2h^7 ",
@@ -2802,7 +2802,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 8,
-    }
+    },
     RawSpacegroupType {
         number: 53,
         schoenflies: "D2h^7 ",
@@ -2813,7 +2813,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "ba-c ",
         centering: Centering::Primitive,
         pointgroup_number: 8,
-    }
+    },
     RawSpacegroupType {
         number: 53,
         schoenflies: "D2h^7 ",
@@ -2824,7 +2824,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "cab  ",
         centering: Centering::Primitive,
         pointgroup_number: 8,
-    }
+    },
     RawSpacegroupType {
         number: 53,
         schoenflies: "D2h^7 ",
@@ -2835,7 +2835,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "-cba ",
         centering: Centering::Primitive,
         pointgroup_number: 8,
-    }
+    },
     RawSpacegroupType {
         number: 53,
         schoenflies: "D2h^7 ",
@@ -2846,7 +2846,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "bca  ",
         centering: Centering::Primitive,
         pointgroup_number: 8,
-    }
+    },
     RawSpacegroupType {
         number: 53,
         schoenflies: "D2h^7 ",
@@ -2857,7 +2857,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "a-cb ",
         centering: Centering::Primitive,
         pointgroup_number: 8,
-    }
+    },
     RawSpacegroupType {
         number: 54,
         schoenflies: "D2h^8 ",
@@ -2868,7 +2868,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 8,
-    }
+    },
     RawSpacegroupType {
         number: 54,
         schoenflies: "D2h^8 ",
@@ -2879,7 +2879,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "ba-c ",
         centering: Centering::Primitive,
         pointgroup_number: 8,
-    }
+    },
     RawSpacegroupType {
         number: 54,
         schoenflies: "D2h^8 ",
@@ -2890,7 +2890,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "cab  ",
         centering: Centering::Primitive,
         pointgroup_number: 8,
-    }
+    },
     RawSpacegroupType {
         number: 54,
         schoenflies: "D2h^8 ",
@@ -2901,7 +2901,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "-cba ",
         centering: Centering::Primitive,
         pointgroup_number: 8,
-    }
+    },
     RawSpacegroupType {
         number: 54,
         schoenflies: "D2h^8 ",
@@ -2912,7 +2912,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "bca  ",
         centering: Centering::Primitive,
         pointgroup_number: 8,
-    }
+    },
     RawSpacegroupType {
         number: 54,
         schoenflies: "D2h^8 ",
@@ -2923,7 +2923,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "a-cb ",
         centering: Centering::Primitive,
         pointgroup_number: 8,
-    }
+    },
     RawSpacegroupType {
         number: 55,
         schoenflies: "D2h^9 ",
@@ -2934,7 +2934,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 8,
-    }
+    },
     RawSpacegroupType {
         number: 55,
         schoenflies: "D2h^9 ",
@@ -2945,7 +2945,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "cab  ",
         centering: Centering::Primitive,
         pointgroup_number: 8,
-    }
+    },
     RawSpacegroupType {
         number: 55,
         schoenflies: "D2h^9 ",
@@ -2956,7 +2956,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "bca  ",
         centering: Centering::Primitive,
         pointgroup_number: 8,
-    }
+    },
     RawSpacegroupType {
         number: 56,
         schoenflies: "D2h^10",
@@ -2967,7 +2967,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 8,
-    }
+    },
     RawSpacegroupType {
         number: 56,
         schoenflies: "D2h^10",
@@ -2978,7 +2978,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "cab  ",
         centering: Centering::Primitive,
         pointgroup_number: 8,
-    }
+    },
     RawSpacegroupType {
         number: 56,
         schoenflies: "D2h^10",
@@ -2989,7 +2989,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "bca  ",
         centering: Centering::Primitive,
         pointgroup_number: 8,
-    }
+    },
     RawSpacegroupType {
         number: 57,
         schoenflies: "D2h^11",
@@ -3000,7 +3000,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 8,
-    }
+    },
     RawSpacegroupType {
         number: 57,
         schoenflies: "D2h^11",
@@ -3011,7 +3011,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "ba-c ",
         centering: Centering::Primitive,
         pointgroup_number: 8,
-    }
+    },
     RawSpacegroupType {
         number: 57,
         schoenflies: "D2h^11",
@@ -3022,7 +3022,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "cab  ",
         centering: Centering::Primitive,
         pointgroup_number: 8,
-    }
+    },
     RawSpacegroupType {
         number: 57,
         schoenflies: "D2h^11",
@@ -3033,7 +3033,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "-cba ",
         centering: Centering::Primitive,
         pointgroup_number: 8,
-    }
+    },
     RawSpacegroupType {
         number: 57,
         schoenflies: "D2h^11",
@@ -3044,7 +3044,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "bca  ",
         centering: Centering::Primitive,
         pointgroup_number: 8,
-    }
+    },
     RawSpacegroupType {
         number: 57,
         schoenflies: "D2h^11",
@@ -3055,7 +3055,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "a-cb ",
         centering: Centering::Primitive,
         pointgroup_number: 8,
-    }
+    },
     RawSpacegroupType {
         number: 58,
         schoenflies: "D2h^12",
@@ -3066,7 +3066,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 8,
-    }
+    },
     RawSpacegroupType {
         number: 58,
         schoenflies: "D2h^12",
@@ -3077,7 +3077,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "cab  ",
         centering: Centering::Primitive,
         pointgroup_number: 8,
-    }
+    },
     RawSpacegroupType {
         number: 58,
         schoenflies: "D2h^12",
@@ -3088,7 +3088,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "bca  ",
         centering: Centering::Primitive,
         pointgroup_number: 8,
-    }
+    },
     RawSpacegroupType {
         number: 59,
         schoenflies: "D2h^13",
@@ -3099,7 +3099,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "1    ",
         centering: Centering::Primitive,
         pointgroup_number: 8,
-    }
+    },
     RawSpacegroupType {
         number: 59,
         schoenflies: "D2h^13",
@@ -3110,7 +3110,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "2    ",
         centering: Centering::Primitive,
         pointgroup_number: 8,
-    }
+    },
     RawSpacegroupType {
         number: 59,
         schoenflies: "D2h^13",
@@ -3121,7 +3121,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "1cab ",
         centering: Centering::Primitive,
         pointgroup_number: 8,
-    }
+    },
     RawSpacegroupType {
         number: 59,
         schoenflies: "D2h^13",
@@ -3132,7 +3132,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "2cab ",
         centering: Centering::Primitive,
         pointgroup_number: 8,
-    }
+    },
     RawSpacegroupType {
         number: 59,
         schoenflies: "D2h^13",
@@ -3143,7 +3143,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "1bca ",
         centering: Centering::Primitive,
         pointgroup_number: 8,
-    }
+    },
     RawSpacegroupType {
         number: 59,
         schoenflies: "D2h^13",
@@ -3154,7 +3154,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "2bca ",
         centering: Centering::Primitive,
         pointgroup_number: 8,
-    }
+    },
     RawSpacegroupType {
         number: 60,
         schoenflies: "D2h^14",
@@ -3165,7 +3165,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 8,
-    }
+    },
     RawSpacegroupType {
         number: 60,
         schoenflies: "D2h^14",
@@ -3176,7 +3176,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "ba-c ",
         centering: Centering::Primitive,
         pointgroup_number: 8,
-    }
+    },
     RawSpacegroupType {
         number: 60,
         schoenflies: "D2h^14",
@@ -3187,7 +3187,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "cab  ",
         centering: Centering::Primitive,
         pointgroup_number: 8,
-    }
+    },
     RawSpacegroupType {
         number: 60,
         schoenflies: "D2h^14",
@@ -3198,7 +3198,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "-cba ",
         centering: Centering::Primitive,
         pointgroup_number: 8,
-    }
+    },
     RawSpacegroupType {
         number: 60,
         schoenflies: "D2h^14",
@@ -3209,7 +3209,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "bca  ",
         centering: Centering::Primitive,
         pointgroup_number: 8,
-    }
+    },
     RawSpacegroupType {
         number: 60,
         schoenflies: "D2h^14",
@@ -3220,7 +3220,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "a-cb ",
         centering: Centering::Primitive,
         pointgroup_number: 8,
-    }
+    },
     RawSpacegroupType {
         number: 61,
         schoenflies: "D2h^15",
@@ -3231,7 +3231,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 8,
-    }
+    },
     RawSpacegroupType {
         number: 61,
         schoenflies: "D2h^15",
@@ -3242,7 +3242,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "ba-c ",
         centering: Centering::Primitive,
         pointgroup_number: 8,
-    }
+    },
     RawSpacegroupType {
         number: 62,
         schoenflies: "D2h^16",
@@ -3253,7 +3253,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 8,
-    }
+    },
     RawSpacegroupType {
         number: 62,
         schoenflies: "D2h^16",
@@ -3264,7 +3264,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "ba-c ",
         centering: Centering::Primitive,
         pointgroup_number: 8,
-    }
+    },
     RawSpacegroupType {
         number: 62,
         schoenflies: "D2h^16",
@@ -3275,7 +3275,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "cab  ",
         centering: Centering::Primitive,
         pointgroup_number: 8,
-    }
+    },
     RawSpacegroupType {
         number: 62,
         schoenflies: "D2h^16",
@@ -3286,7 +3286,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "-cba ",
         centering: Centering::Primitive,
         pointgroup_number: 8,
-    }
+    },
     RawSpacegroupType {
         number: 62,
         schoenflies: "D2h^16",
@@ -3297,7 +3297,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "bca  ",
         centering: Centering::Primitive,
         pointgroup_number: 8,
-    }
+    },
     RawSpacegroupType {
         number: 62,
         schoenflies: "D2h^16",
@@ -3308,7 +3308,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "a-cb ",
         centering: Centering::Primitive,
         pointgroup_number: 8,
-    }
+    },
     RawSpacegroupType {
         number: 63,
         schoenflies: "D2h^17",
@@ -3319,7 +3319,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::CFace,
         pointgroup_number: 8,
-    }
+    },
     RawSpacegroupType {
         number: 63,
         schoenflies: "D2h^17",
@@ -3330,7 +3330,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "ba-c ",
         centering: Centering::CFace,
         pointgroup_number: 8,
-    }
+    },
     RawSpacegroupType {
         number: 63,
         schoenflies: "D2h^17",
@@ -3341,7 +3341,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "cab  ",
         centering: Centering::AFace,
         pointgroup_number: 8,
-    }
+    },
     RawSpacegroupType {
         number: 63,
         schoenflies: "D2h^17",
@@ -3352,7 +3352,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "-cba ",
         centering: Centering::AFace,
         pointgroup_number: 8,
-    }
+    },
     RawSpacegroupType {
         number: 63,
         schoenflies: "D2h^17",
@@ -3363,7 +3363,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "bca  ",
         centering: Centering::Primitive,
         pointgroup_number: 8,
-    }
+    },
     RawSpacegroupType {
         number: 63,
         schoenflies: "D2h^17",
@@ -3374,7 +3374,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "a-cb ",
         centering: Centering::Primitive,
         pointgroup_number: 8,
-    }
+    },
     RawSpacegroupType {
         number: 64,
         schoenflies: "D2h^18",
@@ -3385,7 +3385,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::CFace,
         pointgroup_number: 8,
-    }
+    },
     RawSpacegroupType {
         number: 64,
         schoenflies: "D2h^18",
@@ -3396,7 +3396,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "ba-c ",
         centering: Centering::CFace,
         pointgroup_number: 8,
-    }
+    },
     RawSpacegroupType {
         number: 64,
         schoenflies: "D2h^18",
@@ -3407,7 +3407,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "cab  ",
         centering: Centering::AFace,
         pointgroup_number: 8,
-    }
+    },
     RawSpacegroupType {
         number: 64,
         schoenflies: "D2h^18",
@@ -3418,7 +3418,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "-cba ",
         centering: Centering::AFace,
         pointgroup_number: 8,
-    }
+    },
     RawSpacegroupType {
         number: 64,
         schoenflies: "D2h^18",
@@ -3429,7 +3429,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "bca  ",
         centering: Centering::Primitive,
         pointgroup_number: 8,
-    }
+    },
     RawSpacegroupType {
         number: 64,
         schoenflies: "D2h^18",
@@ -3440,7 +3440,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "a-cb ",
         centering: Centering::Primitive,
         pointgroup_number: 8,
-    }
+    },
     RawSpacegroupType {
         number: 65,
         schoenflies: "D2h^19",
@@ -3451,7 +3451,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::CFace,
         pointgroup_number: 8,
-    }
+    },
     RawSpacegroupType {
         number: 65,
         schoenflies: "D2h^19",
@@ -3462,7 +3462,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "cab  ",
         centering: Centering::AFace,
         pointgroup_number: 8,
-    }
+    },
     RawSpacegroupType {
         number: 65,
         schoenflies: "D2h^19",
@@ -3473,7 +3473,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "bca  ",
         centering: Centering::Primitive,
         pointgroup_number: 8,
-    }
+    },
     RawSpacegroupType {
         number: 66,
         schoenflies: "D2h^20",
@@ -3484,7 +3484,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::CFace,
         pointgroup_number: 8,
-    }
+    },
     RawSpacegroupType {
         number: 66,
         schoenflies: "D2h^20",
@@ -3495,7 +3495,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "cab  ",
         centering: Centering::AFace,
         pointgroup_number: 8,
-    }
+    },
     RawSpacegroupType {
         number: 66,
         schoenflies: "D2h^20",
@@ -3506,7 +3506,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "bca  ",
         centering: Centering::Primitive,
         pointgroup_number: 8,
-    }
+    },
     RawSpacegroupType {
         number: 67,
         schoenflies: "D2h^21",
@@ -3517,7 +3517,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::CFace,
         pointgroup_number: 8,
-    }
+    },
     RawSpacegroupType {
         number: 67,
         schoenflies: "D2h^21",
@@ -3528,7 +3528,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "ba-c ",
         centering: Centering::CFace,
         pointgroup_number: 8,
-    }
+    },
     RawSpacegroupType {
         number: 67,
         schoenflies: "D2h^21",
@@ -3539,7 +3539,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "cab  ",
         centering: Centering::AFace,
         pointgroup_number: 8,
-    }
+    },
     RawSpacegroupType {
         number: 67,
         schoenflies: "D2h^21",
@@ -3550,7 +3550,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "-cba ",
         centering: Centering::AFace,
         pointgroup_number: 8,
-    }
+    },
     RawSpacegroupType {
         number: 67,
         schoenflies: "D2h^21",
@@ -3561,7 +3561,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "bca  ",
         centering: Centering::Primitive,
         pointgroup_number: 8,
-    }
+    },
     RawSpacegroupType {
         number: 67,
         schoenflies: "D2h^21",
@@ -3572,7 +3572,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "a-cb ",
         centering: Centering::Primitive,
         pointgroup_number: 8,
-    }
+    },
     RawSpacegroupType {
         number: 68,
         schoenflies: "D2h^22",
@@ -3583,7 +3583,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "1    ",
         centering: Centering::CFace,
         pointgroup_number: 8,
-    }
+    },
     RawSpacegroupType {
         number: 68,
         schoenflies: "D2h^22",
@@ -3594,7 +3594,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "2    ",
         centering: Centering::CFace,
         pointgroup_number: 8,
-    }
+    },
     RawSpacegroupType {
         number: 68,
         schoenflies: "D2h^22",
@@ -3605,7 +3605,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "1ba-c",
         centering: Centering::CFace,
         pointgroup_number: 8,
-    }
+    },
     RawSpacegroupType {
         number: 68,
         schoenflies: "D2h^22",
@@ -3616,7 +3616,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "2ba-c",
         centering: Centering::CFace,
         pointgroup_number: 8,
-    }
+    },
     RawSpacegroupType {
         number: 68,
         schoenflies: "D2h^22",
@@ -3627,7 +3627,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "1cab ",
         centering: Centering::AFace,
         pointgroup_number: 8,
-    }
+    },
     RawSpacegroupType {
         number: 68,
         schoenflies: "D2h^22",
@@ -3638,7 +3638,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "2cab ",
         centering: Centering::AFace,
         pointgroup_number: 8,
-    }
+    },
     RawSpacegroupType {
         number: 68,
         schoenflies: "D2h^22",
@@ -3649,7 +3649,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "1-cba",
         centering: Centering::AFace,
         pointgroup_number: 8,
-    }
+    },
     RawSpacegroupType {
         number: 68,
         schoenflies: "D2h^22",
@@ -3660,7 +3660,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "2-cba",
         centering: Centering::AFace,
         pointgroup_number: 8,
-    }
+    },
     RawSpacegroupType {
         number: 68,
         schoenflies: "D2h^22",
@@ -3671,7 +3671,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "1bca ",
         centering: Centering::Primitive,
         pointgroup_number: 8,
-    }
+    },
     RawSpacegroupType {
         number: 68,
         schoenflies: "D2h^22",
@@ -3682,7 +3682,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "2bca ",
         centering: Centering::Primitive,
         pointgroup_number: 8,
-    }
+    },
     RawSpacegroupType {
         number: 68,
         schoenflies: "D2h^22",
@@ -3693,7 +3693,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "1a-cb",
         centering: Centering::Primitive,
         pointgroup_number: 8,
-    }
+    },
     RawSpacegroupType {
         number: 68,
         schoenflies: "D2h^22",
@@ -3704,7 +3704,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "2a-cb",
         centering: Centering::Primitive,
         pointgroup_number: 8,
-    }
+    },
     RawSpacegroupType {
         number: 69,
         schoenflies: "D2h^23",
@@ -3715,7 +3715,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Face,
         pointgroup_number: 8,
-    }
+    },
     RawSpacegroupType {
         number: 70,
         schoenflies: "D2h^24",
@@ -3726,7 +3726,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "1    ",
         centering: Centering::Face,
         pointgroup_number: 8,
-    }
+    },
     RawSpacegroupType {
         number: 70,
         schoenflies: "D2h^24",
@@ -3737,7 +3737,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "2    ",
         centering: Centering::Face,
         pointgroup_number: 8,
-    }
+    },
     RawSpacegroupType {
         number: 71,
         schoenflies: "D2h^25",
@@ -3748,7 +3748,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Body,
         pointgroup_number: 8,
-    }
+    },
     RawSpacegroupType {
         number: 72,
         schoenflies: "D2h^26",
@@ -3759,7 +3759,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Body,
         pointgroup_number: 8,
-    }
+    },
     RawSpacegroupType {
         number: 72,
         schoenflies: "D2h^26",
@@ -3770,7 +3770,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "cab  ",
         centering: Centering::Body,
         pointgroup_number: 8,
-    }
+    },
     RawSpacegroupType {
         number: 72,
         schoenflies: "D2h^26",
@@ -3781,7 +3781,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "bca  ",
         centering: Centering::Body,
         pointgroup_number: 8,
-    }
+    },
     RawSpacegroupType {
         number: 73,
         schoenflies: "D2h^27",
@@ -3792,7 +3792,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Body,
         pointgroup_number: 8,
-    }
+    },
     RawSpacegroupType {
         number: 73,
         schoenflies: "D2h^27",
@@ -3803,7 +3803,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "ba-c ",
         centering: Centering::Body,
         pointgroup_number: 8,
-    }
+    },
     RawSpacegroupType {
         number: 74,
         schoenflies: "D2h^28",
@@ -3814,7 +3814,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Body,
         pointgroup_number: 8,
-    }
+    },
     RawSpacegroupType {
         number: 74,
         schoenflies: "D2h^28",
@@ -3825,7 +3825,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "ba-c ",
         centering: Centering::Body,
         pointgroup_number: 8,
-    }
+    },
     RawSpacegroupType {
         number: 74,
         schoenflies: "D2h^28",
@@ -3836,7 +3836,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "cab  ",
         centering: Centering::Body,
         pointgroup_number: 8,
-    }
+    },
     RawSpacegroupType {
         number: 74,
         schoenflies: "D2h^28",
@@ -3847,7 +3847,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "-cba ",
         centering: Centering::Body,
         pointgroup_number: 8,
-    }
+    },
     RawSpacegroupType {
         number: 74,
         schoenflies: "D2h^28",
@@ -3858,7 +3858,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "bca  ",
         centering: Centering::Body,
         pointgroup_number: 8,
-    }
+    },
     RawSpacegroupType {
         number: 74,
         schoenflies: "D2h^28",
@@ -3869,7 +3869,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "a-cb ",
         centering: Centering::Body,
         pointgroup_number: 8,
-    }
+    },
     RawSpacegroupType {
         number: 75,
         schoenflies: "C4^1  ",
@@ -3880,7 +3880,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 9,
-    }
+    },
     RawSpacegroupType {
         number: 76,
         schoenflies: "C4^2  ",
@@ -3891,7 +3891,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 9,
-    }
+    },
     RawSpacegroupType {
         number: 77,
         schoenflies: "C4^3  ",
@@ -3902,7 +3902,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 9,
-    }
+    },
     RawSpacegroupType {
         number: 78,
         schoenflies: "C4^4  ",
@@ -3913,7 +3913,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 9,
-    }
+    },
     RawSpacegroupType {
         number: 79,
         schoenflies: "C4^5  ",
@@ -3924,7 +3924,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Body,
         pointgroup_number: 9,
-    }
+    },
     RawSpacegroupType {
         number: 80,
         schoenflies: "C4^6  ",
@@ -3935,7 +3935,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Body,
         pointgroup_number: 9,
-    }
+    },
     RawSpacegroupType {
         number: 81,
         schoenflies: "S4^1  ",
@@ -3946,7 +3946,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 10,
-    }
+    },
     RawSpacegroupType {
         number: 82,
         schoenflies: "S4^2  ",
@@ -3957,7 +3957,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Body,
         pointgroup_number: 10,
-    }
+    },
     RawSpacegroupType {
         number: 83,
         schoenflies: "C4h^1 ",
@@ -3968,7 +3968,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 11,
-    }
+    },
     RawSpacegroupType {
         number: 84,
         schoenflies: "C4h^2 ",
@@ -3979,7 +3979,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 11,
-    }
+    },
     RawSpacegroupType {
         number: 85,
         schoenflies: "C4h^3 ",
@@ -3990,7 +3990,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "1    ",
         centering: Centering::Primitive,
         pointgroup_number: 11,
-    }
+    },
     RawSpacegroupType {
         number: 85,
         schoenflies: "C4h^3 ",
@@ -4001,7 +4001,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "2    ",
         centering: Centering::Primitive,
         pointgroup_number: 11,
-    }
+    },
     RawSpacegroupType {
         number: 86,
         schoenflies: "C4h^4 ",
@@ -4012,7 +4012,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "1    ",
         centering: Centering::Primitive,
         pointgroup_number: 11,
-    }
+    },
     RawSpacegroupType {
         number: 86,
         schoenflies: "C4h^4 ",
@@ -4023,7 +4023,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "2    ",
         centering: Centering::Primitive,
         pointgroup_number: 11,
-    }
+    },
     RawSpacegroupType {
         number: 87,
         schoenflies: "C4h^5 ",
@@ -4034,7 +4034,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Body,
         pointgroup_number: 11,
-    }
+    },
     RawSpacegroupType {
         number: 88,
         schoenflies: "C4h^6 ",
@@ -4045,7 +4045,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "1    ",
         centering: Centering::Body,
         pointgroup_number: 11,
-    }
+    },
     RawSpacegroupType {
         number: 88,
         schoenflies: "C4h^6 ",
@@ -4056,7 +4056,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "2    ",
         centering: Centering::Body,
         pointgroup_number: 11,
-    }
+    },
     RawSpacegroupType {
         number: 89,
         schoenflies: "D4^1  ",
@@ -4067,7 +4067,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 12,
-    }
+    },
     RawSpacegroupType {
         number: 90,
         schoenflies: "D4^2  ",
@@ -4078,7 +4078,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 12,
-    }
+    },
     RawSpacegroupType {
         number: 91,
         schoenflies: "D4^3  ",
@@ -4089,7 +4089,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 12,
-    }
+    },
     RawSpacegroupType {
         number: 92,
         schoenflies: "D4^4  ",
@@ -4100,7 +4100,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 12,
-    }
+    },
     RawSpacegroupType {
         number: 93,
         schoenflies: "D4^5  ",
@@ -4111,7 +4111,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 12,
-    }
+    },
     RawSpacegroupType {
         number: 94,
         schoenflies: "D4^6  ",
@@ -4122,7 +4122,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 12,
-    }
+    },
     RawSpacegroupType {
         number: 95,
         schoenflies: "D4^7  ",
@@ -4133,7 +4133,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 12,
-    }
+    },
     RawSpacegroupType {
         number: 96,
         schoenflies: "D4^8  ",
@@ -4144,7 +4144,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 12,
-    }
+    },
     RawSpacegroupType {
         number: 97,
         schoenflies: "D4^9  ",
@@ -4155,7 +4155,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Body,
         pointgroup_number: 12,
-    }
+    },
     RawSpacegroupType {
         number: 98,
         schoenflies: "D4^10 ",
@@ -4166,7 +4166,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Body,
         pointgroup_number: 12,
-    }
+    },
     RawSpacegroupType {
         number: 99,
         schoenflies: "C4v^1 ",
@@ -4177,7 +4177,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 13,
-    }
+    },
     RawSpacegroupType {
         number: 100,
         schoenflies: "C4v^2 ",
@@ -4188,7 +4188,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 13,
-    }
+    },
     RawSpacegroupType {
         number: 101,
         schoenflies: "C4v^3 ",
@@ -4199,7 +4199,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 13,
-    }
+    },
     RawSpacegroupType {
         number: 102,
         schoenflies: "C4v^4 ",
@@ -4210,7 +4210,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 13,
-    }
+    },
     RawSpacegroupType {
         number: 103,
         schoenflies: "C4v^5 ",
@@ -4221,7 +4221,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 13,
-    }
+    },
     RawSpacegroupType {
         number: 104,
         schoenflies: "C4v^6 ",
@@ -4232,7 +4232,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 13,
-    }
+    },
     RawSpacegroupType {
         number: 105,
         schoenflies: "C4v^7 ",
@@ -4243,7 +4243,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 13,
-    }
+    },
     RawSpacegroupType {
         number: 106,
         schoenflies: "C4v^8 ",
@@ -4254,7 +4254,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 13,
-    }
+    },
     RawSpacegroupType {
         number: 107,
         schoenflies: "C4v^9 ",
@@ -4265,7 +4265,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Body,
         pointgroup_number: 13,
-    }
+    },
     RawSpacegroupType {
         number: 108,
         schoenflies: "C4v^10",
@@ -4276,7 +4276,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Body,
         pointgroup_number: 13,
-    }
+    },
     RawSpacegroupType {
         number: 109,
         schoenflies: "C4v^11",
@@ -4287,7 +4287,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Body,
         pointgroup_number: 13,
-    }
+    },
     RawSpacegroupType {
         number: 110,
         schoenflies: "C4v^12",
@@ -4298,7 +4298,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Body,
         pointgroup_number: 13,
-    }
+    },
     RawSpacegroupType {
         number: 111,
         schoenflies: "D2d^1 ",
@@ -4309,7 +4309,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 14,
-    }
+    },
     RawSpacegroupType {
         number: 112,
         schoenflies: "D2d^2 ",
@@ -4320,7 +4320,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 14,
-    }
+    },
     RawSpacegroupType {
         number: 113,
         schoenflies: "D2d^3 ",
@@ -4331,7 +4331,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 14,
-    }
+    },
     RawSpacegroupType {
         number: 114,
         schoenflies: "D2d^4 ",
@@ -4342,7 +4342,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 14,
-    }
+    },
     RawSpacegroupType {
         number: 115,
         schoenflies: "D2d^5 ",
@@ -4353,7 +4353,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 14,
-    }
+    },
     RawSpacegroupType {
         number: 116,
         schoenflies: "D2d^6 ",
@@ -4364,7 +4364,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 14,
-    }
+    },
     RawSpacegroupType {
         number: 117,
         schoenflies: "D2d^7 ",
@@ -4375,7 +4375,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 14,
-    }
+    },
     RawSpacegroupType {
         number: 118,
         schoenflies: "D2d^8 ",
@@ -4386,7 +4386,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 14,
-    }
+    },
     RawSpacegroupType {
         number: 119,
         schoenflies: "D2d^9 ",
@@ -4397,7 +4397,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Body,
         pointgroup_number: 14,
-    }
+    },
     RawSpacegroupType {
         number: 120,
         schoenflies: "D2d^10",
@@ -4408,7 +4408,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Body,
         pointgroup_number: 14,
-    }
+    },
     RawSpacegroupType {
         number: 121,
         schoenflies: "D2d^11",
@@ -4419,7 +4419,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Body,
         pointgroup_number: 14,
-    }
+    },
     RawSpacegroupType {
         number: 122,
         schoenflies: "D2d^12",
@@ -4430,7 +4430,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Body,
         pointgroup_number: 14,
-    }
+    },
     RawSpacegroupType {
         number: 123,
         schoenflies: "D4h^1 ",
@@ -4441,7 +4441,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 15,
-    }
+    },
     RawSpacegroupType {
         number: 124,
         schoenflies: "D4h^2 ",
@@ -4452,7 +4452,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 15,
-    }
+    },
     RawSpacegroupType {
         number: 125,
         schoenflies: "D4h^3 ",
@@ -4463,7 +4463,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "1    ",
         centering: Centering::Primitive,
         pointgroup_number: 15,
-    }
+    },
     RawSpacegroupType {
         number: 125,
         schoenflies: "D4h^3 ",
@@ -4474,7 +4474,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "2    ",
         centering: Centering::Primitive,
         pointgroup_number: 15,
-    }
+    },
     RawSpacegroupType {
         number: 126,
         schoenflies: "D4h^4 ",
@@ -4485,7 +4485,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "1    ",
         centering: Centering::Primitive,
         pointgroup_number: 15,
-    }
+    },
     RawSpacegroupType {
         number: 126,
         schoenflies: "D4h^4 ",
@@ -4496,7 +4496,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "2    ",
         centering: Centering::Primitive,
         pointgroup_number: 15,
-    }
+    },
     RawSpacegroupType {
         number: 127,
         schoenflies: "D4h^5 ",
@@ -4507,7 +4507,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 15,
-    }
+    },
     RawSpacegroupType {
         number: 128,
         schoenflies: "D4h^6 ",
@@ -4518,7 +4518,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 15,
-    }
+    },
     RawSpacegroupType {
         number: 129,
         schoenflies: "D4h^7 ",
@@ -4529,7 +4529,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "1    ",
         centering: Centering::Primitive,
         pointgroup_number: 15,
-    }
+    },
     RawSpacegroupType {
         number: 129,
         schoenflies: "D4h^7 ",
@@ -4540,7 +4540,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "2    ",
         centering: Centering::Primitive,
         pointgroup_number: 15,
-    }
+    },
     RawSpacegroupType {
         number: 130,
         schoenflies: "D4h^8 ",
@@ -4551,7 +4551,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "1    ",
         centering: Centering::Primitive,
         pointgroup_number: 15,
-    }
+    },
     RawSpacegroupType {
         number: 130,
         schoenflies: "D4h^8 ",
@@ -4562,7 +4562,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "2    ",
         centering: Centering::Primitive,
         pointgroup_number: 15,
-    }
+    },
     RawSpacegroupType {
         number: 131,
         schoenflies: "D4h^9 ",
@@ -4573,7 +4573,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 15,
-    }
+    },
     RawSpacegroupType {
         number: 132,
         schoenflies: "D4h^10",
@@ -4584,7 +4584,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 15,
-    }
+    },
     RawSpacegroupType {
         number: 133,
         schoenflies: "D4h^11",
@@ -4595,7 +4595,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "1    ",
         centering: Centering::Primitive,
         pointgroup_number: 15,
-    }
+    },
     RawSpacegroupType {
         number: 133,
         schoenflies: "D4h^11",
@@ -4606,7 +4606,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "2    ",
         centering: Centering::Primitive,
         pointgroup_number: 15,
-    }
+    },
     RawSpacegroupType {
         number: 134,
         schoenflies: "D4h^12",
@@ -4617,7 +4617,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "1    ",
         centering: Centering::Primitive,
         pointgroup_number: 15,
-    }
+    },
     RawSpacegroupType {
         number: 134,
         schoenflies: "D4h^12",
@@ -4628,7 +4628,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "2    ",
         centering: Centering::Primitive,
         pointgroup_number: 15,
-    }
+    },
     RawSpacegroupType {
         number: 135,
         schoenflies: "D4h^13",
@@ -4639,7 +4639,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 15,
-    }
+    },
     RawSpacegroupType {
         number: 136,
         schoenflies: "D4h^14",
@@ -4650,7 +4650,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 15,
-    }
+    },
     RawSpacegroupType {
         number: 137,
         schoenflies: "D4h^15",
@@ -4661,7 +4661,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "1    ",
         centering: Centering::Primitive,
         pointgroup_number: 15,
-    }
+    },
     RawSpacegroupType {
         number: 137,
         schoenflies: "D4h^15",
@@ -4672,7 +4672,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "2    ",
         centering: Centering::Primitive,
         pointgroup_number: 15,
-    }
+    },
     RawSpacegroupType {
         number: 138,
         schoenflies: "D4h^16",
@@ -4683,7 +4683,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "1    ",
         centering: Centering::Primitive,
         pointgroup_number: 15,
-    }
+    },
     RawSpacegroupType {
         number: 138,
         schoenflies: "D4h^16",
@@ -4694,7 +4694,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "2    ",
         centering: Centering::Primitive,
         pointgroup_number: 15,
-    }
+    },
     RawSpacegroupType {
         number: 139,
         schoenflies: "D4h^17",
@@ -4705,7 +4705,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Body,
         pointgroup_number: 15,
-    }
+    },
     RawSpacegroupType {
         number: 140,
         schoenflies: "D4h^18",
@@ -4716,7 +4716,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Body,
         pointgroup_number: 15,
-    }
+    },
     RawSpacegroupType {
         number: 141,
         schoenflies: "D4h^19",
@@ -4727,7 +4727,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "1    ",
         centering: Centering::Body,
         pointgroup_number: 15,
-    }
+    },
     RawSpacegroupType {
         number: 141,
         schoenflies: "D4h^19",
@@ -4738,7 +4738,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "2    ",
         centering: Centering::Body,
         pointgroup_number: 15,
-    }
+    },
     RawSpacegroupType {
         number: 142,
         schoenflies: "D4h^20",
@@ -4749,7 +4749,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "1    ",
         centering: Centering::Body,
         pointgroup_number: 15,
-    }
+    },
     RawSpacegroupType {
         number: 142,
         schoenflies: "D4h^20",
@@ -4760,7 +4760,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "2    ",
         centering: Centering::Body,
         pointgroup_number: 15,
-    }
+    },
     RawSpacegroupType {
         number: 143,
         schoenflies: "C3^1  ",
@@ -4771,7 +4771,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 16,
-    }
+    },
     RawSpacegroupType {
         number: 144,
         schoenflies: "C3^2  ",
@@ -4782,7 +4782,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 16,
-    }
+    },
     RawSpacegroupType {
         number: 145,
         schoenflies: "C3^3  ",
@@ -4793,7 +4793,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 16,
-    }
+    },
     RawSpacegroupType {
         number: 146,
         schoenflies: "C3^4  ",
@@ -4804,7 +4804,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "H    ",
         centering: Centering::RCenter,
         pointgroup_number: 16,
-    }
+    },
     RawSpacegroupType {
         number: 146,
         schoenflies: "C3^4  ",
@@ -4815,7 +4815,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "R    ",
         centering: Centering::Primitive,
         pointgroup_number: 16,
-    }
+    },
     RawSpacegroupType {
         number: 147,
         schoenflies: "C3i^1 ",
@@ -4826,7 +4826,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 17,
-    }
+    },
     RawSpacegroupType {
         number: 148,
         schoenflies: "C3i^2 ",
@@ -4837,7 +4837,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "H    ",
         centering: Centering::RCenter,
         pointgroup_number: 17,
-    }
+    },
     RawSpacegroupType {
         number: 148,
         schoenflies: "C3i^2 ",
@@ -4848,7 +4848,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "R    ",
         centering: Centering::Primitive,
         pointgroup_number: 17,
-    }
+    },
     RawSpacegroupType {
         number: 149,
         schoenflies: "D3^1  ",
@@ -4859,7 +4859,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 18,
-    }
+    },
     RawSpacegroupType {
         number: 150,
         schoenflies: "D3^2  ",
@@ -4870,7 +4870,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 18,
-    }
+    },
     RawSpacegroupType {
         number: 151,
         schoenflies: "D3^3  ",
@@ -4881,7 +4881,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 18,
-    }
+    },
     RawSpacegroupType {
         number: 152,
         schoenflies: "D3^4  ",
@@ -4892,7 +4892,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 18,
-    }
+    },
     RawSpacegroupType {
         number: 153,
         schoenflies: "D3^5  ",
@@ -4903,7 +4903,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 18,
-    }
+    },
     RawSpacegroupType {
         number: 154,
         schoenflies: "D3^6  ",
@@ -4914,7 +4914,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 18,
-    }
+    },
     RawSpacegroupType {
         number: 155,
         schoenflies: "D3^7  ",
@@ -4925,7 +4925,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "H    ",
         centering: Centering::RCenter,
         pointgroup_number: 18,
-    }
+    },
     RawSpacegroupType {
         number: 155,
         schoenflies: "D3^7  ",
@@ -4936,7 +4936,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "R    ",
         centering: Centering::Primitive,
         pointgroup_number: 18,
-    }
+    },
     RawSpacegroupType {
         number: 156,
         schoenflies: "C3v^1 ",
@@ -4947,7 +4947,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 19,
-    }
+    },
     RawSpacegroupType {
         number: 157,
         schoenflies: "C3v^2 ",
@@ -4958,7 +4958,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 19,
-    }
+    },
     RawSpacegroupType {
         number: 158,
         schoenflies: "C3v^3 ",
@@ -4969,7 +4969,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 19,
-    }
+    },
     RawSpacegroupType {
         number: 159,
         schoenflies: "C3v^4 ",
@@ -4980,7 +4980,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 19,
-    }
+    },
     RawSpacegroupType {
         number: 160,
         schoenflies: "C3v^5 ",
@@ -4991,7 +4991,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "H    ",
         centering: Centering::RCenter,
         pointgroup_number: 19,
-    }
+    },
     RawSpacegroupType {
         number: 160,
         schoenflies: "C3v^5 ",
@@ -5002,7 +5002,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "R    ",
         centering: Centering::Primitive,
         pointgroup_number: 19,
-    }
+    },
     RawSpacegroupType {
         number: 161,
         schoenflies: "C3v^6 ",
@@ -5013,7 +5013,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "H    ",
         centering: Centering::RCenter,
         pointgroup_number: 19,
-    }
+    },
     RawSpacegroupType {
         number: 161,
         schoenflies: "C3v^6 ",
@@ -5024,7 +5024,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "R    ",
         centering: Centering::Primitive,
         pointgroup_number: 19,
-    }
+    },
     RawSpacegroupType {
         number: 162,
         schoenflies: "D3d^1 ",
@@ -5035,7 +5035,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 20,
-    }
+    },
     RawSpacegroupType {
         number: 163,
         schoenflies: "D3d^2 ",
@@ -5046,7 +5046,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 20,
-    }
+    },
     RawSpacegroupType {
         number: 164,
         schoenflies: "D3d^3 ",
@@ -5057,7 +5057,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 20,
-    }
+    },
     RawSpacegroupType {
         number: 165,
         schoenflies: "D3d^4 ",
@@ -5068,7 +5068,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 20,
-    }
+    },
     RawSpacegroupType {
         number: 166,
         schoenflies: "D3d^5 ",
@@ -5079,7 +5079,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "H    ",
         centering: Centering::RCenter,
         pointgroup_number: 20,
-    }
+    },
     RawSpacegroupType {
         number: 166,
         schoenflies: "D3d^5 ",
@@ -5090,7 +5090,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "R    ",
         centering: Centering::Primitive,
         pointgroup_number: 20,
-    }
+    },
     RawSpacegroupType {
         number: 167,
         schoenflies: "D3d^6 ",
@@ -5101,7 +5101,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "H    ",
         centering: Centering::RCenter,
         pointgroup_number: 20,
-    }
+    },
     RawSpacegroupType {
         number: 167,
         schoenflies: "D3d^6 ",
@@ -5112,7 +5112,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "R    ",
         centering: Centering::Primitive,
         pointgroup_number: 20,
-    }
+    },
     RawSpacegroupType {
         number: 168,
         schoenflies: "C6^1  ",
@@ -5123,7 +5123,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 21,
-    }
+    },
     RawSpacegroupType {
         number: 169,
         schoenflies: "C6^2  ",
@@ -5134,7 +5134,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 21,
-    }
+    },
     RawSpacegroupType {
         number: 170,
         schoenflies: "C6^3  ",
@@ -5145,7 +5145,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 21,
-    }
+    },
     RawSpacegroupType {
         number: 171,
         schoenflies: "C6^4  ",
@@ -5156,7 +5156,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 21,
-    }
+    },
     RawSpacegroupType {
         number: 172,
         schoenflies: "C6^5  ",
@@ -5167,7 +5167,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 21,
-    }
+    },
     RawSpacegroupType {
         number: 173,
         schoenflies: "C6^6  ",
@@ -5178,7 +5178,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 21,
-    }
+    },
     RawSpacegroupType {
         number: 174,
         schoenflies: "C3h^1 ",
@@ -5189,7 +5189,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 22,
-    }
+    },
     RawSpacegroupType {
         number: 175,
         schoenflies: "C6h^1 ",
@@ -5200,7 +5200,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 23,
-    }
+    },
     RawSpacegroupType {
         number: 176,
         schoenflies: "C6h^2 ",
@@ -5211,7 +5211,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 23,
-    }
+    },
     RawSpacegroupType {
         number: 177,
         schoenflies: "D6^1  ",
@@ -5222,7 +5222,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 24,
-    }
+    },
     RawSpacegroupType {
         number: 178,
         schoenflies: "D6^2  ",
@@ -5233,7 +5233,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 24,
-    }
+    },
     RawSpacegroupType {
         number: 179,
         schoenflies: "D6^3  ",
@@ -5244,7 +5244,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 24,
-    }
+    },
     RawSpacegroupType {
         number: 180,
         schoenflies: "D6^4  ",
@@ -5255,7 +5255,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 24,
-    }
+    },
     RawSpacegroupType {
         number: 181,
         schoenflies: "D6^5  ",
@@ -5266,7 +5266,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 24,
-    }
+    },
     RawSpacegroupType {
         number: 182,
         schoenflies: "D6^6  ",
@@ -5277,7 +5277,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 24,
-    }
+    },
     RawSpacegroupType {
         number: 183,
         schoenflies: "C6v^1 ",
@@ -5288,7 +5288,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 25,
-    }
+    },
     RawSpacegroupType {
         number: 184,
         schoenflies: "C6v^2 ",
@@ -5299,7 +5299,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 25,
-    }
+    },
     RawSpacegroupType {
         number: 185,
         schoenflies: "C6v^3 ",
@@ -5310,7 +5310,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 25,
-    }
+    },
     RawSpacegroupType {
         number: 186,
         schoenflies: "C6v^4 ",
@@ -5321,7 +5321,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 25,
-    }
+    },
     RawSpacegroupType {
         number: 187,
         schoenflies: "D3h^1 ",
@@ -5332,7 +5332,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 26,
-    }
+    },
     RawSpacegroupType {
         number: 188,
         schoenflies: "D3h^2 ",
@@ -5343,7 +5343,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 26,
-    }
+    },
     RawSpacegroupType {
         number: 189,
         schoenflies: "D3h^3 ",
@@ -5354,7 +5354,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 26,
-    }
+    },
     RawSpacegroupType {
         number: 190,
         schoenflies: "D3h^4 ",
@@ -5365,7 +5365,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 26,
-    }
+    },
     RawSpacegroupType {
         number: 191,
         schoenflies: "D6h^1 ",
@@ -5376,7 +5376,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 27,
-    }
+    },
     RawSpacegroupType {
         number: 192,
         schoenflies: "D6h^2 ",
@@ -5387,7 +5387,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 27,
-    }
+    },
     RawSpacegroupType {
         number: 193,
         schoenflies: "D6h^3 ",
@@ -5398,7 +5398,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 27,
-    }
+    },
     RawSpacegroupType {
         number: 194,
         schoenflies: "D6h^4 ",
@@ -5409,7 +5409,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 27,
-    }
+    },
     RawSpacegroupType {
         number: 195,
         schoenflies: "T^1   ",
@@ -5420,7 +5420,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 28,
-    }
+    },
     RawSpacegroupType {
         number: 196,
         schoenflies: "T^2   ",
@@ -5431,7 +5431,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Face,
         pointgroup_number: 28,
-    }
+    },
     RawSpacegroupType {
         number: 197,
         schoenflies: "T^3   ",
@@ -5442,7 +5442,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Body,
         pointgroup_number: 28,
-    }
+    },
     RawSpacegroupType {
         number: 198,
         schoenflies: "T^4   ",
@@ -5453,7 +5453,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 28,
-    }
+    },
     RawSpacegroupType {
         number: 199,
         schoenflies: "T^5   ",
@@ -5464,7 +5464,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Body,
         pointgroup_number: 28,
-    }
+    },
     RawSpacegroupType {
         number: 200,
         schoenflies: "Th^1  ",
@@ -5475,7 +5475,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 29,
-    }
+    },
     RawSpacegroupType {
         number: 201,
         schoenflies: "Th^2  ",
@@ -5486,7 +5486,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "1    ",
         centering: Centering::Primitive,
         pointgroup_number: 29,
-    }
+    },
     RawSpacegroupType {
         number: 201,
         schoenflies: "Th^2  ",
@@ -5497,7 +5497,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "2    ",
         centering: Centering::Primitive,
         pointgroup_number: 29,
-    }
+    },
     RawSpacegroupType {
         number: 202,
         schoenflies: "Th^3  ",
@@ -5508,7 +5508,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Face,
         pointgroup_number: 29,
-    }
+    },
     RawSpacegroupType {
         number: 203,
         schoenflies: "Th^4  ",
@@ -5519,7 +5519,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "1    ",
         centering: Centering::Face,
         pointgroup_number: 29,
-    }
+    },
     RawSpacegroupType {
         number: 203,
         schoenflies: "Th^4  ",
@@ -5530,7 +5530,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "2    ",
         centering: Centering::Face,
         pointgroup_number: 29,
-    }
+    },
     RawSpacegroupType {
         number: 204,
         schoenflies: "Th^5  ",
@@ -5541,7 +5541,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Body,
         pointgroup_number: 29,
-    }
+    },
     RawSpacegroupType {
         number: 205,
         schoenflies: "Th^6  ",
@@ -5552,7 +5552,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 29,
-    }
+    },
     RawSpacegroupType {
         number: 206,
         schoenflies: "Th^7  ",
@@ -5563,7 +5563,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Body,
         pointgroup_number: 29,
-    }
+    },
     RawSpacegroupType {
         number: 207,
         schoenflies: "O^1   ",
@@ -5574,7 +5574,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 30,
-    }
+    },
     RawSpacegroupType {
         number: 208,
         schoenflies: "O^2   ",
@@ -5585,7 +5585,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 30,
-    }
+    },
     RawSpacegroupType {
         number: 209,
         schoenflies: "O^3   ",
@@ -5596,7 +5596,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Face,
         pointgroup_number: 30,
-    }
+    },
     RawSpacegroupType {
         number: 210,
         schoenflies: "O^4   ",
@@ -5607,7 +5607,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Face,
         pointgroup_number: 30,
-    }
+    },
     RawSpacegroupType {
         number: 211,
         schoenflies: "O^5   ",
@@ -5618,7 +5618,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Body,
         pointgroup_number: 30,
-    }
+    },
     RawSpacegroupType {
         number: 212,
         schoenflies: "O^6   ",
@@ -5629,7 +5629,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 30,
-    }
+    },
     RawSpacegroupType {
         number: 213,
         schoenflies: "O^7   ",
@@ -5640,7 +5640,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 30,
-    }
+    },
     RawSpacegroupType {
         number: 214,
         schoenflies: "O^8   ",
@@ -5651,7 +5651,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Body,
         pointgroup_number: 30,
-    }
+    },
     RawSpacegroupType {
         number: 215,
         schoenflies: "Td^1  ",
@@ -5662,7 +5662,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 31,
-    }
+    },
     RawSpacegroupType {
         number: 216,
         schoenflies: "Td^2  ",
@@ -5673,7 +5673,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Face,
         pointgroup_number: 31,
-    }
+    },
     RawSpacegroupType {
         number: 217,
         schoenflies: "Td^3  ",
@@ -5684,7 +5684,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Body,
         pointgroup_number: 31,
-    }
+    },
     RawSpacegroupType {
         number: 218,
         schoenflies: "Td^4  ",
@@ -5695,7 +5695,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 31,
-    }
+    },
     RawSpacegroupType {
         number: 219,
         schoenflies: "Td^5  ",
@@ -5706,7 +5706,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Face,
         pointgroup_number: 31,
-    }
+    },
     RawSpacegroupType {
         number: 220,
         schoenflies: "Td^6  ",
@@ -5717,7 +5717,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Body,
         pointgroup_number: 31,
-    }
+    },
     RawSpacegroupType {
         number: 221,
         schoenflies: "Oh^1  ",
@@ -5728,7 +5728,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 32,
-    }
+    },
     RawSpacegroupType {
         number: 222,
         schoenflies: "Oh^2  ",
@@ -5739,7 +5739,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "1    ",
         centering: Centering::Primitive,
         pointgroup_number: 32,
-    }
+    },
     RawSpacegroupType {
         number: 222,
         schoenflies: "Oh^2  ",
@@ -5750,7 +5750,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "2    ",
         centering: Centering::Primitive,
         pointgroup_number: 32,
-    }
+    },
     RawSpacegroupType {
         number: 223,
         schoenflies: "Oh^3  ",
@@ -5761,7 +5761,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 32,
-    }
+    },
     RawSpacegroupType {
         number: 224,
         schoenflies: "Oh^4  ",
@@ -5772,7 +5772,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "1    ",
         centering: Centering::Primitive,
         pointgroup_number: 32,
-    }
+    },
     RawSpacegroupType {
         number: 224,
         schoenflies: "Oh^4  ",
@@ -5783,7 +5783,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "2    ",
         centering: Centering::Primitive,
         pointgroup_number: 32,
-    }
+    },
     RawSpacegroupType {
         number: 225,
         schoenflies: "Oh^5  ",
@@ -5794,7 +5794,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Face,
         pointgroup_number: 32,
-    }
+    },
     RawSpacegroupType {
         number: 226,
         schoenflies: "Oh^6  ",
@@ -5805,7 +5805,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Face,
         pointgroup_number: 32,
-    }
+    },
     RawSpacegroupType {
         number: 227,
         schoenflies: "Oh^7  ",
@@ -5816,7 +5816,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "1    ",
         centering: Centering::Face,
         pointgroup_number: 32,
-    }
+    },
     RawSpacegroupType {
         number: 227,
         schoenflies: "Oh^7  ",
@@ -5827,7 +5827,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "2    ",
         centering: Centering::Face,
         pointgroup_number: 32,
-    }
+    },
     RawSpacegroupType {
         number: 228,
         schoenflies: "Oh^8  ",
@@ -5838,7 +5838,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "1    ",
         centering: Centering::Face,
         pointgroup_number: 32,
-    }
+    },
     RawSpacegroupType {
         number: 228,
         schoenflies: "Oh^8  ",
@@ -5849,7 +5849,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "2    ",
         centering: Centering::Face,
         pointgroup_number: 32,
-    }
+    },
     RawSpacegroupType {
         number: 229,
         schoenflies: "Oh^9  ",
@@ -5860,7 +5860,7 @@ pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
         choice: "     ",
         centering: Centering::Body,
         pointgroup_number: 32,
-    }
+    },
     RawSpacegroupType {
         number: 230,
         schoenflies: "Oh^10 ",
@@ -5885,7 +5885,7 @@ pub static LAYER_GROUP_TYPES: [RawSpacegroupType; 117] = [
         choice: "     ",
         centering: Centering::Error,
         pointgroup_number: 0,
-    }
+    },
     RawSpacegroupType {
         number: 1,
         schoenflies: "C1^1  ",
@@ -5896,7 +5896,7 @@ pub static LAYER_GROUP_TYPES: [RawSpacegroupType; 117] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 1,
-    }
+    },
     RawSpacegroupType {
         number: 2,
         schoenflies: "Ci^1  ",
@@ -5907,7 +5907,7 @@ pub static LAYER_GROUP_TYPES: [RawSpacegroupType; 117] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 2,
-    }
+    },
     RawSpacegroupType {
         number: 3,
         schoenflies: "C2^1  ",
@@ -5918,7 +5918,7 @@ pub static LAYER_GROUP_TYPES: [RawSpacegroupType; 117] = [
         choice: "c    ",
         centering: Centering::Primitive,
         pointgroup_number: 3,
-    }
+    },
     RawSpacegroupType {
         number: 4,
         schoenflies: "Cs^1  ",
@@ -5929,7 +5929,7 @@ pub static LAYER_GROUP_TYPES: [RawSpacegroupType; 117] = [
         choice: "c    ",
         centering: Centering::Primitive,
         pointgroup_number: 4,
-    }
+    },
     RawSpacegroupType {
         number: 5,
         schoenflies: "Cs^2  ",
@@ -5940,7 +5940,7 @@ pub static LAYER_GROUP_TYPES: [RawSpacegroupType; 117] = [
         choice: "c1   ",
         centering: Centering::Primitive,
         pointgroup_number: 4,
-    }
+    },
     RawSpacegroupType {
         number: 5,
         schoenflies: "Cs^2  ",
@@ -5951,7 +5951,7 @@ pub static LAYER_GROUP_TYPES: [RawSpacegroupType; 117] = [
         choice: "c2   ",
         centering: Centering::Primitive,
         pointgroup_number: 4,
-    }
+    },
     RawSpacegroupType {
         number: 5,
         schoenflies: "Cs^2  ",
@@ -5962,7 +5962,7 @@ pub static LAYER_GROUP_TYPES: [RawSpacegroupType; 117] = [
         choice: "c3   ",
         centering: Centering::Primitive,
         pointgroup_number: 4,
-    }
+    },
     RawSpacegroupType {
         number: 6,
         schoenflies: "C2h^1 ",
@@ -5973,7 +5973,7 @@ pub static LAYER_GROUP_TYPES: [RawSpacegroupType; 117] = [
         choice: "c    ",
         centering: Centering::Primitive,
         pointgroup_number: 5,
-    }
+    },
     RawSpacegroupType {
         number: 7,
         schoenflies: "C2h^2 ",
@@ -5984,7 +5984,7 @@ pub static LAYER_GROUP_TYPES: [RawSpacegroupType; 117] = [
         choice: "c1   ",
         centering: Centering::Primitive,
         pointgroup_number: 5,
-    }
+    },
     RawSpacegroupType {
         number: 7,
         schoenflies: "C2h^2 ",
@@ -5995,7 +5995,7 @@ pub static LAYER_GROUP_TYPES: [RawSpacegroupType; 117] = [
         choice: "c2   ",
         centering: Centering::Primitive,
         pointgroup_number: 5,
-    }
+    },
     RawSpacegroupType {
         number: 7,
         schoenflies: "C2h^2 ",
@@ -6006,7 +6006,7 @@ pub static LAYER_GROUP_TYPES: [RawSpacegroupType; 117] = [
         choice: "c3   ",
         centering: Centering::Primitive,
         pointgroup_number: 5,
-    }
+    },
     RawSpacegroupType {
         number: 8,
         schoenflies: "C2^2  ",
@@ -6017,7 +6017,7 @@ pub static LAYER_GROUP_TYPES: [RawSpacegroupType; 117] = [
         choice: "a    ",
         centering: Centering::Primitive,
         pointgroup_number: 3,
-    }
+    },
     RawSpacegroupType {
         number: 8,
         schoenflies: "C2^2  ",
@@ -6028,7 +6028,7 @@ pub static LAYER_GROUP_TYPES: [RawSpacegroupType; 117] = [
         choice: "b    ",
         centering: Centering::Primitive,
         pointgroup_number: 3,
-    }
+    },
     RawSpacegroupType {
         number: 9,
         schoenflies: "C2^3  ",
@@ -6039,7 +6039,7 @@ pub static LAYER_GROUP_TYPES: [RawSpacegroupType; 117] = [
         choice: "a    ",
         centering: Centering::Primitive,
         pointgroup_number: 3,
-    }
+    },
     RawSpacegroupType {
         number: 9,
         schoenflies: "C2^3  ",
@@ -6050,7 +6050,7 @@ pub static LAYER_GROUP_TYPES: [RawSpacegroupType; 117] = [
         choice: "b    ",
         centering: Centering::Primitive,
         pointgroup_number: 3,
-    }
+    },
     RawSpacegroupType {
         number: 10,
         schoenflies: "C2^4  ",
@@ -6061,7 +6061,7 @@ pub static LAYER_GROUP_TYPES: [RawSpacegroupType; 117] = [
         choice: "a    ",
         centering: Centering::CFace,
         pointgroup_number: 3,
-    }
+    },
     RawSpacegroupType {
         number: 10,
         schoenflies: "C2^4  ",
@@ -6072,7 +6072,7 @@ pub static LAYER_GROUP_TYPES: [RawSpacegroupType; 117] = [
         choice: "b    ",
         centering: Centering::CFace,
         pointgroup_number: 3,
-    }
+    },
     RawSpacegroupType {
         number: 11,
         schoenflies: "Cs^3  ",
@@ -6083,7 +6083,7 @@ pub static LAYER_GROUP_TYPES: [RawSpacegroupType; 117] = [
         choice: "a    ",
         centering: Centering::Primitive,
         pointgroup_number: 4,
-    }
+    },
     RawSpacegroupType {
         number: 11,
         schoenflies: "Cs^3  ",
@@ -6094,7 +6094,7 @@ pub static LAYER_GROUP_TYPES: [RawSpacegroupType; 117] = [
         choice: "b    ",
         centering: Centering::Primitive,
         pointgroup_number: 4,
-    }
+    },
     RawSpacegroupType {
         number: 12,
         schoenflies: "Cs^4  ",
@@ -6105,7 +6105,7 @@ pub static LAYER_GROUP_TYPES: [RawSpacegroupType; 117] = [
         choice: "a    ",
         centering: Centering::Primitive,
         pointgroup_number: 4,
-    }
+    },
     RawSpacegroupType {
         number: 12,
         schoenflies: "Cs^4  ",
@@ -6116,7 +6116,7 @@ pub static LAYER_GROUP_TYPES: [RawSpacegroupType; 117] = [
         choice: "b    ",
         centering: Centering::Primitive,
         pointgroup_number: 4,
-    }
+    },
     RawSpacegroupType {
         number: 13,
         schoenflies: "Cs^5  ",
@@ -6127,7 +6127,7 @@ pub static LAYER_GROUP_TYPES: [RawSpacegroupType; 117] = [
         choice: "a    ",
         centering: Centering::CFace,
         pointgroup_number: 4,
-    }
+    },
     RawSpacegroupType {
         number: 13,
         schoenflies: "Cs^5  ",
@@ -6138,7 +6138,7 @@ pub static LAYER_GROUP_TYPES: [RawSpacegroupType; 117] = [
         choice: "b    ",
         centering: Centering::CFace,
         pointgroup_number: 4,
-    }
+    },
     RawSpacegroupType {
         number: 14,
         schoenflies: "C2h^3 ",
@@ -6149,7 +6149,7 @@ pub static LAYER_GROUP_TYPES: [RawSpacegroupType; 117] = [
         choice: "a    ",
         centering: Centering::Primitive,
         pointgroup_number: 5,
-    }
+    },
     RawSpacegroupType {
         number: 14,
         schoenflies: "C2h^3 ",
@@ -6160,7 +6160,7 @@ pub static LAYER_GROUP_TYPES: [RawSpacegroupType; 117] = [
         choice: "b    ",
         centering: Centering::Primitive,
         pointgroup_number: 5,
-    }
+    },
     RawSpacegroupType {
         number: 15,
         schoenflies: "C2h^4 ",
@@ -6171,7 +6171,7 @@ pub static LAYER_GROUP_TYPES: [RawSpacegroupType; 117] = [
         choice: "a    ",
         centering: Centering::Primitive,
         pointgroup_number: 5,
-    }
+    },
     RawSpacegroupType {
         number: 15,
         schoenflies: "C2h^4 ",
@@ -6182,7 +6182,7 @@ pub static LAYER_GROUP_TYPES: [RawSpacegroupType; 117] = [
         choice: "b    ",
         centering: Centering::Primitive,
         pointgroup_number: 5,
-    }
+    },
     RawSpacegroupType {
         number: 16,
         schoenflies: "C2h^5 ",
@@ -6193,7 +6193,7 @@ pub static LAYER_GROUP_TYPES: [RawSpacegroupType; 117] = [
         choice: "a    ",
         centering: Centering::Primitive,
         pointgroup_number: 5,
-    }
+    },
     RawSpacegroupType {
         number: 16,
         schoenflies: "C2h^5 ",
@@ -6204,7 +6204,7 @@ pub static LAYER_GROUP_TYPES: [RawSpacegroupType; 117] = [
         choice: "b    ",
         centering: Centering::Primitive,
         pointgroup_number: 5,
-    }
+    },
     RawSpacegroupType {
         number: 17,
         schoenflies: "C2h^6 ",
@@ -6215,7 +6215,7 @@ pub static LAYER_GROUP_TYPES: [RawSpacegroupType; 117] = [
         choice: "a    ",
         centering: Centering::Primitive,
         pointgroup_number: 5,
-    }
+    },
     RawSpacegroupType {
         number: 17,
         schoenflies: "C2h^6 ",
@@ -6226,7 +6226,7 @@ pub static LAYER_GROUP_TYPES: [RawSpacegroupType; 117] = [
         choice: "b    ",
         centering: Centering::Primitive,
         pointgroup_number: 5,
-    }
+    },
     RawSpacegroupType {
         number: 18,
         schoenflies: "C2h^7 ",
@@ -6237,7 +6237,7 @@ pub static LAYER_GROUP_TYPES: [RawSpacegroupType; 117] = [
         choice: "a    ",
         centering: Centering::CFace,
         pointgroup_number: 5,
-    }
+    },
     RawSpacegroupType {
         number: 18,
         schoenflies: "C2h^7 ",
@@ -6248,7 +6248,7 @@ pub static LAYER_GROUP_TYPES: [RawSpacegroupType; 117] = [
         choice: "b    ",
         centering: Centering::CFace,
         pointgroup_number: 5,
-    }
+    },
     RawSpacegroupType {
         number: 19,
         schoenflies: "D2^1  ",
@@ -6259,7 +6259,7 @@ pub static LAYER_GROUP_TYPES: [RawSpacegroupType; 117] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 6,
-    }
+    },
     RawSpacegroupType {
         number: 20,
         schoenflies: "D2^2  ",
@@ -6270,7 +6270,7 @@ pub static LAYER_GROUP_TYPES: [RawSpacegroupType; 117] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 6,
-    }
+    },
     RawSpacegroupType {
         number: 20,
         schoenflies: "D2^2  ",
@@ -6281,7 +6281,7 @@ pub static LAYER_GROUP_TYPES: [RawSpacegroupType; 117] = [
         choice: "b-ac ",
         centering: Centering::Primitive,
         pointgroup_number: 6,
-    }
+    },
     RawSpacegroupType {
         number: 21,
         schoenflies: "D2^3  ",
@@ -6292,7 +6292,7 @@ pub static LAYER_GROUP_TYPES: [RawSpacegroupType; 117] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 6,
-    }
+    },
     RawSpacegroupType {
         number: 22,
         schoenflies: "D2^4  ",
@@ -6303,7 +6303,7 @@ pub static LAYER_GROUP_TYPES: [RawSpacegroupType; 117] = [
         choice: "     ",
         centering: Centering::CFace,
         pointgroup_number: 6,
-    }
+    },
     RawSpacegroupType {
         number: 23,
         schoenflies: "C2v^1 ",
@@ -6314,7 +6314,7 @@ pub static LAYER_GROUP_TYPES: [RawSpacegroupType; 117] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 7,
-    }
+    },
     RawSpacegroupType {
         number: 24,
         schoenflies: "C2v^2 ",
@@ -6325,7 +6325,7 @@ pub static LAYER_GROUP_TYPES: [RawSpacegroupType; 117] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 7,
-    }
+    },
     RawSpacegroupType {
         number: 24,
         schoenflies: "C2v^2 ",
@@ -6336,7 +6336,7 @@ pub static LAYER_GROUP_TYPES: [RawSpacegroupType; 117] = [
         choice: "b-ac ",
         centering: Centering::Primitive,
         pointgroup_number: 7,
-    }
+    },
     RawSpacegroupType {
         number: 25,
         schoenflies: "C2v^3 ",
@@ -6347,7 +6347,7 @@ pub static LAYER_GROUP_TYPES: [RawSpacegroupType; 117] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 7,
-    }
+    },
     RawSpacegroupType {
         number: 26,
         schoenflies: "C2v^4 ",
@@ -6358,7 +6358,7 @@ pub static LAYER_GROUP_TYPES: [RawSpacegroupType; 117] = [
         choice: "     ",
         centering: Centering::CFace,
         pointgroup_number: 7,
-    }
+    },
     RawSpacegroupType {
         number: 27,
         schoenflies: "C2v^5 ",
@@ -6369,7 +6369,7 @@ pub static LAYER_GROUP_TYPES: [RawSpacegroupType; 117] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 7,
-    }
+    },
     RawSpacegroupType {
         number: 27,
         schoenflies: "C2v^5 ",
@@ -6380,7 +6380,7 @@ pub static LAYER_GROUP_TYPES: [RawSpacegroupType; 117] = [
         choice: "b-ac ",
         centering: Centering::Primitive,
         pointgroup_number: 7,
-    }
+    },
     RawSpacegroupType {
         number: 28,
         schoenflies: "C2v^6 ",
@@ -6391,7 +6391,7 @@ pub static LAYER_GROUP_TYPES: [RawSpacegroupType; 117] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 7,
-    }
+    },
     RawSpacegroupType {
         number: 28,
         schoenflies: "C2v^6 ",
@@ -6402,7 +6402,7 @@ pub static LAYER_GROUP_TYPES: [RawSpacegroupType; 117] = [
         choice: "b-ac ",
         centering: Centering::Primitive,
         pointgroup_number: 7,
-    }
+    },
     RawSpacegroupType {
         number: 29,
         schoenflies: "C2v^7 ",
@@ -6413,7 +6413,7 @@ pub static LAYER_GROUP_TYPES: [RawSpacegroupType; 117] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 7,
-    }
+    },
     RawSpacegroupType {
         number: 29,
         schoenflies: "C2v^7 ",
@@ -6424,7 +6424,7 @@ pub static LAYER_GROUP_TYPES: [RawSpacegroupType; 117] = [
         choice: "b-ac ",
         centering: Centering::Primitive,
         pointgroup_number: 7,
-    }
+    },
     RawSpacegroupType {
         number: 30,
         schoenflies: "C2v^8 ",
@@ -6435,7 +6435,7 @@ pub static LAYER_GROUP_TYPES: [RawSpacegroupType; 117] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 7,
-    }
+    },
     RawSpacegroupType {
         number: 30,
         schoenflies: "C2v^8 ",
@@ -6446,7 +6446,7 @@ pub static LAYER_GROUP_TYPES: [RawSpacegroupType; 117] = [
         choice: "b-ac ",
         centering: Centering::Primitive,
         pointgroup_number: 7,
-    }
+    },
     RawSpacegroupType {
         number: 31,
         schoenflies: "C2v^9 ",
@@ -6457,7 +6457,7 @@ pub static LAYER_GROUP_TYPES: [RawSpacegroupType; 117] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 7,
-    }
+    },
     RawSpacegroupType {
         number: 31,
         schoenflies: "C2v^9 ",
@@ -6468,7 +6468,7 @@ pub static LAYER_GROUP_TYPES: [RawSpacegroupType; 117] = [
         choice: "b-ac ",
         centering: Centering::Primitive,
         pointgroup_number: 7,
-    }
+    },
     RawSpacegroupType {
         number: 32,
         schoenflies: "C2v^10",
@@ -6479,7 +6479,7 @@ pub static LAYER_GROUP_TYPES: [RawSpacegroupType; 117] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 7,
-    }
+    },
     RawSpacegroupType {
         number: 32,
         schoenflies: "C2v^10",
@@ -6490,7 +6490,7 @@ pub static LAYER_GROUP_TYPES: [RawSpacegroupType; 117] = [
         choice: "b-ac ",
         centering: Centering::Primitive,
         pointgroup_number: 7,
-    }
+    },
     RawSpacegroupType {
         number: 33,
         schoenflies: "C2v^11",
@@ -6501,7 +6501,7 @@ pub static LAYER_GROUP_TYPES: [RawSpacegroupType; 117] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 7,
-    }
+    },
     RawSpacegroupType {
         number: 33,
         schoenflies: "C2v^11",
@@ -6512,7 +6512,7 @@ pub static LAYER_GROUP_TYPES: [RawSpacegroupType; 117] = [
         choice: "b-ac ",
         centering: Centering::Primitive,
         pointgroup_number: 7,
-    }
+    },
     RawSpacegroupType {
         number: 34,
         schoenflies: "C2v^12",
@@ -6523,7 +6523,7 @@ pub static LAYER_GROUP_TYPES: [RawSpacegroupType; 117] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 7,
-    }
+    },
     RawSpacegroupType {
         number: 34,
         schoenflies: "C2v^12",
@@ -6534,7 +6534,7 @@ pub static LAYER_GROUP_TYPES: [RawSpacegroupType; 117] = [
         choice: "b-ac ",
         centering: Centering::Primitive,
         pointgroup_number: 7,
-    }
+    },
     RawSpacegroupType {
         number: 35,
         schoenflies: "C2v^13",
@@ -6545,7 +6545,7 @@ pub static LAYER_GROUP_TYPES: [RawSpacegroupType; 117] = [
         choice: "     ",
         centering: Centering::CFace,
         pointgroup_number: 7,
-    }
+    },
     RawSpacegroupType {
         number: 35,
         schoenflies: "C2v^13",
@@ -6556,7 +6556,7 @@ pub static LAYER_GROUP_TYPES: [RawSpacegroupType; 117] = [
         choice: "b-ac ",
         centering: Centering::CFace,
         pointgroup_number: 7,
-    }
+    },
     RawSpacegroupType {
         number: 36,
         schoenflies: "C2v^14",
@@ -6567,7 +6567,7 @@ pub static LAYER_GROUP_TYPES: [RawSpacegroupType; 117] = [
         choice: "     ",
         centering: Centering::CFace,
         pointgroup_number: 7,
-    }
+    },
     RawSpacegroupType {
         number: 36,
         schoenflies: "C2v^14",
@@ -6578,7 +6578,7 @@ pub static LAYER_GROUP_TYPES: [RawSpacegroupType; 117] = [
         choice: "b-ac ",
         centering: Centering::CFace,
         pointgroup_number: 7,
-    }
+    },
     RawSpacegroupType {
         number: 37,
         schoenflies: "D2h^1 ",
@@ -6589,7 +6589,7 @@ pub static LAYER_GROUP_TYPES: [RawSpacegroupType; 117] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 8,
-    }
+    },
     RawSpacegroupType {
         number: 38,
         schoenflies: "D2h^2 ",
@@ -6600,7 +6600,7 @@ pub static LAYER_GROUP_TYPES: [RawSpacegroupType; 117] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 8,
-    }
+    },
     RawSpacegroupType {
         number: 38,
         schoenflies: "D2h^2 ",
@@ -6611,7 +6611,7 @@ pub static LAYER_GROUP_TYPES: [RawSpacegroupType; 117] = [
         choice: "b-ac ",
         centering: Centering::Primitive,
         pointgroup_number: 8,
-    }
+    },
     RawSpacegroupType {
         number: 39,
         schoenflies: "D2h^3 ",
@@ -6622,7 +6622,7 @@ pub static LAYER_GROUP_TYPES: [RawSpacegroupType; 117] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 8,
-    }
+    },
     RawSpacegroupType {
         number: 40,
         schoenflies: "D2h^4 ",
@@ -6633,7 +6633,7 @@ pub static LAYER_GROUP_TYPES: [RawSpacegroupType; 117] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 8,
-    }
+    },
     RawSpacegroupType {
         number: 40,
         schoenflies: "D2h^4 ",
@@ -6644,7 +6644,7 @@ pub static LAYER_GROUP_TYPES: [RawSpacegroupType; 117] = [
         choice: "b-ac ",
         centering: Centering::Primitive,
         pointgroup_number: 8,
-    }
+    },
     RawSpacegroupType {
         number: 41,
         schoenflies: "D2h^5 ",
@@ -6655,7 +6655,7 @@ pub static LAYER_GROUP_TYPES: [RawSpacegroupType; 117] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 8,
-    }
+    },
     RawSpacegroupType {
         number: 41,
         schoenflies: "D2h^5 ",
@@ -6666,7 +6666,7 @@ pub static LAYER_GROUP_TYPES: [RawSpacegroupType; 117] = [
         choice: "b-ac ",
         centering: Centering::Primitive,
         pointgroup_number: 8,
-    }
+    },
     RawSpacegroupType {
         number: 42,
         schoenflies: "D2h^6 ",
@@ -6677,7 +6677,7 @@ pub static LAYER_GROUP_TYPES: [RawSpacegroupType; 117] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 8,
-    }
+    },
     RawSpacegroupType {
         number: 42,
         schoenflies: "D2h^6 ",
@@ -6688,7 +6688,7 @@ pub static LAYER_GROUP_TYPES: [RawSpacegroupType; 117] = [
         choice: "b-ac ",
         centering: Centering::Primitive,
         pointgroup_number: 8,
-    }
+    },
     RawSpacegroupType {
         number: 43,
         schoenflies: "D2h^7 ",
@@ -6699,7 +6699,7 @@ pub static LAYER_GROUP_TYPES: [RawSpacegroupType; 117] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 8,
-    }
+    },
     RawSpacegroupType {
         number: 43,
         schoenflies: "D2h^7 ",
@@ -6710,7 +6710,7 @@ pub static LAYER_GROUP_TYPES: [RawSpacegroupType; 117] = [
         choice: "b-ac ",
         centering: Centering::Primitive,
         pointgroup_number: 8,
-    }
+    },
     RawSpacegroupType {
         number: 44,
         schoenflies: "D2h^8 ",
@@ -6721,7 +6721,7 @@ pub static LAYER_GROUP_TYPES: [RawSpacegroupType; 117] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 8,
-    }
+    },
     RawSpacegroupType {
         number: 45,
         schoenflies: "D2h^9 ",
@@ -6732,7 +6732,7 @@ pub static LAYER_GROUP_TYPES: [RawSpacegroupType; 117] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 8,
-    }
+    },
     RawSpacegroupType {
         number: 45,
         schoenflies: "D2h^9 ",
@@ -6743,7 +6743,7 @@ pub static LAYER_GROUP_TYPES: [RawSpacegroupType; 117] = [
         choice: "b-ac ",
         centering: Centering::Primitive,
         pointgroup_number: 8,
-    }
+    },
     RawSpacegroupType {
         number: 46,
         schoenflies: "D2h^10",
@@ -6754,7 +6754,7 @@ pub static LAYER_GROUP_TYPES: [RawSpacegroupType; 117] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 8,
-    }
+    },
     RawSpacegroupType {
         number: 47,
         schoenflies: "D2h^11",
@@ -6765,7 +6765,7 @@ pub static LAYER_GROUP_TYPES: [RawSpacegroupType; 117] = [
         choice: "     ",
         centering: Centering::CFace,
         pointgroup_number: 8,
-    }
+    },
     RawSpacegroupType {
         number: 48,
         schoenflies: "D2h^12",
@@ -6776,7 +6776,7 @@ pub static LAYER_GROUP_TYPES: [RawSpacegroupType; 117] = [
         choice: "     ",
         centering: Centering::CFace,
         pointgroup_number: 8,
-    }
+    },
     RawSpacegroupType {
         number: 49,
         schoenflies: "C4^1  ",
@@ -6787,7 +6787,7 @@ pub static LAYER_GROUP_TYPES: [RawSpacegroupType; 117] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 9,
-    }
+    },
     RawSpacegroupType {
         number: 50,
         schoenflies: "S4^1  ",
@@ -6798,7 +6798,7 @@ pub static LAYER_GROUP_TYPES: [RawSpacegroupType; 117] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 10,
-    }
+    },
     RawSpacegroupType {
         number: 51,
         schoenflies: "C4h^1 ",
@@ -6809,7 +6809,7 @@ pub static LAYER_GROUP_TYPES: [RawSpacegroupType; 117] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 11,
-    }
+    },
     RawSpacegroupType {
         number: 52,
         schoenflies: "C4h^2 ",
@@ -6820,7 +6820,7 @@ pub static LAYER_GROUP_TYPES: [RawSpacegroupType; 117] = [
         choice: "1    ",
         centering: Centering::Primitive,
         pointgroup_number: 11,
-    }
+    },
     RawSpacegroupType {
         number: 52,
         schoenflies: "C4h^2 ",
@@ -6831,7 +6831,7 @@ pub static LAYER_GROUP_TYPES: [RawSpacegroupType; 117] = [
         choice: "2    ",
         centering: Centering::Primitive,
         pointgroup_number: 11,
-    }
+    },
     RawSpacegroupType {
         number: 53,
         schoenflies: "D4^1  ",
@@ -6842,7 +6842,7 @@ pub static LAYER_GROUP_TYPES: [RawSpacegroupType; 117] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 12,
-    }
+    },
     RawSpacegroupType {
         number: 54,
         schoenflies: "D4^2  ",
@@ -6853,7 +6853,7 @@ pub static LAYER_GROUP_TYPES: [RawSpacegroupType; 117] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 12,
-    }
+    },
     RawSpacegroupType {
         number: 55,
         schoenflies: "C4v^1 ",
@@ -6864,7 +6864,7 @@ pub static LAYER_GROUP_TYPES: [RawSpacegroupType; 117] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 13,
-    }
+    },
     RawSpacegroupType {
         number: 56,
         schoenflies: "C4v^2 ",
@@ -6875,7 +6875,7 @@ pub static LAYER_GROUP_TYPES: [RawSpacegroupType; 117] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 13,
-    }
+    },
     RawSpacegroupType {
         number: 57,
         schoenflies: "D2d^1 ",
@@ -6886,7 +6886,7 @@ pub static LAYER_GROUP_TYPES: [RawSpacegroupType; 117] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 14,
-    }
+    },
     RawSpacegroupType {
         number: 58,
         schoenflies: "D2d^2 ",
@@ -6897,7 +6897,7 @@ pub static LAYER_GROUP_TYPES: [RawSpacegroupType; 117] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 14,
-    }
+    },
     RawSpacegroupType {
         number: 59,
         schoenflies: "D2d^3 ",
@@ -6908,7 +6908,7 @@ pub static LAYER_GROUP_TYPES: [RawSpacegroupType; 117] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 14,
-    }
+    },
     RawSpacegroupType {
         number: 60,
         schoenflies: "D2d^4 ",
@@ -6919,7 +6919,7 @@ pub static LAYER_GROUP_TYPES: [RawSpacegroupType; 117] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 14,
-    }
+    },
     RawSpacegroupType {
         number: 61,
         schoenflies: "D4h^1 ",
@@ -6930,7 +6930,7 @@ pub static LAYER_GROUP_TYPES: [RawSpacegroupType; 117] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 15,
-    }
+    },
     RawSpacegroupType {
         number: 62,
         schoenflies: "D4h^2 ",
@@ -6941,7 +6941,7 @@ pub static LAYER_GROUP_TYPES: [RawSpacegroupType; 117] = [
         choice: "1    ",
         centering: Centering::Primitive,
         pointgroup_number: 15,
-    }
+    },
     RawSpacegroupType {
         number: 62,
         schoenflies: "D4h^2 ",
@@ -6952,7 +6952,7 @@ pub static LAYER_GROUP_TYPES: [RawSpacegroupType; 117] = [
         choice: "2    ",
         centering: Centering::Primitive,
         pointgroup_number: 15,
-    }
+    },
     RawSpacegroupType {
         number: 63,
         schoenflies: "D4h^3 ",
@@ -6963,7 +6963,7 @@ pub static LAYER_GROUP_TYPES: [RawSpacegroupType; 117] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 15,
-    }
+    },
     RawSpacegroupType {
         number: 64,
         schoenflies: "D4h^4 ",
@@ -6974,7 +6974,7 @@ pub static LAYER_GROUP_TYPES: [RawSpacegroupType; 117] = [
         choice: "1    ",
         centering: Centering::Primitive,
         pointgroup_number: 15,
-    }
+    },
     RawSpacegroupType {
         number: 64,
         schoenflies: "D4h^4 ",
@@ -6985,7 +6985,7 @@ pub static LAYER_GROUP_TYPES: [RawSpacegroupType; 117] = [
         choice: "2    ",
         centering: Centering::Primitive,
         pointgroup_number: 15,
-    }
+    },
     RawSpacegroupType {
         number: 65,
         schoenflies: "C3^1  ",
@@ -6996,7 +6996,7 @@ pub static LAYER_GROUP_TYPES: [RawSpacegroupType; 117] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 16,
-    }
+    },
     RawSpacegroupType {
         number: 66,
         schoenflies: "C3i^1 ",
@@ -7007,7 +7007,7 @@ pub static LAYER_GROUP_TYPES: [RawSpacegroupType; 117] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 17,
-    }
+    },
     RawSpacegroupType {
         number: 67,
         schoenflies: "D3^1  ",
@@ -7018,7 +7018,7 @@ pub static LAYER_GROUP_TYPES: [RawSpacegroupType; 117] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 18,
-    }
+    },
     RawSpacegroupType {
         number: 68,
         schoenflies: "D3^2  ",
@@ -7029,7 +7029,7 @@ pub static LAYER_GROUP_TYPES: [RawSpacegroupType; 117] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 18,
-    }
+    },
     RawSpacegroupType {
         number: 69,
         schoenflies: "C3v^1 ",
@@ -7040,7 +7040,7 @@ pub static LAYER_GROUP_TYPES: [RawSpacegroupType; 117] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 19,
-    }
+    },
     RawSpacegroupType {
         number: 70,
         schoenflies: "C3v^2 ",
@@ -7051,7 +7051,7 @@ pub static LAYER_GROUP_TYPES: [RawSpacegroupType; 117] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 19,
-    }
+    },
     RawSpacegroupType {
         number: 71,
         schoenflies: "D3d^1 ",
@@ -7062,7 +7062,7 @@ pub static LAYER_GROUP_TYPES: [RawSpacegroupType; 117] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 20,
-    }
+    },
     RawSpacegroupType {
         number: 72,
         schoenflies: "D3d^2 ",
@@ -7073,7 +7073,7 @@ pub static LAYER_GROUP_TYPES: [RawSpacegroupType; 117] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 20,
-    }
+    },
     RawSpacegroupType {
         number: 73,
         schoenflies: "C6^1  ",
@@ -7084,7 +7084,7 @@ pub static LAYER_GROUP_TYPES: [RawSpacegroupType; 117] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 21,
-    }
+    },
     RawSpacegroupType {
         number: 74,
         schoenflies: "C3h^1 ",
@@ -7095,7 +7095,7 @@ pub static LAYER_GROUP_TYPES: [RawSpacegroupType; 117] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 22,
-    }
+    },
     RawSpacegroupType {
         number: 75,
         schoenflies: "C6h^1 ",
@@ -7106,7 +7106,7 @@ pub static LAYER_GROUP_TYPES: [RawSpacegroupType; 117] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 23,
-    }
+    },
     RawSpacegroupType {
         number: 76,
         schoenflies: "D6^1  ",
@@ -7117,7 +7117,7 @@ pub static LAYER_GROUP_TYPES: [RawSpacegroupType; 117] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 24,
-    }
+    },
     RawSpacegroupType {
         number: 77,
         schoenflies: "C6v^1 ",
@@ -7128,7 +7128,7 @@ pub static LAYER_GROUP_TYPES: [RawSpacegroupType; 117] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 25,
-    }
+    },
     RawSpacegroupType {
         number: 78,
         schoenflies: "D3h^1 ",
@@ -7139,7 +7139,7 @@ pub static LAYER_GROUP_TYPES: [RawSpacegroupType; 117] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 26,
-    }
+    },
     RawSpacegroupType {
         number: 79,
         schoenflies: "D3h^2 ",
@@ -7150,7 +7150,7 @@ pub static LAYER_GROUP_TYPES: [RawSpacegroupType; 117] = [
         choice: "     ",
         centering: Centering::Primitive,
         pointgroup_number: 26,
-    }
+    },
     RawSpacegroupType {
         number: 80,
         schoenflies: "D6h^1 ",
@@ -8864,6 +8864,15 @@ pub fn spgdb_decode_symmetry(encoded: i32) -> (Mat3I, Vec3) {
         degit /= 12;
     }
     (rot, trans)
+}
+
+/// 根据操作索引直接获取单个对称操作
+pub fn spgdb_get_operation_by_index(index: usize) -> Option<(Mat3I, Vec3)> {
+    if index < SYMMETRY_OPERATIONS.len() {
+        Some(spgdb_decode_symmetry(SYMMETRY_OPERATIONS[index]))
+    } else {
+        None
+    }
 }
 
 /// 根据 Hall 编号获取单个对称操作

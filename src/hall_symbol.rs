@@ -7954,18 +7954,19 @@ fn is_hall_symbol(
     vspu: &[[f64; 9]; 3],
     _symprec: f64,
 ) -> bool {
-    let (op_count, op_start) = match spgdb_get_operation_index(hall_number) {
-        Some([c, s]) => (c as usize, s as usize),
-        None => { return false; }
-    };
+    let (op_count, _op_start) = spgdb_get_operation_index(hall_number);
+    if op_count == 0 {
+        return false;
+    }
 
+    let op_count_i32 = op_count as i32;
     if op_count != symmetry.size {
         return false;
     }
 
     // DEBUG: trace for hall 497 (Pm-3m)
     let trace = hall_number == 497;
-    if trace { eprintln!("    is_hall_symbol(hall={}): op_count={}, symmetry.size={}", hall_number, op_count, symmetry.size); }
+    if trace { eprintln!("    is_hall_symbol(hall={}): op_count={}, symmetry.size={}", hall_number, op_count_i32, symmetry.size); }
 
     let mut rot = [[[0; 3]; 3]; 3];
     unpack_generators(&mut rot, generators);
@@ -8048,10 +8049,10 @@ fn get_origin_shift(
     vspu: &[[f64; 9]; 3],
 ) -> bool {
     // FIX: Handle Option return
-    let (count, start_index) = match spgdb_get_operation_index(hall_number) {
-        Some([c, s]) => (c as usize, s as usize),
-        None => return false,
-    };
+    let (count, start_index) = spgdb_get_operation_index(hall_number);
+    if count == 0 {
+        return false;
+    }
 
     let mut dw = [0.0; 9];
 
@@ -8176,11 +8177,11 @@ fn is_match_database(
     symprec: f64,
 ) -> bool {
     // FIX: Handle Option return
-    let (count, start_index) = match spgdb_get_operation_index(hall_number) {
-        Some([c, s]) => (c as usize, s as usize),
-        None => return false,
-    };
-    
+    let (count, start_index) = spgdb_get_operation_index(hall_number);
+    if count == 0 {
+        return false;
+    }
+
     let mut found_list = vec![false; count];
     let aperiodic = AperiodicAxis::Z;
 
