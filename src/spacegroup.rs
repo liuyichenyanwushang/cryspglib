@@ -1,9 +1,23 @@
-// spacegroup.rs
+//! 空间群搜索与识别。
+//!
+//! 本模块实现空间群识别的最后一步：对 Hall 符号匹配产生的候选编号，
+//! 逐一尝试原点平移和常规晶胞变换，选择最佳匹配并返回完整的 [`Spacegroup`] 信息。
+//!
+//! # 入口函数
+//!
+//! - [`spa_search_spacegroup`] — 从原胞出发的完整空间群搜索
+//! - [`spa_search_spacegroup_with_symmetry`] — 给定对称操作的空间群搜索
+//! - [`spa_transform_to_primitive`] / [`spa_transform_from_primitive`] — 坐标变换辅助
+//!
+//! # 晶格矩阵约定
+//!
+//! 所有 [`Mat3`] 采用 `lattice[cart][vec]` 布局（行=笛卡尔分量, 列=晶格矢量）。
+//! 详见 [`mathfunc`](crate::mathfunc) 模块文档。
 
-use crate::cell::{Cell, TensorRank, cel_trim_cell};
+use crate::cell::{AperiodicAxis, Cell, TensorRank, cel_trim_cell};
 use crate::debug;
 use crate::delaunay::del_layer_delaunay_reduce_2D;
-use crate::delaunay::{del_delaunay_reduce, del_layer_delaunay_reduce};
+
 use crate::hall_symbol::hal_match_hall_symbol_db;
 use crate::mathfunc::{
     Mat3, Mat3I, Vec3, mat_cast_matrix_3d_to_3i, mat_cast_matrix_3i_to_3d,
@@ -11,14 +25,13 @@ use crate::mathfunc::{
     mat_copy_vector_d3, mat_dabs, mat_get_determinant_d3, mat_get_determinant_i3, mat_get_metric,
     mat_get_similar_matrix_d3, mat_inverse_matrix_d3, mat_is_int_matrix, mat_multiply_matrix_d3,
     mat_multiply_matrix_di3, mat_multiply_matrix_id3, mat_multiply_matrix_vector_d3,
-    mat_norm_squared_d3,
 };
 use crate::niggli::niggli_reduce;
 use crate::pointgroup::{
-    Holohedry, Laue, Pointgroup, ptg_get_pointsymmetry, ptg_get_transformation_matrix,
+    Laue, ptg_get_pointsymmetry, ptg_get_transformation_matrix,
 };
 use crate::primitive::Primitive;
-use crate::spg_database::{Centering, SpacegroupType, spgdb_get_spacegroup_type};
+use crate::spg_database::{Centering, spgdb_get_spacegroup_type};
 use crate::symmetry::{Symmetry, sym_get_operation, sym_reduce_operation};
 
 const REDUCE_RATE: f64 = 0.95;
@@ -148,6 +161,12 @@ static LAYER_GROUP_TO_HALL_NUMBER: [i32; 80] = [
 
 // --- Structs ---
 
+/// 空间群识别结果。
+///
+/// 包含标准晶体学信息：空间群编号、Hall 编号、国际符号（短/长/完整）、
+/// Schoenflies 符号、Bravais 晶格矩阵和原点平移向量。
+///
+/// `bravais_lattice` 采用 `[cart][vec]` 布局（行=笛卡尔, 列=Bravais 基矢量）。
 #[derive(Clone, Debug)]
 pub struct Spacegroup {
     pub number: i32,
@@ -199,7 +218,7 @@ pub fn spa_search_spacegroup(
 
     let candidates = if hall_number != 0 {
         vec![hall_number]
-    } else if cell.aperiodic_axis == -1 {
+    } else if cell.aperiodic_axis.is_none() {
         SPACEGROUP_TO_HALL_NUMBER.to_vec()
     } else {
         LAYER_GROUP_TO_HALL_NUMBER.to_vec()
@@ -474,20 +493,22 @@ fn search_hall_number(
 
     let pointgroup = ptg_get_transformation_matrix(&mut tmat_int, &symmetry.rot, aperiodic_axis);
 
-    // debug_print("initial transformation matrix\n");
-    // debug_print_matrix_i3(tmat_int);
-
     if pointgroup.number == 0 {
+        eprintln!("  search_hall_number: pointgroup.number == 0");
         return 0;
     }
+    eprintln!("  search_hall_number: pointgroup.number={}, laue={:?}, tmat_int={:?}",
+        pointgroup.number, pointgroup.laue, tmat_int);
 
     let mut conv_lattice_tmp = [[0.0; 3]; 3];
 
     if pointgroup.laue == Laue::Laue1 || pointgroup.laue == Laue::Laue2M {
+        eprintln!("  search_hall_number: entering Laue1/Laue2M branch");
         conv_lattice_tmp =
             mat_multiply_matrix_di3(&primitive.cell.as_ref().unwrap().lattice, &tmat_int);
 
         if pointgroup.laue == Laue::Laue1 {
+            eprintln!("  search_hall_number: calling change_basis_tricli");
             if !change_basis_tricli(
                 &mut tmat_int,
                 &conv_lattice_tmp,
@@ -495,11 +516,13 @@ fn search_hall_number(
                 symprec,
                 aperiodic_axis,
             ) {
+                eprintln!("  search_hall_number: change_basis_tricli failed");
                 return 0;
             }
         }
 
         if pointgroup.laue == Laue::Laue2M {
+            eprintln!("  search_hall_number: calling change_basis_monocli");
             if !change_basis_monocli(
                 &mut tmat_int,
                 &conv_lattice_tmp,
@@ -507,6 +530,7 @@ fn search_hall_number(
                 symprec,
                 aperiodic_axis,
             ) {
+                eprintln!("  search_hall_number: change_basis_monocli failed");
                 return 0;
             }
         }
@@ -514,23 +538,27 @@ fn search_hall_number(
 
     let mut correction_mat = [[0.0; 3]; 3];
     let centering = get_centering(&mut correction_mat, &tmat_int, pointgroup.laue);
+    eprintln!("  search_hall_number: centering={:?}, correction_mat={:?}", centering, correction_mat);
     if centering == Centering::Error {
+        eprintln!("  search_hall_number: centering is Error");
         return 0;
     }
 
     let tmat = mat_multiply_matrix_id3(&tmat_int, &correction_mat);
     *conv_lattice = mat_multiply_matrix_d3(&primitive.cell.as_ref().unwrap().lattice, &tmat);
-
-    // debug_print("transformation matrix\n");
-    // debug_print_matrix_d3(tmat);
+    eprintln!("  search_hall_number: tmat={:?}", tmat);
+    eprintln!("  search_hall_number: conv_lattice={:?}", conv_lattice);
 
     let conv_symmetry = get_initial_conventional_symmetry(centering, &tmat, symmetry);
     if conv_symmetry.is_none() {
+        eprintln!("  search_hall_number: get_initial_conventional_symmetry failed");
         return 0;
     }
     let conv_symmetry = conv_symmetry.unwrap();
+    eprintln!("  search_hall_number: conv_symmetry.size = {}", conv_symmetry.size);
 
     for &cand in candidates {
+        eprintln!("  search_hall_number: trying candidate hall number {}", cand);
         if hal_match_hall_symbol_db(
             origin_shift,
             conv_lattice,
@@ -540,11 +568,11 @@ fn search_hall_number(
             symprec,
         ) {
             debug::debug_print(format_args!("origin shift\n"));
-            // debug_print_vector_d3(origin_shift);
             return cand;
         }
     }
 
+    eprintln!("  search_hall_number: no candidate matched");
     0
 }
 
@@ -553,7 +581,7 @@ fn change_basis_tricli(
     conv_lattice: &Mat3,
     primitive_lattice: &Mat3,
     symprec: f64,
-    aperiodic_axis: i32,
+    aperiodic_axis: Option<AperiodicAxis>,
 ) -> bool {
     let mut niggli_cell = *conv_lattice;
 
@@ -582,17 +610,18 @@ fn change_basis_monocli(
     conv_lattice: &Mat3,
     primitive_lattice: &Mat3,
     symprec: f64,
-    aperiodic_axis_prim: i32,
+    aperiodic_axis_prim: Option<AperiodicAxis>,
 ) -> bool {
     let mut smallest_lattice = [[0.0; 3]; 3];
-    let mut aperiodic_axis_conv = -1;
+    let mut aperiodic_axis_conv: i32 = -1;
     let unique_axis;
 
-    if aperiodic_axis_prim == -1 {
+    if aperiodic_axis_prim.is_none() {
         unique_axis = 1;
     } else {
+        let ap_idx = aperiodic_axis_prim.unwrap().axis_index();
         for i in 0..3 {
-            if tmat_int[aperiodic_axis_prim as usize][i] != 0 {
+            if tmat_int[ap_idx][i] != 0 {
                 aperiodic_axis_conv = i as i32;
             }
         }
@@ -655,8 +684,7 @@ fn get_conventional_symmetry(
     let inv_tmat = mat_inverse_matrix_d3(tmat, 0.0).unwrap_or([[0.0; 3]; 3]);
 
     for i in 0..size {
-        let mut primitive_sym_rot_d3 = [[0.0; 3]; 3];
-        mat_cast_matrix_3i_to_3d(&primitive_sym.rot[i]);
+        let primitive_sym_rot_d3 = mat_cast_matrix_3i_to_3d(&primitive_sym.rot[i]);
 
         // C*S*C^-1
         let mut symmetry_rot_d3 = [[0.0; 3]; 3];
@@ -882,30 +910,349 @@ fn is_equivalent_lattice(
 mod tests {
     use super::*;
     use crate::cell::Cell;
-    use crate::primitive::Primitive;
-    use crate::symmetry::Symmetry;
+
+    const SYMPREC: f64 = 1e-5;
+    const ANGLE_TOL: f64 = -1.0;
+
+    /// 辅助函数：根据晶格和原子位置搜索空间群
+    /// 流程：Cell → prm_get_primitive → spa_search_spacegroup
+    fn search_spacegroup(
+        lattice: &Mat3,
+        positions: &[Vec3],
+        types: &[i32],
+    ) -> Option<Spacegroup> {
+        let mut cell = Cell::new(types.len(), crate::cell::TensorRank::NoSpin);
+        cell.set_cell(lattice, positions, types);
+        cell.aperiodic_axis = None;
+
+        // 第一步：获取原胞 (Primitive)
+        let primitive = crate::primitive::prm_get_primitive(&cell, SYMPREC, ANGLE_TOL)?;
+
+        // 第二步：搜索空间群
+        spa_search_spacegroup(&primitive, 0, SYMPREC, ANGLE_TOL)
+    }
+
+    /// 验证空间群识别结果
+    fn assert_spacegroup(
+        spg: &Spacegroup,
+        expected_number: i32,
+        expected_short: &str,
+        label: &str,
+    ) {
+        assert_eq!(
+            spg.number, expected_number,
+            "[{}] Expected space group #{}, got #{}",
+            label, expected_number, spg.number
+        );
+        let actual_short = spg.international_short.trim();
+        assert_eq!(
+            actual_short, expected_short,
+            "[{}] Expected short symbol '{}', got '{}'",
+            label, expected_short, actual_short
+        );
+        // 验证 bravais_lattice 非零
+        let det = mat_get_determinant_d3(&spg.bravais_lattice);
+        assert!(det.abs() > 1e-10, "[{}] bravais_lattice determinant is zero", label);
+    }
+
+    // ==================== 立方晶系测试 ====================
 
     #[test]
-    fn test_search_spacegroup_simple() {
-        // Construct a simple P1 cell
+    fn test_cubic_simple_pm3m() {
+        // 简单立方晶格，1个原子在原点 → Pm-3m (#221)
         let lattice = [[1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0]];
-        let position = [[0.0, 0.0, 0.0]];
+        let positions = [[0.0, 0.0, 0.0]];
         let types = [1];
-        let mut cell = Cell::new(1, crate::cell::TensorRank::NoSpin);
-        cell.set_cell(&lattice, &position, &types);
 
-        let mut primitive = Primitive::new(1);
-        primitive.cell = Some(cell);
-        mat_copy_matrix_d3(&mut primitive.orig_lattice, &lattice);
-
-        // Should find P1 (Hall number 1)
-        // Note: A single atom at origin in cubic lattice is actually Pm-3m (221).
-        // If we want P1, we should break symmetry, e.g. triclinic lattice.
-        // But let's see what it finds. It should find something valid.
-        let spg = spa_search_spacegroup(&primitive, 0, 1e-5, -1.0);
-        assert!(spg.is_some());
-        let s = spg.unwrap();
-        // For cubic lattice with 1 atom, it is Pm-3m (221)
-        assert_eq!(s.number, 221);
+        let spg = search_spacegroup(&lattice, &positions, &types)
+            .expect("Simple cubic: spacegroup search returned None");
+        eprintln!(
+            "Simple cubic: #{}, hall={}, short='{}'",
+            spg.number, spg.hall_number, spg.international_short.trim()
+        );
+        assert_spacegroup(&spg, 221, "Pm-3m", "simple cubic");
     }
+
+    #[test]
+    fn test_cubic_bcc_im3m() {
+        // 体心立方：立方晶格 + 2个原子 → Im-3m (#229)
+        let lattice = [[1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0]];
+        let positions = [[0.0, 0.0, 0.0], [0.5, 0.5, 0.5]];
+        let types = [1, 1];
+
+        let spg = search_spacegroup(&lattice, &positions, &types)
+            .expect("BCC: spacegroup search returned None");
+        eprintln!(
+            "BCC: #{}, hall={}, short='{}'",
+            spg.number, spg.hall_number, spg.international_short.trim()
+        );
+        assert_spacegroup(&spg, 229, "Im-3m", "BCC");
+    }
+
+    #[test]
+    fn test_cubic_fcc_fm3m() {
+        // 面心立方：立方晶格 + 4个原子 → Fm-3m (#225)
+        let lattice = [[1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0]];
+        let positions = [
+            [0.0, 0.0, 0.0],
+            [0.0, 0.5, 0.5],
+            [0.5, 0.0, 0.5],
+            [0.5, 0.5, 0.0],
+        ];
+        let types = [1, 1, 1, 1];
+
+        let spg = search_spacegroup(&lattice, &positions, &types)
+            .expect("FCC: spacegroup search returned None");
+        eprintln!(
+            "FCC: #{}, hall={}, short='{}'",
+            spg.number, spg.hall_number, spg.international_short.trim()
+        );
+        assert_spacegroup(&spg, 225, "Fm-3m", "FCC");
+    }
+
+    #[test]
+    fn test_cubic_diamond_fd3m() {
+        // 金刚石结构：FCC + 2原子基元 → Fd-3m (#227)
+        let lattice = [[1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0]];
+        let positions = [
+            [0.0, 0.0, 0.0],
+            [0.25, 0.25, 0.25],
+            [0.0, 0.5, 0.5],
+            [0.25, 0.75, 0.75],
+            [0.5, 0.0, 0.5],
+            [0.75, 0.25, 0.75],
+            [0.5, 0.5, 0.0],
+            [0.75, 0.75, 0.25],
+        ];
+        let types = [1, 1, 1, 1, 1, 1, 1, 1];
+
+        let spg = search_spacegroup(&lattice, &positions, &types)
+            .expect("Diamond: spacegroup search returned None");
+        eprintln!(
+            "Diamond: #{}, hall={}, short='{}'",
+            spg.number, spg.hall_number, spg.international_short.trim()
+        );
+        assert_spacegroup(&spg, 227, "Fd-3m", "diamond");
+    }
+
+    // ==================== 六方晶系测试 ====================
+
+    /// 构建六方晶格矩阵（a=b, c 独立，γ=120°）
+    /// 六方晶格在 cart×vec 约定下：每行是一个 Cartesian 分量，每列是一个晶格向量
+    /// a = (a, 0, 0), b = (-a/2, a*sqrt(3)/2, 0), c = (0, 0, c)
+    fn hexagonal_lattice(a: f64, c: f64) -> Mat3 {
+        let sqrt3 = 3.0_f64.sqrt();
+        [
+            [a, -a / 2.0, 0.0],
+            [0.0, a * sqrt3 / 2.0, 0.0],
+            [0.0, 0.0, c],
+        ]
+    }
+
+    #[test]
+    fn test_graphene_p6mmm() {
+        // 石墨烯：六方晶格，2个C原子，平面结构 → P6/mmm (#191)
+        let a = 2.46;
+        let c = 10.0;
+        let lattice = hexagonal_lattice(a, c);
+        // 蜂巢结构的两个原子：A 和 B 位点
+        let positions = [[0.0, 0.0, 0.0], [1.0 / 3.0, 2.0 / 3.0, 0.0]];
+        let types = [6, 6]; // 碳原子
+
+        let spg = search_spacegroup(&lattice, &positions, &types)
+            .expect("Graphene: spacegroup search returned None");
+        eprintln!(
+            "Graphene: #{}, hall={}, short='{}'",
+            spg.number, spg.hall_number, spg.international_short.trim()
+        );
+        assert_spacegroup(&spg, 191, "P6/mmm", "graphene");
+    }
+
+    #[test]
+    fn test_silicene_p3m1() {
+        // 硅烯：六方晶格，2个Si原子，low-buckled结构 → P-3m1 (#164)
+        // AB子晶格在z方向作相反方向buckling，保留了反演对称性但打破了水平镜面
+        let a = 3.86;
+        let c = 20.0;
+        let lattice = hexagonal_lattice(a, c);
+        let delta = 0.44 / c; // buckling 在分数坐标中
+        let positions = [[1.0 / 3.0, 2.0 / 3.0, -delta], [2.0 / 3.0, 1.0 / 3.0, delta]];
+        let types = [14, 14]; // 硅原子
+
+        let spg = search_spacegroup(&lattice, &positions, &types)
+            .expect("Silicene: spacegroup search returned None");
+        eprintln!(
+            "Silicene: #{}, hall={}, short='{}'",
+            spg.number, spg.hall_number, spg.international_short.trim()
+        );
+        // D6h → D3d（保留3重轴和反演，失去6重轴和水平镜面）
+        assert_spacegroup(&spg, 164, "P-3m1", "silicene");
+    }
+
+    #[test]
+    fn test_hcp_p63mmc() {
+        // HCP 结构：六方晶格，2个原子 → P6_3/mmc (#194)
+        let a = 2.5;
+        let c = a * (8.0_f64 / 3.0_f64).sqrt(); // 理想 c/a 比
+        let lattice = hexagonal_lattice(a, c);
+        let positions = [[0.0, 0.0, 0.0], [1.0 / 3.0, 2.0 / 3.0, 0.5]];
+        let types = [1, 1];
+
+        let spg = search_spacegroup(&lattice, &positions, &types)
+            .expect("HCP: spacegroup search returned None");
+        eprintln!(
+            "HCP: #{}, hall={}, short='{}'",
+            spg.number, spg.hall_number, spg.international_short.trim()
+        );
+        assert_spacegroup(&spg, 194, "P6_3/mmc", "HCP");
+    }
+
+    // ==================== 超胞测试 ====================
+
+    #[test]
+    fn test_supercell_2x2x2_simple_cubic() {
+        // 2x2x2 超胞的简单立方 → 应仍返回 Pm-3m (#221)
+        let a_super = 2.0;
+        let lattice = [
+            [a_super, 0.0, 0.0],
+            [0.0, a_super, 0.0],
+            [0.0, 0.0, a_super],
+        ];
+        // 8个原子在超胞的各个角上
+        let mut positions = Vec::new();
+        for i in 0..2 {
+            for j in 0..2 {
+                for k in 0..2 {
+                    positions.push([
+                        i as f64 * 0.5,
+                        j as f64 * 0.5,
+                        k as f64 * 0.5,
+                    ]);
+                }
+            }
+        }
+        let types = vec![1; 8];
+
+        let spg = search_spacegroup(&lattice, &positions, &types)
+            .expect("Supercell 2x2x2: spacegroup search returned None");
+        eprintln!(
+            "Supercell 2x2x2 simple cubic: #{}, hall={}, short='{}'",
+            spg.number, spg.hall_number, spg.international_short.trim()
+        );
+        assert_spacegroup(&spg, 221, "Pm-3m", "supercell 2x2x2 simple cubic");
+    }
+
+    #[test]
+    fn test_supercell_2x2x2_cscl() {
+        // 2x2x2 超胞的 CsCl 结构 → 应仍返回 Pm-3m (#221)
+        let a_super = 2.0;
+        let lattice = [
+            [a_super, 0.0, 0.0],
+            [0.0, a_super, 0.0],
+            [0.0, 0.0, a_super],
+        ];
+        // CsCl: 2种原子，Cs在角上，Cl在体心
+        // 2x2x2 超胞：8个Cs + 8个Cl = 16个原子
+        let mut positions = Vec::new();
+        let mut types = Vec::new();
+        // Cs 原子在角上 (type=1)
+        for i in 0..2 {
+            for j in 0..2 {
+                for k in 0..2 {
+                    positions.push([
+                        i as f64 * 0.5,
+                        j as f64 * 0.5,
+                        k as f64 * 0.5,
+                    ]);
+                    types.push(1);
+                }
+            }
+        }
+        // Cl 原子在体心位置 (type=2)
+        for i in 0..2 {
+            for j in 0..2 {
+                for k in 0..2 {
+                    positions.push([
+                        i as f64 * 0.5 + 0.25,
+                        j as f64 * 0.5 + 0.25,
+                        k as f64 * 0.5 + 0.25,
+                    ]);
+                    types.push(2);
+                }
+            }
+        }
+
+        let spg = search_spacegroup(&lattice, &positions, &types)
+            .expect("Supercell 2x2x2 CsCl: spacegroup search returned None");
+        eprintln!(
+            "Supercell 2x2x2 CsCl: #{}, hall={}, short='{}'",
+            spg.number, spg.hall_number, spg.international_short.trim()
+        );
+        assert_spacegroup(&spg, 221, "Pm-3m", "supercell 2x2x2 CsCl");
+    }
+
+    #[test]
+    fn test_supercell_2x2x1_graphene() {
+        // 2x2x1 超胞的石墨烯 → 应仍返回 P6/mmm (#191)
+        let a = 2.46;
+        let c = 10.0;
+        // 超胞: 2a x 2b x c
+        let super_lattice = [
+            [2.0 * a, -a, 0.0],
+            [0.0, a * 3.0_f64.sqrt(), 0.0],
+            [0.0, 0.0, c],
+        ];
+        // 原始石墨烯的2个原子 × (2×2×1) = 8个原子
+        let base_positions = [[0.0, 0.0, 0.0], [1.0 / 3.0, 2.0 / 3.0, 0.0]];
+        let mut positions = Vec::new();
+        let mut types = Vec::new();
+        for i in 0..2 {
+            for j in 0..2 {
+                for (base_pos, &base_type) in base_positions.iter().zip([6, 6].iter()) {
+                    positions.push([
+                        (base_pos[0] + i as f64) / 2.0,
+                        (base_pos[1] + j as f64) / 2.0,
+                        base_pos[2],
+                    ]);
+                    types.push(base_type);
+                }
+            }
+        }
+
+        let spg = search_spacegroup(&super_lattice, &positions, &types)
+            .expect("Supercell 2x2x1 graphene: spacegroup search returned None");
+        eprintln!(
+            "Supercell 2x2x1 graphene: #{}, hall={}, short='{}'",
+            spg.number, spg.hall_number, spg.international_short.trim()
+        );
+        assert_spacegroup(&spg, 191, "P6/mmm", "supercell 2x2x1 graphene");
+    }
+
+    // ==================== 其他晶系测试 ====================
+
+    #[test]
+    fn test_rocksalt_fm3m() {
+        // NaCl 岩盐结构 → Fm-3m (#225)
+        let lattice = [[1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0]];
+        let positions = [
+            [0.0, 0.0, 0.0],   // Na
+            [0.5, 0.5, 0.5],   // Cl
+            [0.0, 0.5, 0.5],   // Na
+            [0.5, 0.0, 0.5],   // Na
+            [0.5, 0.5, 0.0],   // Na
+            [0.0, 0.0, 0.5],   // Cl
+            [0.0, 0.5, 0.0],   // Cl
+            [0.5, 0.0, 0.0],   // Cl
+        ];
+        let types = [1, 2, 1, 1, 1, 2, 2, 2];
+
+        let spg = search_spacegroup(&lattice, &positions, &types)
+            .expect("NaCl: spacegroup search returned None");
+        eprintln!(
+            "NaCl: #{}, hall={}, short='{}'",
+            spg.number, spg.hall_number, spg.international_short.trim()
+        );
+        assert_spacegroup(&spg, 225, "Fm-3m", "NaCl");
+    }
+
 }

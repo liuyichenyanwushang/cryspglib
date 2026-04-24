@@ -1,5 +1,12 @@
-// delaunay.rs
+//! Delaunay 晶格约化。
+//!
+//! 将任意晶格约化为 Delaunay 标准形式（Niggli 约化的推广）。
+//! 核心算法基于 Selling 变换（International Table A），通过迭代
+//! 确保扩展基两两之间的点积 ≤ 0（Delaunay 条件）。
+//!
+//! 同时支持三维周期性晶格和二维层状晶格（有非周期性轴）。
 
+use crate::cell::AperiodicAxis;
 use crate::debug;
 use crate::mathfunc::{
     Mat3, Mat3I, Vec3, mat_cast_matrix_3d_to_3i, mat_copy_matrix_d3, mat_copy_vector_d3,
@@ -40,18 +47,19 @@ pub fn del_delaunay_reduce(min_lattice: &mut Mat3, lattice: &Mat3, symprec: f64)
 }
 
 /// 层状结构的 Delaunay 约化
-/// aperiodic_axis: 非周期性轴的索引 (0, 1, 2)
+/// aperiodic_axis: 非周期轴
 pub fn del_layer_delaunay_reduce(
     min_lattice: &mut Mat3,
     lattice: &Mat3,
-    aperiodic_axis: i32,
+    aperiodic_axis: Option<AperiodicAxis>,
     symprec: f64,
 ) -> bool {
     debug::debug_print(format_args!(
         "del_layer_delaunay_reduce (tolerance = {}):\n",
         symprec
     ));
-    delaunay_reduce(min_lattice, lattice, aperiodic_axis, symprec)
+    let ap_i32 = aperiodic_axis.map_or(-1, |ap| ap.axis_index() as i32);
+    delaunay_reduce(min_lattice, lattice, ap_i32, symprec)
 }
 
 /// Delaunay 约化核心逻辑
@@ -147,11 +155,9 @@ fn delaunay_reduce(
 /// 如果存在非周期轴，则在周期平面内找最短的两个，在平面外找最短的一个
 fn get_delaunay_shortest_vectors(basis: &mut [[f64; 3]; 4], lattice_rank: usize, symprec: f64) {
     // 构造 7 个候选向量集合: {b1, b2, b1+b2, b3, b4, b2+b3, b3+b1}
-    // 注意：C 代码中的索引映射比较 tricky
     let mut b: [[f64; 3]; 7] = [[0.0; 3]; 7];
 
-    // b[0] = basis[0]
-    // b[1] = basis[1]
+    // b[0] = basis[0], b[1] = basis[1]
     mat_copy_vector_d3(&mut b[0], &basis[0]);
     mat_copy_vector_d3(&mut b[1], &basis[1]);
 
@@ -160,8 +166,7 @@ fn get_delaunay_shortest_vectors(basis: &mut [[f64; 3]; 4], lattice_rank: usize,
         b[2][i] = basis[0][i] + basis[1][i];
     }
 
-    // b[3] = basis[2]
-    // b[4] = basis[3]
+    // b[3] = basis[2], b[4] = basis[3]
     mat_copy_vector_d3(&mut b[3], &basis[2]);
     mat_copy_vector_d3(&mut b[4], &basis[3]);
 
@@ -169,16 +174,15 @@ fn get_delaunay_shortest_vectors(basis: &mut [[f64; 3]; 4], lattice_rank: usize,
     for i in 0..3 {
         b[5][i] = basis[1][i] + basis[2][i];
     }
+
     // b[6] = basis[2] + basis[0]
     for i in 0..3 {
         b[6][i] = basis[2][i] + basis[0][i];
     }
 
     // 冒泡排序
-    // C 代码中针对 lattice_rank == 3 和 != 3 有不同的排序范围
     if lattice_rank == 3 {
-        // 对所有 7 个向量进行排序 (索引 0 到 6)
-        // 注意：C 代码是 0..6 的双重循环
+        // 对所有 7 个向量排序 (索引 0..6)
         for _ in 0..6 {
             for j in 0..6 {
                 if mat_norm_squared_d3(&b[j]) > mat_norm_squared_d3(&b[j + 1]) + ZERO_PREC {
@@ -189,8 +193,7 @@ fn get_delaunay_shortest_vectors(basis: &mut [[f64; 3]; 4], lattice_rank: usize,
             }
         }
     } else {
-        // Rank != 3 (通常是 2)
-        // 1. 在 {b1, b2, b1+b2} (索引 0, 1, 2) 中排序
+        // 排序前三个 (b1, b2, b1+b2)
         for _ in 0..2 {
             for j in 0..2 {
                 if mat_norm_squared_d3(&b[j]) > mat_norm_squared_d3(&b[j + 1]) + ZERO_PREC {
@@ -200,8 +203,8 @@ fn get_delaunay_shortest_vectors(basis: &mut [[f64; 3]; 4], lattice_rank: usize,
                 }
             }
         }
-        // 2. 在 {b3, b4, b2+b3, b3+b1} (索引 3, 4, 5, 6) 中排序
-        for _ in 3..6 {
+        // 排序后四个 (b3, b4, b2+b3, b3+b1)
+        for _ in 3..6 {  // 外层循环 3 次，对应 C 的 for (i = 3; i <= 5; i++)
             for j in 3..6 {
                 if mat_norm_squared_d3(&b[j]) > mat_norm_squared_d3(&b[j + 1]) + ZERO_PREC {
                     let tmp = b[j];
@@ -213,8 +216,6 @@ fn get_delaunay_shortest_vectors(basis: &mut [[f64; 3]; 4], lattice_rank: usize,
     }
 
     // 选取线性无关的三个向量
-    // 前两个向量 b[0], b[1] 总是被选中
-    // 第三个向量从 b[2] 开始尝试，直到行列式非零
     let mut tmpmat = [[0.0; 3]; 3];
     for i in 2..7 {
         // 构造矩阵 [b[0], b[1], b[i]] (列向量)
@@ -233,6 +234,7 @@ fn get_delaunay_shortest_vectors(basis: &mut [[f64; 3]; 4], lattice_rank: usize,
         }
     }
 }
+
 
 /// 执行一次 Delaunay 约化步骤
 /// 返回 true 表示已经满足 Delaunay 条件（无需修改），false 表示进行了修改

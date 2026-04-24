@@ -1,4 +1,6 @@
-// kpoint.rs
+//! k 点地址生成。
+//!
+//! 在不可约布里渊区内生成 k 点坐标和权重，用于态密度和能带计算。
 
 use crate::debug;
 use crate::kgrid;
@@ -267,6 +269,80 @@ pub fn kpt_relocate_bz_grid_address(
     }
 
     num_bzgp
+}
+
+/// 对原始网格地址应用旋转，获取所有旋转后的双倍网格点索引。
+pub fn kpt_get_dense_grid_points_by_rotations(
+    rot_grid_points: &mut [usize],
+    address_orig: &[i32; 3],
+    rot_reciprocal: &MatINT,
+    mesh: &[i32; 3],
+    is_shift: &[i32; 3],
+) {
+    let mut address_double_orig = [0i32; 3];
+    for i in 0..3 {
+        address_double_orig[i] = address_orig[i] * 2 + is_shift[i];
+    }
+    for i in 0..rot_reciprocal.size {
+        let address_double =
+            mat_multiply_matrix_vector_i3(&rot_reciprocal.mat[i], &address_double_orig);
+        rot_grid_points[i] =
+            kgrid::kgd_get_dense_grid_point_double_mesh(&address_double, mesh);
+    }
+}
+
+/// 对原始网格地址应用旋转，获取旋转后在 BZ 映射中的双倍网格点索引。
+pub fn kpt_get_dense_BZ_grid_points_by_rotations(
+    rot_grid_points: &mut [usize],
+    address_orig: &[i32; 3],
+    rot_reciprocal: &MatINT,
+    mesh: &[i32; 3],
+    is_shift: &[i32; 3],
+    bz_map: &[usize],
+) {
+    let mut address_double_orig = [0i32; 3];
+    let mut bzmesh = [0i32; 3];
+    for i in 0..3 {
+        bzmesh[i] = mesh[i] * 2;
+        address_double_orig[i] = address_orig[i] * 2 + is_shift[i];
+    }
+    for i in 0..rot_reciprocal.size {
+        let address_double =
+            mat_multiply_matrix_vector_i3(&rot_reciprocal.mat[i], &address_double_orig);
+        rot_grid_points[i] = bz_map[kgrid::kgd_get_dense_grid_point_double_mesh(
+            &address_double,
+            &bzmesh,
+        )];
+    }
+}
+
+/// 获取倒易空间点群 (公共包装)。
+pub fn kpt_get_point_group_reciprocal(
+    rotations: &MatINT,
+    is_time_reversal: i32,
+) -> Option<MatINT> {
+    get_point_group_reciprocal(rotations, is_time_reversal)
+}
+
+/// 获取考虑 q 点的倒易空间点群 (公共包装)。
+pub fn kpt_get_point_group_reciprocal_with_q(
+    rot_reciprocal: &MatINT,
+    symprec: f64,
+    qpoints: &[[f64; 3]],
+) -> Option<MatINT> {
+    get_point_group_reciprocal_with_q(rot_reciprocal, symprec, qpoints)
+}
+
+/// 将网格点重定位到第一布里渊区 (Dense版本，返回 usize 的 bz_map)。
+pub fn kpt_relocate_dense_BZ_grid_address(
+    bz_grid_address: &mut [[i32; 3]],
+    bz_map: &mut [usize],
+    grid_address: &[[i32; 3]],
+    mesh: &[i32; 3],
+    rec_lattice: &[[f64; 3]; 3],
+    is_shift: &[i32; 3],
+) -> usize {
+    relocate_dense_bz_grid_address(bz_grid_address, bz_map, grid_address, mesh, rec_lattice, is_shift)
 }
 
 // --- Internal Logic ---

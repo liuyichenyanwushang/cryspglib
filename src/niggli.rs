@@ -1,5 +1,10 @@
-// niggli.rs
+//! Niggli 晶格约化。
+//!
+//! 将三维晶格约化为 Niggli 标准形式。用于三斜和单斜晶系（对更高对称性的晶系，
+//! 使用 Delaunay 约化）。Niggli 约化后的晶格满足一组严格的不等式条件，
+//! 确保同一晶格的所有等价表示约化到相同的标准形式。
 
+use crate::cell::AperiodicAxis;
 use crate::debug;
 use crate::mathfunc::{Mat3, mat_copy_matrix_d3, mat_get_metric, mat_multiply_matrix_d3};
 use std::env;
@@ -73,15 +78,15 @@ pub fn niggli_get_micro_version() -> i32 {
 /// Niggli 约化主函数
 /// lattice: 输入/输出晶格 (列向量矩阵)
 /// eps: 容差
-/// aperiodic_axis: 非周期轴索引 (-1 表示体材料)
+/// aperiodic_axis: None=体材料, Some(X/Y/Z)=非周期轴
 /// 返回 true 表示成功
-pub fn niggli_reduce(lattice: &mut Mat3, eps: f64, aperiodic_axis: i32) -> bool {
+pub fn niggli_reduce(lattice: &mut Mat3, eps: f64, aperiodic_axis: Option<AperiodicAxis>) -> bool {
     let mut p = NiggliParams::new(lattice, eps);
     let mut succeeded = false;
 
     // Step 0: Move aperiodic axis to c for layer
-    if !((matches!(aperiodic_axis, 0 | 1) && layer_swap_axis(&mut p, aperiodic_axis))
-        || (matches!(aperiodic_axis, -1 | 2) && set_parameters(&mut p)))
+    if !((matches!(aperiodic_axis, Some(AperiodicAxis::X | AperiodicAxis::Y)) && layer_swap_axis(&mut p, aperiodic_axis.unwrap()))
+        || (matches!(aperiodic_axis, None | Some(AperiodicAxis::Z)) && set_parameters(&mut p)))
     {
         return false;
     }
@@ -108,7 +113,7 @@ pub fn niggli_reduce(lattice: &mut Mat3, eps: f64, aperiodic_axis: i32) -> bool 
         }
 
         // Step 2
-        let do_step2 = if aperiodic_axis != -1 {
+        let do_step2 = if aperiodic_axis.is_some() {
             step2_for_layer(&mut p)
         } else {
             step2(&mut p)
@@ -190,10 +195,10 @@ pub fn niggli_reduce(lattice: &mut Mat3, eps: f64, aperiodic_axis: i32) -> bool 
     succeeded
 }
 
-fn layer_swap_axis(p: &mut NiggliParams, aperiodic_axis: i32) -> bool {
-    if aperiodic_axis == 0 {
+fn layer_swap_axis(p: &mut NiggliParams, aperiodic_axis: AperiodicAxis) -> bool {
+    if aperiodic_axis == AperiodicAxis::X {
         p.tmat = [[0.0, 0.0, -1.0], [0.0, -1.0, 0.0], [-1.0, 0.0, 0.0]];
-    } else if aperiodic_axis == 1 {
+    } else { // Y
         p.tmat = [[-1.0, 0.0, 0.0], [0.0, 0.0, -1.0], [0.0, -1.0, 0.0]];
     }
     reset(p)
@@ -423,7 +428,7 @@ mod tests {
     #[test]
     fn test_niggli_reduce_identity() {
         let mut lattice = [[1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0]];
-        let res = niggli_reduce(&mut lattice, 1e-5, -1);
+        let res = niggli_reduce(&mut lattice, 1e-5, None);
         assert!(res);
         // Identity should remain identity
         assert!((lattice[0][0] - 1.0).abs() < 1e-5);
@@ -440,7 +445,7 @@ mod tests {
         // New: a=(0,1,0), b=(0,0,1), c=(2,0,0). A=1, B=1, C=4.
         // Sorted.
         let mut lattice = [[2.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0]];
-        let res = niggli_reduce(&mut lattice, 1e-5, -1);
+        let res = niggli_reduce(&mut lattice, 1e-5, None);
         assert!(res);
 
         let g = mat_get_metric(&lattice);

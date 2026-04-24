@@ -1,4 +1,7 @@
-// debug.rs
+//! 调试和日志输出工具。
+//!
+//! 提供受环境变量 (`SPGLIB_DEBUG`, `SPGLIB_WARNING`) 控制的调试打印宏，
+//! 以及矩阵/向量的格式化显示函数。调试输出默认写入 stderr。
 
 use std::env;
 use std::fmt;

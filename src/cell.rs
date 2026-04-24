@@ -1,4 +1,9 @@
-// cell.rs
+//! 晶胞结构体和相关操作。
+//!
+//! [`Cell`] 是晶体结构的核心表示，包含晶格矢量、原子位置和类型。
+//! 晶格矩阵采用 [`Mat3`] 的 `lattice[cart][vec]` 布局——
+//! 行=笛卡尔分量 (x,y,z)，列=晶格矢量 (a,b,c)。
+//! 详见 [`mathfunc`](crate::mathfunc) 模块文档。
 
 use crate::debug;
 use crate::mathfunc::{
@@ -20,17 +25,67 @@ pub enum TensorRank {
     NonCollinear = 1,
 }
 
-/// 晶胞结构体
-/// 对应 C 语言中的 Cell 结构体
+/// 层状结构的非周期轴。
+///
+/// `None` 表示三维完全周期性，`Some(AperiodicAxis)` 表示该方向无周期。
+/// 例如 `Some(X)` 表示只有 YZ 面内周期，X 方向非周期。
+#[derive(Clone, Copy, Debug, PartialEq)]
+pub enum AperiodicAxis {
+    /// X 轴非周期；YZ 面内周期
+    X,
+    /// Y 轴非周期；ZX 面内周期
+    Y,
+    /// Z 轴非周期；XY 面内周期
+    Z,
+}
+
+impl AperiodicAxis {
+    /// 返回两个周期轴的索引。
+    pub fn periodic_indices(self) -> [usize; 2] {
+        match self {
+            AperiodicAxis::X => [1, 2],
+            AperiodicAxis::Y => [0, 2],
+            AperiodicAxis::Z => [0, 1],
+        }
+    }
+
+    /// 格子秩（层状结构始终为 2）。
+    pub fn lattice_rank(self) -> usize {
+        2
+    }
+
+    /// 非周期轴的索引 (0, 1, 2)。
+    pub fn axis_index(self) -> usize {
+        match self {
+            AperiodicAxis::X => 0,
+            AperiodicAxis::Y => 1,
+            AperiodicAxis::Z => 2,
+        }
+    }
+}
+
+/// 晶胞结构体。
+///
+/// `lattice` 采用 `[cart][vec]` 布局：`lattice[i][j]` = 第 i 个笛卡尔分量在第 j 个晶格矢量上的投影。
+/// `position` 以分数坐标存储（相对于晶格矢量）。
+///
+/// 对应 C 中的 `Cell` 结构体。
 #[derive(Clone, Debug)]
 pub struct Cell {
+    /// 原子数量
     pub size: usize,
+    /// 3x3 晶格矩阵，布局 `[cart][vec]`（行=笛卡尔, 列=晶格矢量）
     pub lattice: Mat3,
+    /// 原子类型（原子序数）
     pub types: Vec<i32>,
+    /// 原子位置（分数坐标，相对于 lattice 矢量）
     pub position: Vec<Vec3>,
-    pub tensors: Vec<f64>, // 扁平化存储：Collinear 为 size, NonCollinear 为 size * 3
+    /// 磁性张量（扁平化存储：Collinear 为 size，NonCollinear 为 size*3）
+    pub tensors: Vec<f64>,
+    /// 磁性张量秩
     pub tensor_rank: TensorRank,
-    pub aperiodic_axis: i32, // -1 表示无，0,1,2 分别对应 a,b,c
+    /// 非周期轴：None=三维周期, Some(X/Y/Z)=对应轴非周期
+    pub aperiodic_axis: Option<AperiodicAxis>,
 }
 
 impl Cell {
@@ -50,7 +105,7 @@ impl Cell {
             position: vec![[0.0; 3]; size],
             tensors: vec![0.0; tensors_size],
             tensor_rank,
-            aperiodic_axis: -1,
+            aperiodic_axis: None,
         }
     }
 
@@ -75,12 +130,12 @@ impl Cell {
         lattice: &Mat3,
         position: &[Vec3],
         types: &[i32],
-        aperiodic_axis: i32,
+        aperiodic_axis: Option<AperiodicAxis>,
     ) {
         mat_copy_matrix_d3(&mut self.lattice, lattice);
         for i in 0..self.size {
             for j in 0..3 {
-                if j as i32 != aperiodic_axis {
+                if aperiodic_axis.map_or(true, |ap| j != ap.axis_index()) {
                     self.position[i][j] = position[i][j] - mat_nint(position[i][j]) as f64;
                 } else {
                     self.position[i][j] = position[i][j];
@@ -183,16 +238,17 @@ pub fn cel_layer_is_overlap(
     a: &Vec3,
     b: &Vec3,
     lattice: &Mat3,
-    periodic_axes: &[usize; 2],
+    aperiodic: AperiodicAxis,
     symprec: f64,
 ) -> bool {
+    let pa = aperiodic.periodic_indices();
     let mut v_diff = [0.0; 3];
     v_diff[0] = a[0] - b[0];
     v_diff[1] = a[1] - b[1];
     v_diff[2] = a[2] - b[2];
 
-    v_diff[periodic_axes[0]] -= mat_nint(v_diff[periodic_axes[0]]) as f64;
-    v_diff[periodic_axes[1]] -= mat_nint(v_diff[periodic_axes[1]]) as f64;
+    v_diff[pa[0]] -= mat_nint(v_diff[pa[0]]) as f64;
+    v_diff[pa[1]] -= mat_nint(v_diff[pa[1]]) as f64;
 
     let v_diff = mat_multiply_matrix_vector_d3(lattice, &v_diff);
     mat_norm_squared_d3(&v_diff).sqrt() < symprec
@@ -205,11 +261,11 @@ pub fn cel_layer_is_overlap_with_same_type(
     type_a: i32,
     type_b: i32,
     lattice: &Mat3,
-    periodic_axes: &[usize; 2],
+    aperiodic: AperiodicAxis,
     symprec: f64,
 ) -> bool {
     if type_a == type_b {
-        cel_layer_is_overlap(a, b, lattice, periodic_axes, symprec)
+        cel_layer_is_overlap(a, b, lattice, aperiodic, symprec)
     } else {
         false
     }
@@ -218,7 +274,7 @@ pub fn cel_layer_is_overlap_with_same_type(
 /// 对应 C: cel_layer_any_overlap_with_same_type
 pub fn cel_layer_any_overlap_with_same_type(
     cell: &Cell,
-    periodic_axes: &[usize; 2],
+    aperiodic: AperiodicAxis,
     symprec: f64,
 ) -> bool {
     for i in 0..cell.size {
@@ -229,7 +285,7 @@ pub fn cel_layer_any_overlap_with_same_type(
                 cell.types[i],
                 cell.types[j],
                 &cell.lattice,
-                periodic_axes,
+                aperiodic,
                 symprec,
             ) {
                 return true;
@@ -399,7 +455,7 @@ fn set_positions_and_tensors(
     for i in 0..trimmed_cell.size {
         for j in 0..3 {
             trimmed_cell.position[i][j] /= multi;
-            if j as i32 != trimmed_cell.aperiodic_axis {
+            if trimmed_cell.aperiodic_axis.map_or(true, |ap| j != ap.axis_index()) {
                 trimmed_cell.position[i][j] = mat_dmod1(trimmed_cell.position[i][j]);
             }
         }
@@ -427,7 +483,7 @@ fn translate_atoms_in_trimmed_lattice(cell: &Cell, tmat_p_i: &[[i32; 3]; 3]) -> 
         // 假设 mat_multiply_matrix_vector_id3 返回计算后的向量
         position.vec[i] = mat_multiply_matrix_vector_id3(tmat_p_i, &cell.position[i]);
         for j in 0..3 {
-            if j as i32 != cell.aperiodic_axis {
+            if cell.aperiodic_axis.map_or(true, |ap| j != ap.axis_index()) {
                 position.vec[i][j] = mat_dmod1(position.vec[i][j]);
             }
         }
@@ -444,14 +500,10 @@ fn get_overlap_table(
     trimmed_cell: &Cell,
     symprec: f64,
 ) -> Option<Vec<usize>> {
-    let mut periodic_axes = [0; 3]; // 实际上只用前 lattice_rank 个
-    let mut lattice_rank = 0;
-    for i in 0..3 {
-        if i as i32 != trimmed_cell.aperiodic_axis {
-            periodic_axes[lattice_rank] = i;
-            lattice_rank += 1;
-        }
-    }
+    let lattice_rank = match trimmed_cell.aperiodic_axis {
+        Some(ap) => ap.lattice_rank(), // 2
+        None => 3,
+    };
 
     let mut trim_tolerance = symprec;
     let ratio = cell_size / trimmed_cell.size;
@@ -473,13 +525,11 @@ fn get_overlap_table(
                             trim_tolerance,
                         )
                     } else {
-                        // lattice_rank == 2
-                        let axes = [periodic_axes[0], periodic_axes[1]];
                         cel_layer_is_overlap(
                             &position.vec[i],
                             &position.vec[j],
                             &trimmed_cell.lattice,
-                            &axes,
+                            trimmed_cell.aperiodic_axis.unwrap(),
                             trim_tolerance,
                         )
                     };

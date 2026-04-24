@@ -1,6 +1,9 @@
-// symmetry.rs
+//! 对称操作检测。
+//!
+//! 在给定精度下寻找晶胞的所有对称操作（旋转 + 平移）。
+//! 核心函数 [`sym_get_operation`] 返回包含旋转矩阵（i32）和平移向量（f64）的 [`Symmetry`] 结构体。
 
-use crate::cell::{Cell, cel_is_overlap_with_same_type, cel_layer_is_overlap_with_same_type};
+use crate::cell::{AperiodicAxis, Cell, cel_is_overlap_with_same_type, cel_layer_is_overlap_with_same_type};
 use crate::debug;
 use crate::delaunay::{del_delaunay_reduce, del_layer_delaunay_reduce};
 use crate::mathfunc::{
@@ -30,11 +33,17 @@ static RELATIVE_AXES: [[i32; 3]; 26] = [
 
 static IDENTITY: [[i32; 3]; 3] = [[1, 0, 0], [0, 1, 0], [0, 0, 1]];
 
-/// 对称操作结构体
+/// 对称操作集合。
+///
+/// 包含 `size` 个对称操作 `(W, w)`，其中 W 是 3x3 整数旋转矩阵，
+/// w 是分数平移向量。对原子坐标 x，操作后为 `W*x + w`。
 #[derive(Clone, Debug)]
 pub struct Symmetry {
+    /// 对称操作数量
     pub size: usize,
+    /// 旋转矩阵列表（每个为 3x3 i32 矩阵）
     pub rot: Vec<Mat3I>,
+    /// 平移向量列表（分数坐标）
     pub trans: Vec<Vec3>,
 }
 
@@ -109,7 +118,7 @@ pub fn sym_get_pure_translation(cell: &Cell, symprec: f64) -> Option<Vec<Vec3>> 
         symprec
     ));
 
-    let pure_trans = if cell.aperiodic_axis == -1 {
+    let pure_trans = if cell.aperiodic_axis.is_none() {
         get_translation(&IDENTITY, cell, symprec, true)
     } else {
         get_layer_translation(&IDENTITY, cell, symprec, true)
@@ -361,7 +370,7 @@ fn is_overlap_all_atoms(
         None => return -1,
     };
 
-    if cell.aperiodic_axis == -1 {
+    if cell.aperiodic_axis.is_none() {
         checker.check_total_overlap(trans, rot, symprec, is_identity)
     } else {
         checker.check_layer_total_overlap(trans, rot, symprec, is_identity)
@@ -428,7 +437,7 @@ fn get_layer_translation(
             let mut t = [0.0; 3];
             for j in 0..3 {
                 t[j] = cell.position[i][j] - origin[j];
-                if j as i32 != cell.aperiodic_axis {
+                if cell.aperiodic_axis.map_or(true, |ap| j != ap.axis_index()) {
                     t[j] = mat_dmod1(t[j]);
                 }
             }
@@ -474,21 +483,12 @@ fn search_layer_translation_part(
             atoms_found[i] = true;
             num_trans += 1;
             if is_identity {
-                let mut periodic_axes = [0; 2];
-                let mut r = 0;
-                for k in 0..3 {
-                    if k as i32 != cell.aperiodic_axis {
-                        if r < 2 {
-                            periodic_axes[r] = k;
-                        }
-                        r += 1;
-                    }
-                }
+                let aperiodic = cell.aperiodic_axis.unwrap();
                 num_trans += search_layer_pure_translations(
                     atoms_found,
                     cell,
                     &trans,
-                    &periodic_axes,
+                    aperiodic,
                     symprec,
                 );
             }
@@ -501,7 +501,7 @@ fn search_layer_pure_translations(
     atoms_found: &mut [bool],
     cell: &Cell,
     trans: &Vec3,
-    periodic_axes: &[usize; 2],
+    aperiodic: AperiodicAxis,
     symprec: f64,
 ) -> i32 {
     let mut num_trans = 0;
@@ -524,7 +524,7 @@ fn search_layer_pure_translations(
                     cell.types[i_atom],
                     cell.types[j],
                     &cell.lattice,
-                    periodic_axes,
+                    aperiodic,
                     symprec,
                 ) {
                     if !atoms_found[j] {
@@ -557,7 +557,7 @@ fn get_space_group_operations(
     let mut total_num_sym = 0;
 
     for i in 0..lattice_sym.size {
-        let t = if primitive.aperiodic_axis == -1 {
+        let t = if primitive.aperiodic_axis.is_none() {
             get_translation(&lattice_sym.rot[i], primitive, symprec, false)
         } else {
             get_layer_translation(&lattice_sym.rot[i], primitive, symprec, false)
@@ -598,7 +598,7 @@ pub fn get_lattice_symmetry(cell: &Cell, symprec: f64, angle_symprec: f64) -> Po
     let aperiodic_axis = cell.aperiodic_axis;
 
     let mut min_lattice = [[0.0; 3]; 3];
-    let success = if aperiodic_axis == -1 {
+    let success = if aperiodic_axis.is_none() {
         del_delaunay_reduce(&mut min_lattice, &cell.lattice, symprec)
     } else {
         del_layer_delaunay_reduce(&mut min_lattice, &cell.lattice, aperiodic_axis, symprec)
@@ -624,7 +624,7 @@ pub fn get_lattice_symmetry(cell: &Cell, symprec: f64, angle_symprec: f64) -> Po
 
                     // Layer group checks
                     match aperiodic_axis {
-                        2 => {
+                        Some(AperiodicAxis::Z) => {
                             if axes[0][2] != 0
                                 || axes[1][2] != 0
                                 || axes[2][0] != 0
@@ -633,7 +633,7 @@ pub fn get_lattice_symmetry(cell: &Cell, symprec: f64, angle_symprec: f64) -> Po
                                 continue;
                             }
                         }
-                        0 => {
+                        Some(AperiodicAxis::X) => {
                             if axes[0][1] != 0
                                 || axes[0][2] != 0
                                 || axes[1][0] != 0
@@ -642,7 +642,7 @@ pub fn get_lattice_symmetry(cell: &Cell, symprec: f64, angle_symprec: f64) -> Po
                                 continue;
                             }
                         }
-                        1 => {
+                        Some(AperiodicAxis::Y) => {
                             if axes[0][1] != 0
                                 || axes[1][0] != 0
                                 || axes[1][2] != 0
@@ -663,8 +663,8 @@ pub fn get_lattice_symmetry(cell: &Cell, symprec: f64, angle_symprec: f64) -> Po
                     let metric = mat_get_metric(&lattice_trans);
 
                     if is_identity_metric(&metric, &metric_orig, symprec, angle_tol) {
-                        if (aperiodic_axis == -1 && rot_list.len() >= 48)
-                            || (aperiodic_axis != -1 && rot_list.len() >= 24)
+                        if (aperiodic_axis.is_none() && rot_list.len() >= 48)
+                            || (aperiodic_axis.is_some() && rot_list.len() >= 24)
                         {
                             debug::debug_print(format_args!(
                                 "spglib: Too many lattice symmetries were found.\n"
@@ -687,8 +687,8 @@ pub fn get_lattice_symmetry(cell: &Cell, symprec: f64, angle_symprec: f64) -> Po
         }
 
         if !rot_list.is_empty() {
-            if (aperiodic_axis == -1 && rot_list.len() <= 48)
-                || (aperiodic_axis != -1 && rot_list.len() <= 24)
+            if (aperiodic_axis.is_none() && rot_list.len() <= 48)
+                || (aperiodic_axis.is_some() && rot_list.len() <= 24)
                 || angle_tol < 0.0
             {
                 lattice_sym.size = rot_list.len();

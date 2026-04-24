@@ -1,4 +1,6 @@
-// spin.rs
+//! 磁性对称性支持。
+//!
+//! 提供磁性张量、共线/非共线磁结构的点群分析等功能。
 
 use crate::cell::{Cell, TensorRank, cel_is_overlap_with_same_type};
 use crate::debug;

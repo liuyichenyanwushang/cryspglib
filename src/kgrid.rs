@@ -1,4 +1,6 @@
-// kgrid.rs
+//! k 点网格生成。
+//!
+//! 生成 Monkhorst-Pack 风格的 k 点网格地址，用于能带计算和布里渊区采样。
 
 /// 获取所有网格点的地址 (Monkhorst-Pack Grid Generation)
 ///
@@ -6,7 +8,7 @@
 /// 并将对应的三维网格坐标（已约化到第一布里渊区附近）存储在 `grid_address` 中。
 ///
 /// # Arguments
-/// * `grid_address` - 输出参数，用于存储网格点坐标。大小必须 >= mesh[0]*mesh[1]*mesh[2]。
+/// * `grid_address` - 输出参数，用于存储网格点坐标。大小必须 >= `mesh[0]*mesh[1]*mesh[2]`。
 /// * `mesh` - 定义 k 点网格的尺寸 [Nx, Ny, Nz]。
 pub fn kgd_get_all_grid_addresses(grid_address: &mut [[i32; 3]], mesh: &[i32; 3]) {
     // 预先检查 buffer 大小，避免在循环中进行不必要的边界检查或 Panic

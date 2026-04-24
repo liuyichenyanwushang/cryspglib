@@ -1,6 +1,9 @@
-// overlap.rs
+//! 原子位置重叠检测。
+//!
+//! 提供高效的原子重叠判断，用于在对称性检测中确认
+//! 两个原子位置是否在给定精度下等价。
 
-use crate::cell::Cell;
+use crate::cell::{AperiodicAxis, Cell};
 use crate::mathfunc::{
     Mat3, Vec3, mat_copy_matrix_d3, mat_multiply_matrix_vector_d3, mat_multiply_matrix_vector_id3,
     mat_nint, mat_norm_squared_d3,
@@ -83,7 +86,11 @@ impl OverlapChecker {
         // 设置周期性轴 (用于层状结构)
         let mut lattice_rank = 0;
         for i in 0..3 {
-            if i as i32 != cell.aperiodic_axis {
+            let is_periodic = match cell.aperiodic_axis {
+                None => true,
+                Some(ap) => i != ap.axis_index(),
+            };
+            if is_periodic {
                 if lattice_rank < 2 {
                     checker.periodic_axes[lattice_rank] = i;
                 }
@@ -465,4 +472,134 @@ fn check_layer_total_overlap_for_sorted(
         }
     }
     1
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::cell::{Cell, TensorRank};
+
+    /// 创建一个简单的立方晶胞，包含一个原子
+    fn simple_cell() -> Cell {
+        let lattice = [[1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0]];
+        let positions = [[0.0, 0.0, 0.0]];
+        let types = [1];
+        let mut cell = Cell::new(1, TensorRank::NoSpin);
+        cell.set_cell(&lattice, &positions, &types);
+        cell
+    }
+
+    /// 创建包含两个原子的晶胞，用于测试纯平移
+    fn dimer_cell() -> Cell {
+        let lattice = [[2.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0]];
+        let positions = [[0.0, 0.0, 0.0], [0.5, 0.0, 0.0]];
+        let types = [1, 1];
+        let mut cell = Cell::new(2, TensorRank::NoSpin);
+        cell.set_cell(&lattice, &positions, &types);
+        cell
+    }
+
+    /// 创建层状结构 (c 轴非周期)
+    fn layer_cell() -> Cell {
+        let lattice = [[1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0]];
+        let positions = [[0.1, 0.2, 0.3]];
+        let types = [1];
+        let mut cell = Cell::new(1, TensorRank::NoSpin);
+        cell.set_layer_cell(&lattice, &positions, &types, Some(AperiodicAxis::Z));
+        cell
+    }
+
+    #[test]
+    fn test_has_overlap() {
+        let lattice = [[1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0]];
+        let a = [0.1, 0.1, 0.1];
+        let b = [0.100000001, 0.1, 0.1];
+        let c = [0.5, 0.5, 0.5];
+
+        assert!(has_overlap(&a, &b, &lattice, 1e-5));
+        assert!(!has_overlap(&a, &c, &lattice, 1e-5));
+
+        // 周期性边界
+        let d = [1.1, 0.1, 0.1];
+        assert!(has_overlap(&a, &d, &lattice, 1e-5));
+    }
+
+    #[test]
+    fn test_has_overlap_with_same_type() {
+        let lattice = [[1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0]];
+        let a = [0.1, 0.1, 0.1];
+        let b = [0.100000001, 0.1, 0.1];
+        let a_type = 1;
+        let b_type = 1;
+        let c_type = 2;
+
+        assert!(has_overlap_with_same_type(&a, &b, a_type, b_type, &lattice, 1e-5));
+        assert!(!has_overlap_with_same_type(&a, &b, a_type, c_type, &lattice, 1e-5));
+    }
+
+    #[test]
+    fn test_layer_has_overlap() {
+        let lattice = [[1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0]];
+        let periodic_axes = [0, 1]; // x, y 周期性
+        let a = [0.1, 0.2, 0.3];
+        let b = [1.1, 0.2, 0.3]; // 在 x 方向平移一个周期
+        let c = [0.1, 1.2, 0.3]; // 在 y 方向平移一个周期
+        let d = [0.1, 0.2, 1.3]; // 在 z 方向平移（非周期），不应重叠
+
+        assert!(layer_has_overlap(&a, &b, &lattice, &periodic_axes, 1e-5));
+        assert!(layer_has_overlap(&a, &c, &lattice, &periodic_axes, 1e-5));
+        assert!(!layer_has_overlap(&a, &d, &lattice, &periodic_axes, 1e-5));
+    }
+
+    #[test]
+    fn test_overlap_checker_simple() {
+        let cell = simple_cell();
+        let mut checker = OverlapChecker::new(&cell).expect("Failed to create checker");
+
+        let identity_rot = [[1, 0, 0], [0, 1, 0], [0, 0, 1]];
+        let zero_trans = [0.0, 0.0, 0.0];
+
+        // 恒等操作应返回 1 (True)
+        let result = checker.check_total_overlap(&zero_trans, &identity_rot, 1e-5, true);
+        assert_eq!(result, 1);
+
+        // 一个非对称平移应返回 0
+        let bad_trans = [0.5, 0.5, 0.5];
+        let result = checker.check_total_overlap(&bad_trans, &identity_rot, 1e-5, true);
+        assert_eq!(result, 0);
+    }
+
+    #[test]
+    fn test_overlap_checker_dimer() {
+        let cell = dimer_cell();
+        let mut checker = OverlapChecker::new(&cell).expect("Failed to create checker");
+
+        // 纯平移 (0.5, 0, 0) 应该交换两个原子，是一个对称操作
+        let identity_rot = [[1, 0, 0], [0, 1, 0], [0, 0, 1]];
+        let half_trans = [0.5, 0.0, 0.0];
+        let result = checker.check_total_overlap(&half_trans, &identity_rot, 1e-5, true);
+        assert_eq!(result, 1);
+
+        // 恒等平移也应是对称的
+        let zero_trans = [0.0, 0.0, 0.0];
+        let result = checker.check_total_overlap(&zero_trans, &identity_rot, 1e-5, true);
+        assert_eq!(result, 1);
+    }
+
+    #[test]
+    fn test_overlap_checker_layer() {
+        let cell = layer_cell();
+        let mut checker = OverlapChecker::new(&cell).expect("Failed to create checker");
+
+        // 层状结构中，沿 aperiodic_axis (z) 的平移不应是对称的
+        let identity_rot = [[1, 0, 0], [0, 1, 0], [0, 0, 1]];
+        let z_trans = [0.0, 0.0, 0.5];
+        let result = checker.check_layer_total_overlap(&z_trans, &identity_rot, 1e-5, true);
+        assert_eq!(result, 0); // 预期不是对称操作
+
+        // 沿 x 方向平移整数倍应是周期性的
+        let x_trans = [1.0, 0.0, 0.0];
+        let result = checker.check_layer_total_overlap(&x_trans, &identity_rot, 1e-5, true);
+        assert_eq!(result, 1);
+    }
 }

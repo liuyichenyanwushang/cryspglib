@@ -1,4 +1,10 @@
-// primitive.rs
+//! 原胞查找。
+//!
+//! 利用检测到的纯平移对称性，将常规晶胞约化为原胞 (primitive cell)。
+//! 如果存在多种可能的原胞，选择 Delaunay 约化后晶格最小的那个。
+//!
+//! 核心函数 [`prm_get_primitive`] 返回包含原胞晶格、位置、类型和
+//! 纯平移操作的 [`Primitive`] 结构体，以及其对称操作。
 
 use crate::cell::{Cell, cel_trim_cell};
 use crate::debug;
@@ -170,7 +176,7 @@ fn get_cell_with_smallest_lattice(cell: &Cell, symprec: f64) -> Option<Cell> {
     let aperiodic_axis = cell.aperiodic_axis;
     let mut min_lat = [[0.0; 3]; 3];
 
-    let success = if aperiodic_axis == -1 {
+    let success = if aperiodic_axis.is_none() {
         del_delaunay_reduce(&mut min_lat, &cell.lattice, symprec)
     } else {
         del_layer_delaunay_reduce(&mut min_lat, &cell.lattice, aperiodic_axis, symprec)
@@ -190,8 +196,8 @@ fn get_cell_with_smallest_lattice(cell: &Cell, symprec: f64) -> Option<Cell> {
         smallest_cell.types[i] = cell.types[i];
         smallest_cell.position[i] = mat_multiply_matrix_vector_d3(&trans_mat, &cell.position[i]);
         for j in 0..3 {
-            if j as i32 == aperiodic_axis {
-                smallest_cell.aperiodic_axis = j as i32;
+            if aperiodic_axis.map_or(false, |ap| j == ap.axis_index()) {
+                smallest_cell.aperiodic_axis = aperiodic_axis;
             } else {
                 smallest_cell.position[i][j] = mat_dmod1(smallest_cell.position[i][j]);
             }
@@ -244,7 +250,7 @@ fn get_primitive_lattice_vectors(
         if find_primitive_lattice_vectors(prim_lattice, &vectors, cell, tolerance) {
             // FIX: Create a copy of prim_lattice to avoid simultaneous mutable and immutable borrow
             let lattice_copy = *prim_lattice;
-            let success = if cell.aperiodic_axis == -1 {
+            let success = if cell.aperiodic_axis.is_none() {
                 del_delaunay_reduce(prim_lattice, &lattice_copy, symprec)
             } else {
                 del_layer_delaunay_reduce(prim_lattice, &lattice_copy, cell.aperiodic_axis, symprec)
@@ -288,7 +294,7 @@ fn find_primitive_lattice_vectors(
     let mut min_vectors = [[0.0; 3]; 3];
     let mut found = false;
 
-    if aperiodic_axis == -1 {
+    if aperiodic_axis.is_none() {
         'outer: for i in 0..size {
             for j in (i + 1)..size {
                 for k in (j + 1)..size {
@@ -311,7 +317,8 @@ fn find_primitive_lattice_vectors(
             }
         }
     } else {
-        let k_idx = size + aperiodic_axis as usize - 3;
+        let ap_idx = aperiodic_axis.unwrap().axis_index();
+        let k_idx = size + ap_idx - 3;
         'outer_layer: for i in 0..size {
             for j in (i + 1)..size {
                 if i != k_idx && j != k_idx {
@@ -325,11 +332,11 @@ fn find_primitive_lattice_vectors(
                         if mat_nint(initial_volume / volume) == (size - 2) as i32 {
                             min_vectors[0] = vectors[i];
                             min_vectors[1] = vectors[j];
-                            if aperiodic_axis == 2 {
+                            if ap_idx == 2 {
                                 min_vectors[2] = vectors[k_idx];
                             } else {
-                                min_vectors[2] = min_vectors[aperiodic_axis as usize];
-                                min_vectors[aperiodic_axis as usize] = vectors[k_idx];
+                                min_vectors[2] = min_vectors[ap_idx];
+                                min_vectors[ap_idx] = vectors[k_idx];
                             }
                             found = true;
                             break 'outer_layer;

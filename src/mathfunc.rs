@@ -1,14 +1,47 @@
-// mathfunc.rs
+//! 3x3 矩阵和 3 维向量的基本运算（f64 和 i32）。
+//!
+//! 本模块是 spglib 的数学核心，纯 Rust 实现，不依赖 BLAS/LAPACK。
+//!
+//! # 矩阵内存布局约定：`lattice[cart][vec]`
+//!
+//! 所有 `Mat3` / `Mat3I` 矩阵采用 **行 = 笛卡尔分量，列 = 晶格矢量** 的布局：
+//!
+//! ```text
+//! lattice = [[a_x, b_x, c_x],
+//!            [a_y, b_y, c_y],
+//!            [a_z, b_z, c_z]]
+//! ```
+//!
+//! - `lattice[i][j]` — 第 i 个笛卡尔分量 (0=x, 1=y, 2=z) 在第 j 个晶格矢量 (0=a, 1=b, 2=c) 上的投影
+//! - 每**列**是一个晶格矢量 (a, b, c)，每**行**对应一个笛卡尔方向 (x, y, z)
+//!
+//! ## 为什么这个约定至关重要
+//!
+//! 1. **度量张量**: `mat_get_metric(L) = Lᵀ * L` 得到 G 矩阵，其中 `G[i][j] = vec_i · vec_j`。
+//!    仅在列=矢量时正确——若行=矢量，G 矩阵将表示笛卡尔分量之间的错误内积。
+//!
+//! 2. **坐标变换**: `mat_multiply_matrix_vector_d3(L, frac)` 将分数坐标转为笛卡尔坐标：`cart = L * frac`。
+//!    这里 L 的每一列乘以 frac 分量后累加，即 cart = a*frac_x + b*frac_y + c*frac_z。
+//!
+//! 3. **立方 vs 六方**: 立方晶格矩阵对称（a=b=c, 所有角 90°），两种约定碰巧相同。
+//!    六方晶格不对称——约定错误将导致空间群识别错误（如 graphene #191 → #10）。
+//!
+//! ## C 代码对照
+//!
+//! C 中 `double lattice[3][3]` 内存布局相同（行优先），但 C 的数组字面量写法
+//! 可能与 Rust 的 `[[f64; 3]; 3]` 在视觉上转置。逐行对比时需特别注意初始化代码。
 
 use crate::debug;
 
-// 定义常量，与 C 代码保持一致
 const ZERO_PREC: f64 = 1e-10;
 
-// 类型别名，方便阅读
+/// 3x3 f64 矩阵。`m[i][j]` = 第 i 行（笛卡尔分量），第 j 列（晶格矢量下标）。
 pub type Mat3 = [[f64; 3]; 3];
+/// 3x3 i32 矩阵。布局同 [`Mat3`]。
 pub type Mat3I = [[i32; 3]; 3];
+/// 3 维 f64 向量。
 pub type Vec3 = [f64; 3];
+/// 3 维 i32 向量。
 pub type Vec3I = [i32; 3];
 
 /// 计算 3x3 double 矩阵的行列式
@@ -346,7 +379,7 @@ pub fn mat_is_int_matrix(mat: &Mat3, symprec: f64) -> bool {
 // --- 动态数组结构体封装 (对应 C 的 MatINT 和 VecDBL) ---
 
 /// 对应 C 的 MatINT 结构
-/// 在 Rust 中通常直接使用 Vec<Mat3I>，这里为了兼容性保留结构体
+/// 在 Rust 中通常直接使用 `Vec<Mat3I>`，这里为了兼容性保留结构体
 #[derive(Debug, Clone)]
 pub struct MatINT {
     pub size: usize,
@@ -521,5 +554,11 @@ mod tests {
         assert_eq!(v.vec.len(), 3);
         
         // No explicit free needed
+    }
+
+    #[test]
+    fn test_mat_rem1(){
+        assert!((mat_rem1(1.3) - 0.3).abs() < 1e-10);
+        assert!((mat_rem1(-0.4) - (-0.4)).abs() < 1e-10); // 注意 -0.4 的 Nint 是 0，所以余数仍为 -0.4
     }
 }
