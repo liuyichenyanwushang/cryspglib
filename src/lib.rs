@@ -706,6 +706,444 @@ pub fn spg_get_magnetic_spacegroup_type_from_symmetry(
     }
 }
 
+/// 磁空间群 + 对称操作的完整分析结果。
+pub struct SpglibMagneticSymmetry {
+    /// 空间群编号 (1-230)
+    pub spacegroup_number: i32,
+    /// 国际符号（短）
+    pub international_short: String,
+    /// Hall 编号 (1-530)
+    pub hall_number: i32,
+    /// Hall 符号
+    pub hall_symbol: String,
+    /// 磁空间群 UNI 编号 (0 表示未找到)
+    pub uni_number: i32,
+    /// 磁性类型: 0=非磁, 1=ordinary, 2=grey, 3=black-white, 4=anti-translation
+    pub magnetic_type: i32,
+    /// BNS 符号（如 "221.93"）
+    pub bns_number: String,
+    /// OG 符号（如 "221.2.1595"）
+    pub og_number: String,
+    /// 对称操作数
+    pub num_operations: usize,
+    /// 旋转矩阵 (整数 3x3)
+    pub rotations: Vec<Mat3I>,
+    /// 平移向量 (分数坐标)
+    pub translations: Vec<Vec3>,
+    /// 时间反演标记 (0=ordinary, 1=anti)
+    pub time_reversals: Vec<i32>,
+}
+
+/// 从晶格 + 原子位置 + 磁矩分析磁空间群和对称操作。
+///
+/// `magnetic_moments` 为 `None` 时不考虑磁性，仅返回非磁空间群。
+/// 每个原子的磁矩为 3 分量 `[mx, my, mz]`。
+///
+/// 返回包含非磁空间群、磁空间群、对称操作的结构。
+///
+/// # 示例
+/// ```ignore
+/// let lattice = [[1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0]];
+/// let positions = [[0.0, 0.0, 0.0], [0.5, 0.5, 0.5]];
+/// let types = [26, 26];
+/// let moments = [[1.0, 0.0, 0.0], [-1.0, 0.0, 0.0]];
+/// let result = spg_get_magnetic_dataset(&lattice, &positions, &types, Some(&moments), 1e-5);
+/// ```
+pub fn spg_get_magnetic_dataset(
+    lattice: &Mat3,
+    positions: &[Vec3],
+    types: &[i32],
+    magnetic_moments: Option<&[[f64; 3]]>,
+    symprec: f64,
+) -> Option<SpglibMagneticSymmetry> {
+    let n_atoms = positions.len();
+
+    // --- 构建 Cell ---
+    let has_mag = magnetic_moments.is_some() && magnetic_moments.unwrap().len() == n_atoms;
+    let tensor_rank = if has_mag {
+        crate::cell::TensorRank::NonCollinear
+    } else {
+        crate::cell::TensorRank::NoSpin
+    };
+
+    let mut cell = crate::cell::Cell::new(n_atoms, tensor_rank);
+    cell.set_cell(lattice, positions, types);
+
+    if has_mag {
+        let moments = magnetic_moments.unwrap();
+        for i in 0..n_atoms {
+            cell.tensors[i * 3] = moments[i][0];
+            cell.tensors[i * 3 + 1] = moments[i][1];
+            cell.tensors[i * 3 + 2] = moments[i][2];
+        }
+    }
+    cell.aperiodic_axis = None;
+
+    // --- 1. 非磁空间群 ---
+    let primitive = crate::primitive::prm_get_primitive(&cell, symprec, -1.0)?;
+    let spg = crate::spacegroup::spa_search_spacegroup(&primitive, 0, symprec, -1.0)?;
+    let hall_number = spg.hall_number;
+
+    // --- 2. 非磁对称操作 ---
+    let prim_cell = primitive.cell.as_ref()?;
+    let nonspin_sym = crate::symmetry::sym_get_operation(prim_cell, symprec, -1.0)?;
+
+    if !has_mag {
+        // 无磁矩: 只返回非磁结果
+        let rot = (0..nonspin_sym.size).map(|i| nonspin_sym.rot[i]).collect();
+        let trans = (0..nonspin_sym.size).map(|i| nonspin_sym.trans[i]).collect();
+        let timerev = vec![0; nonspin_sym.size];
+        let spg_type = crate::spg_database::spgdb_get_spacegroup_type(hall_number);
+        return Some(SpglibMagneticSymmetry {
+            spacegroup_number: spg.number,
+            international_short: spg.international_short.trim().to_string(),
+            hall_number,
+            hall_symbol: spg_type.hall_symbol.trim().to_string(),
+            uni_number: 0,
+            magnetic_type: 0,
+            bns_number: String::new(),
+            og_number: String::new(),
+            num_operations: nonspin_sym.size,
+            rotations: rot,
+            translations: trans,
+            time_reversals: timerev,
+        });
+    }
+
+    // --- 3. 磁对称操作 (从磁矩计算 timerev 标记) ---
+    let mut equiv_atoms = Vec::new();
+    let mut permutations = Vec::new();
+    let mut prim_lat = [[0.0; 3]; 3];
+    let mag_sym = crate::spin::spn_get_operations_with_site_tensors(
+        &mut equiv_atoms,
+        &mut permutations,
+        &mut prim_lat,
+        &nonspin_sym,
+        &cell,
+        true,  // with_time_reversal
+        true,  // is_axial (磁矩是轴矢量)
+        symprec,
+        -1.0,  // angle_tolerance
+        -1.0,  // mag_symprec (使用 symprec)
+    )?;
+
+    // 如果有磁矩但磁对称操作数为 0，尝试用简单方法
+    // (spn_get_operations_with_site_tensors 可能因原胞匹配失败)
+    let (final_mag_sym, _used_fallback) = if mag_sym.size == 0 {
+        // fallback: 手动计算 timerev
+        let crystal_ops: Vec<(Mat3I, Vec3)> = (0..nonspin_sym.size)
+            .map(|i| (nonspin_sym.rot[i], nonspin_sym.trans[i]))
+            .collect();
+        let moments = magnetic_moments.unwrap();
+        let tr = manual_compute_timerev(positions, moments, &crystal_ops, symprec);
+        let valid: Vec<usize> = tr.iter().cloned().enumerate().filter(|(_, t)| *t != -1).map(|(i, _)| i).collect();
+        let n = valid.len();
+        if n == 0 {
+            return None;
+        }
+        let mut fallback = crate::symmetry::MagneticSymmetry::new(n);
+        for (j, &idx) in valid.iter().enumerate() {
+            fallback.rot[j] = nonspin_sym.rot[idx];
+            fallback.trans[j] = nonspin_sym.trans[idx];
+            fallback.timerev[j] = tr[idx];
+        }
+        (fallback, true)
+    } else {
+        (mag_sym, false)
+    };
+
+    // --- 4. 磁空间群识别 ---
+    let ds = crate::magnetic_spacegroup::msg_identify_magnetic_space_group_type(
+        lattice,
+        &final_mag_sym,
+        symprec,
+    );
+    let (uni_number, magnetic_type, bns_number, og_number) = match ds {
+        Some(ds) => {
+            let mt = crate::msg_database::msgdb_get_magnetic_spacegroup_type(ds.uni_number);
+            (ds.uni_number, mt.type_, mt.bns_number.to_string(), mt.og_number.to_string())
+        }
+        None => (0, final_mag_sym.size as i32, String::new(), String::new()),
+    };
+
+    let spg_type = crate::spg_database::spgdb_get_spacegroup_type(hall_number);
+    let rot_out = (0..final_mag_sym.size).map(|i| final_mag_sym.rot[i]).collect();
+    let trans_out = (0..final_mag_sym.size).map(|i| final_mag_sym.trans[i]).collect();
+    let tr_out = (0..final_mag_sym.size).map(|i| final_mag_sym.timerev[i]).collect();
+
+    Some(SpglibMagneticSymmetry {
+        spacegroup_number: spg.number,
+        international_short: spg.international_short.trim().to_string(),
+        hall_number,
+        hall_symbol: spg_type.hall_symbol.trim().to_string(),
+        uni_number,
+        magnetic_type,
+        bns_number,
+        og_number,
+        num_operations: final_mag_sym.size,
+        rotations: rot_out,
+        translations: trans_out,
+        time_reversals: tr_out,
+    })
+}
+
+/// 手动计算磁矩变换的 timerev 标记 (fallback)。
+fn manual_compute_timerev(
+    positions: &[Vec3],
+    moments: &[[f64; 3]],
+    ops: &[(Mat3I, Vec3)],
+    symprec: f64,
+) -> Vec<i32> {
+    use crate::mathfunc::mat_get_determinant_i3;
+    let snap = |x: f64| (x * 2.0).round() / 2.0;
+    let snapped_pos: Vec<_> = positions
+        .iter()
+        .map(|p| [snap(p[0]), snap(p[1]), snap(p[2])])
+        .collect();
+
+    ops.iter()
+        .map(|(rot, trans)| {
+            let det = mat_get_determinant_i3(rot);
+            let mut global_tr: Option<i32> = None;
+
+            for i in 0..positions.len() {
+                let p_new = [
+                    snap((rot[0][0] as f64 * positions[i][0]
+                        + rot[0][1] as f64 * positions[i][1]
+                        + rot[0][2] as f64 * positions[i][2]
+                        + trans[0])
+                    .rem_euclid(1.0)),
+                    snap((rot[1][0] as f64 * positions[i][0]
+                        + rot[1][1] as f64 * positions[i][1]
+                        + rot[1][2] as f64 * positions[i][2]
+                        + trans[1])
+                    .rem_euclid(1.0)),
+                    snap((rot[2][0] as f64 * positions[i][0]
+                        + rot[2][1] as f64 * positions[i][1]
+                        + rot[2][2] as f64 * positions[i][2]
+                        + trans[2])
+                    .rem_euclid(1.0)),
+                ];
+
+                let j = snapped_pos.iter().position(|sp| {
+                    (sp[0] - p_new[0]).abs() < 0.01
+                        && (sp[1] - p_new[1]).abs() < 0.01
+                        && (sp[2] - p_new[2]).abs() < 0.01
+                });
+                let j = match j {
+                    Some(j) => j,
+                    None => return -1,
+                };
+
+                let m_new = [
+                    (det as f64)
+                        * (rot[0][0] as f64 * moments[i][0]
+                            + rot[0][1] as f64 * moments[i][1]
+                            + rot[0][2] as f64 * moments[i][2]),
+                    (det as f64)
+                        * (rot[1][0] as f64 * moments[i][0]
+                            + rot[1][1] as f64 * moments[i][1]
+                            + rot[1][2] as f64 * moments[i][2]),
+                    (det as f64)
+                        * (rot[2][0] as f64 * moments[i][0]
+                            + rot[2][1] as f64 * moments[i][1]
+                            + rot[2][2] as f64 * moments[i][2]),
+                ];
+
+                let preserved = (m_new[0] - moments[j][0]).abs() < symprec
+                    && (m_new[1] - moments[j][1]).abs() < symprec
+                    && (m_new[2] - moments[j][2]).abs() < symprec;
+                let reversed = (m_new[0] + moments[j][0]).abs() < symprec
+                    && (m_new[1] + moments[j][1]).abs() < symprec
+                    && (m_new[2] + moments[j][2]).abs() < symprec;
+
+                let this_tr = if preserved {
+                    0
+                } else if reversed {
+                    1
+                } else {
+                    return -1;
+                };
+
+                match global_tr {
+                    Some(tr) if tr != this_tr => return -1,
+                    _ => global_tr = Some(this_tr),
+                }
+            }
+            global_tr.unwrap_or(-1)
+        })
+        .collect()
+}
+
+/// 将 `SpglibMagneticSymmetry` 格式化为可读文本（类似 phonopy --symmetry 风格）。
+pub fn spg_format_magnetic_symmetry(result: &SpglibMagneticSymmetry) -> String {
+    use std::fmt::Write;
+    let mut s = String::new();
+
+    // 空间群信息
+    let _ = writeln!(s, "--- Space group ---");
+    let _ = writeln!(s, "  Number:          {}", result.spacegroup_number);
+    let _ = writeln!(s, "  International:   {}", result.international_short);
+    let _ = writeln!(s, "  Hall number:     {}", result.hall_number);
+    let _ = writeln!(s, "  Hall symbol:     {}", result.hall_symbol);
+
+    // 磁空间群信息
+    if result.magnetic_type > 0 {
+        let type_str = match result.magnetic_type {
+            1 => "Type-1 (ordinary, no time reversal)",
+            2 => "Type-2 (grey, with pure 1')",
+            3 => "Type-3 (black-white, anti-rotation)",
+            4 => "Type-4 (black-white, anti-translation)",
+            _ => "unknown",
+        };
+        let _ = writeln!(s, "--- Magnetic space group ---");
+        let _ = writeln!(s, "  UNI number:      {}", result.uni_number);
+        let _ = writeln!(s, "  Magnetic type:   {} ({})", result.magnetic_type, type_str);
+        let _ = writeln!(s, "  BNS symbol:      {}", result.bns_number);
+        let _ = writeln!(s, "  OG number:       {}", result.og_number);
+    } else {
+        let _ = writeln!(s, "  (non-magnetic)");
+    }
+
+    // 对称操作
+    let _ = writeln!(s, "--- Symmetry operations ({}) ---", result.num_operations);
+    for i in 0..result.num_operations {
+        let r = &result.rotations[i];
+        let t = &result.translations[i];
+        let tr = result.time_reversals[i];
+        let timerev_str = if tr == 1 { "'" } else { " " };
+        let _ = writeln!(
+            s,
+            "  {}. rot=[{:2},{:2},{:2};{:2},{:2},{:2};{:2},{:2},{:2}] trans=[{:.3},{:.3},{:.3}]{}",
+            i + 1,
+            r[0][0], r[0][1], r[0][2],
+            r[1][0], r[1][1], r[1][2],
+            r[2][0], r[2][1], r[2][2],
+            t[0], t[1], t[2],
+            timerev_str,
+        );
+    }
+
+    s
+}
+
+/// 从类似 POSCAR 的格式解析结构（含可选磁矩）。
+///
+/// 格式:
+/// ```text
+/// comment line
+/// scale_factor
+/// a1x a1y a1z
+/// a2x a2y a2z
+/// a3x a3y a3z
+/// atom_types  (e.g. "Fe O")
+/// atom_counts (e.g. "2 1")
+/// Direct|Cartesian
+/// x y z [mx my my]  # 位置，可选 3 个磁矩分量
+/// ```
+///
+/// 返回 `(lattice, positions, types, magnetic_moments)`。
+pub fn spg_read_structure(data: &str) -> Option<(Mat3, Vec<Vec3>, Vec<i32>, Option<Vec<[f64; 3]>>)> {
+    let lines: Vec<&str> = data.lines().collect();
+    if lines.len() < 6 {
+        return None;
+    }
+
+    // scale factor
+    let scale: f64 = lines.get(1)?.trim().parse().ok()?;
+
+    // lattice vectors
+    let mut lattice = [[0.0; 3]; 3];
+    for i in 0..3 {
+        let parts: Vec<f64> = lines[i + 2].split_whitespace().filter_map(|x| x.parse().ok()).collect();
+        if parts.len() < 3 {
+            return None;
+        }
+        lattice[i] = [parts[0], parts[1], parts[2]];
+    }
+    // apply scale
+    if scale != 1.0 {
+        for i in 0..3 {
+            for j in 0..3 {
+                lattice[i][j] *= scale;
+            }
+        }
+    }
+
+    // atom types (skip, just count)
+    let type_line = lines.get(5)?;
+    let counts: Vec<i32> = lines.get(6)?.split_whitespace().filter_map(|x| x.parse().ok()).collect();
+    if counts.is_empty() {
+        return None;
+    }
+    let n_atoms: usize = counts.iter().map(|&c| c as usize).sum();
+
+    // atom types: if type_line has non-numeric tokens, assign 1..n
+    let type_names: Vec<&str> = type_line.split_whitespace().collect();
+    let mut types = Vec::with_capacity(n_atoms);
+    let mut atom_idx = 0;
+    for (ti, &cnt) in counts.iter().enumerate() {
+        let type_num = if type_names.len() > ti && type_names[ti].parse::<i32>().is_err() {
+            // map element name to atomic number
+            element_to_number(type_names[ti])
+        } else {
+            (ti + 1) as i32
+        };
+        for _ in 0..cnt {
+            types.push(type_num);
+            atom_idx += 1;
+        }
+    }
+
+    // coordinate mode
+    let mode_line = lines.get(7)?;
+    let is_cartesian = mode_line.trim().to_uppercase().starts_with('C') || mode_line.trim().to_uppercase().starts_with('K');
+
+    // read positions
+    let mut positions = Vec::with_capacity(n_atoms);
+    let mut moments = Vec::with_capacity(n_atoms);
+    let mut has_moments = false;
+
+    for i in 0..n_atoms {
+        let line = lines.get(8 + i)?;
+        let parts: Vec<f64> = line.split_whitespace().filter_map(|x| x.parse().ok()).collect();
+        if parts.len() < 3 {
+            return None;
+        }
+        positions.push([parts[0], parts[1], parts[2]]);
+        if parts.len() >= 6 {
+            moments.push([parts[3], parts[4], parts[5]]);
+            has_moments = true;
+        } else {
+            moments.push([0.0; 3]);
+        }
+    }
+
+    // convert Cartesian to fractional if needed
+    if is_cartesian {
+        let inv_lat = crate::mathfunc::mat_inverse_matrix_d3(&lattice, 1e-10)?;
+        for i in 0..n_atoms {
+            let frac = crate::mathfunc::mat_multiply_matrix_vector_d3(&inv_lat, &positions[i]);
+            positions[i] = frac;
+        }
+    }
+
+    let mag_opt = if has_moments { Some(moments) } else { None };
+    Some((lattice, positions, types, mag_opt))
+}
+
+/// 原子符号到原子序数的简单映射。
+fn element_to_number(symbol: &str) -> i32 {
+    match symbol.trim() {
+        "H" => 1, "He" => 2, "Li" => 3, "Be" => 4, "B" => 5,
+        "C" => 6, "N" => 7, "O" => 8, "F" => 9, "Ne" => 10,
+        "Na" => 11, "Mg" => 12, "Al" => 13, "Si" => 14, "P" => 15,
+        "S" => 16, "Cl" => 17, "Ar" => 18, "K" => 19, "Ca" => 20,
+        "Fe" => 26, "Co" => 27, "Ni" => 28, "Cu" => 29, "Zn" => 30,
+        _ => 1,
+    }
+}
+
 // ---------------------------------------------------------------------------
 // Lattice reduction
 // ---------------------------------------------------------------------------

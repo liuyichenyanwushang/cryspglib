@@ -16,9 +16,10 @@ mod tests {
         [[1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0]]
     }
 
-    /// 获取空间群 #221 (Pm-3m, hall=497) 的数据库对称操作。
+    /// 获取 Pm-3m (#221, hall=517) 的数据库对称操作。
+    /// 注意: Hall 497 是 Fm-3 (#202)，不是 Pm-3m。
     fn pm3m_ops() -> Vec<(Mat3I, Vec3)> {
-        let (count, start) = crate::spg_database::spgdb_get_operation_index(497);
+        let (count, start) = crate::spg_database::spgdb_get_operation_index(517);
         (0..count)
             .filter_map(|i| crate::spg_database::spgdb_get_operation_by_index(start + i))
             .collect()
@@ -49,7 +50,7 @@ mod tests {
         )
         .expect("Type-1 Pm-3m should match");
         assert_eq!(ds.msg_type, 1);
-        assert_eq!(ds.hall_number, 497);
+        assert_eq!(ds.hall_number, 517);
         assert_eq!(msgdb_get_magnetic_spacegroup_type(ds.uni_number).type_, 1);
     }
 
@@ -93,7 +94,7 @@ mod tests {
         )
         .expect("Type-2 Pm-3m should match");
         assert_eq!(ds.msg_type, 2);
-        assert_eq!(ds.hall_number, 497);
+        assert_eq!(ds.hall_number, 517);
         assert_eq!(msgdb_get_magnetic_spacegroup_type(ds.uni_number).type_, 2);
     }
 
@@ -135,7 +136,7 @@ mod tests {
         )
         .expect("Type-3 Pm-3m should match");
         assert_eq!(ds.msg_type, 3);
-        assert_eq!(ds.hall_number, 497);
+        assert_eq!(ds.hall_number, 517);
         assert_eq!(msgdb_get_magnetic_spacegroup_type(ds.uni_number).type_, 3);
     }
 
@@ -589,11 +590,19 @@ mod tests {
 
     #[test]
     fn test_complex_afm_8atom_cubic() {
-        // 简单立方晶格, 8个原子在角上 (2×2×2 网格)
-        // 非磁: 8个同种原子 → 原胞1个原子 → Pm-3m (#221)
-        // 磁矩: 相邻原子磁矩相反
-        //   偶 parity (i+j+k even) → [1,1,1]
-        //   奇 parity (i+j+k odd)  → [0,0,1]
+        // 简单立方晶格, 8 个 Co 原子在所有角上 (2×2×2 网格)
+        //
+        // 非磁分析: 用原胞 (prm_get_primitive → 1 atom → Pm-3m #221)
+        //   8 个同种 Co, 平移 (0.5,0,0) 等将原子彼此映射 → 结构原胞仅 1 原子
+        //
+        // 磁性分析: 必须用完整 8 原子晶胞 + 常规晶胞对称操作
+        //   AFM 模式中 (0.5,0,0) 将 [0,0,0](moment↑) 映射到
+        //   [0.5,0,0](moment↓), 需要 timerev=1 才成立 → 磁原胞 ≠ 结构原胞
+        //   因此用 Hall 497 的 96 个常规晶胞操作 (含半平移) 来分析磁性
+        //
+        // 磁矩: even parity (i+j+k even) → pos [111]; odd → neg [111]
+        //   构型 1: [111] AFM — even [1,1,1], odd [-1,-1,-1]
+        //   构型 2: [001] AFM — even [0,0,1], odd [0,0,-1]
         let lattice = cubic_lattice();
         let norm_111 = (3.0f64).sqrt();
 
@@ -770,6 +779,89 @@ mod tests {
             &cubic_lattice(), &mag_sym, SYMPREC,
         );
         assert!(result.is_none());
+    }
+
+    // ====================================================================
+    // 端到端管线测试: POSCAR → 解析 → spg_get_magnetic_dataset → 格式化输出
+    // ====================================================================
+
+    #[test]
+    fn test_end_to_end_magnetic_dataset() {
+        // 模拟 POSCAR 格式的输入 (Fe 在体心, 磁矩沿 [001])
+        let poscar = "\
+Fe BCC with magnetic moment
+1.0
+1.0 0.0 0.0
+0.0 1.0 0.0
+0.0 0.0 1.0
+Fe
+1
+Direct
+0.5 0.5 0.5  0.0 0.0 1.0
+";
+        let (lattice, positions, types, moments) =
+            crate::spg_read_structure(poscar).expect("POSCAR parse failed");
+        assert_eq!(positions.len(), 1);
+        assert!(moments.is_some());
+        let moments = moments.unwrap();
+        assert_eq!(moments[0][2], 1.0);
+
+        let result = crate::spg_get_magnetic_dataset(
+            &lattice,
+            &positions,
+            &types,
+            Some(&moments),
+            SYMPREC,
+        )
+        .expect("Magnetic dataset analysis failed");
+
+        let output = crate::spg_format_magnetic_symmetry(&result);
+        eprintln!("{}", output);
+
+        // Fe at body center (SC) → Pm-3m (#221)
+        assert_eq!(result.spacegroup_number, 221, "Fe SC body center: Pm-3m");
+        // Moment [001] → 16 valid ops (8+8) → Type-3
+        // 但可能不在 DB 中（timerev 模式不匹配）
+        assert_eq!(result.international_short, "Pm-3m");
+        assert!(result.num_operations > 0);
+        assert_eq!(result.rotations.len(), result.num_operations);
+        assert_eq!(result.translations.len(), result.num_operations);
+        assert_eq!(result.time_reversals.len(), result.num_operations);
+    }
+
+    #[test]
+    fn test_end_to_end_poscar_afm() {
+        // 2 个 Fe 原子, AFM [111]
+        let poscar = "\
+Fe AFM [111]
+1.0
+1.0 0.0 0.0
+0.0 1.0 0.0
+0.0 0.0 1.0
+Fe
+2
+Direct
+0.0 0.0 0.0  0.57735 0.57735 0.57735
+0.5 0.5 0.5  -0.57735 -0.57735 -0.57735
+";
+        let (lattice, positions, types, moments) =
+            crate::spg_read_structure(poscar).expect("POSCAR parse failed");
+        let moments = moments.expect("Moments should exist");
+        let result = crate::spg_get_magnetic_dataset(
+            &lattice,
+            &positions,
+            &types,
+            Some(&moments),
+            SYMPREC,
+        )
+        .expect("AFM dataset analysis failed");
+
+        let output = crate::spg_format_magnetic_symmetry(&result);
+        eprintln!("{}", output);
+
+        // 2 same atoms at [0,0,0] and [0.5,0.5,0.5] → BCC → Im-3m (#229)
+        assert_eq!(result.spacegroup_number, 229, "Fe BCC AFM: Im-3m");
+        assert!(result.num_operations > 0);
     }
 
     #[test]
