@@ -6,17 +6,22 @@
 use crate::debug;
 use crate::mathfunc::{
     mat_cast_matrix_3i_to_3d, mat_check_identity_matrix_i3, mat_copy_matrix_d3,
-    mat_copy_vector_d3, mat_inverse_matrix_d3, mat_multiply_matrix_d3,
+    mat_copy_vector_d3, mat_inverse_matrix_d3, mat_multiply_matrix_d3, mat_multiply_matrix_id3,
     mat_multiply_matrix_vector_d3, mat_multiply_matrix_vector_id3, mat_nint, Mat3, Mat3I, Vec3,
 };
 use crate::msg_database::{
     msgdb_get_magnetic_spacegroup_type, msgdb_get_spacegroup_operations,
     msgdb_get_std_transformations, msgdb_get_uni_candidates,
 };
+use crate::hall_symbol::hal_match_hall_symbol_db;
+use crate::pointgroup::ptg_get_transformation_matrix;
 use crate::primitive::prm_get_primitive_symmetry;
 use crate::refinement::ref_find_similar_bravais_lattice;
-use crate::spacegroup::{spa_copy_spacegroup, spa_search_spacegroup_with_symmetry, Spacegroup};
-use crate::spg_database::spgdb_get_spacegroup_type;
+use crate::spacegroup::{
+    get_centering, get_initial_conventional_symmetry, spa_copy_spacegroup,
+    spa_search_spacegroup_with_symmetry, Spacegroup,
+};
+use crate::spg_database::{spgdb_get_spacegroup_type, Centering};
 use crate::symmetry::{MagneticSymmetry, Symmetry};
 
 const MAX_DENOMINATOR: f64 = 100.0;
@@ -143,24 +148,22 @@ fn get_reference_space_group(
     symprec: f64,
 ) -> Option<(Spacegroup, MagneticSymmetry, Mat3, Vec3, i32)> {
     // 1. Get family space group (FSG) and its symmetry
+    //    FSG = 所有操作忽略时间反演 → 用于空间群搜索
     let (mut fsg, sym_fsg) =
         get_family_space_group_with_magnetic_symmetry(magnetic_symmetry, symprec)?;
 
-    // 2. Get maximal subspace group (XSG) and its symmetry
-    let (mut xsg, sym_xsg) =
-        get_maximal_subspace_group_with_magnetic_symmetry(magnetic_symmetry, symprec)?;
+    // 2. Get maximal subspace group symmetry (仅 timerev=0 操作)
+    //    XSG 的空间群搜索可能失败（操作数少），但对称性大小对类型分类是必须的
+    let sym_xsg = get_maximal_subspace_symmetry(magnetic_symmetry, symprec)?;
 
     // 3. Determine type of MSG
     let msgtype_num =
         get_magnetic_space_group_type(magnetic_symmetry, sym_fsg.size, sym_xsg.size)?;
 
-    // 4. Choose reference setting
-    // For type-IV, use setting from Hall symbol of XSG.
-    // For other types, use setting from Hall symbol of FSG.
-    let ref_sg = if msgtype_num == 4 { &mut xsg } else { &mut fsg };
+    // 4. Use FSG setting as reference (忽略时间反演找到的空间群作为参考)
+    let ref_sg = &mut fsg;
 
     // 5. Compute tmat and shift from reference spacegroup
-    // tmat = bravais_lattice^{-1}, shift = origin_shift
     let tmat = mat_inverse_matrix_d3(&ref_sg.bravais_lattice, 0.0)?;
     let shift = ref_sg.origin_shift;
 
@@ -274,12 +277,12 @@ fn get_family_space_group_with_magnetic_symmetry(
     get_space_group_with_magnetic_symmetry(magnetic_symmetry, true, symprec)
 }
 
-/// Get maximal subspace group (XSG) and its symmetry.
-fn get_maximal_subspace_group_with_magnetic_symmetry(
+/// Get maximal subspace group symmetry (XSG) — 仅提取对称操作, 不搜索空间群.
+fn get_maximal_subspace_symmetry(
     magnetic_symmetry: &MagneticSymmetry,
     symprec: f64,
-) -> Option<(Spacegroup, Symmetry)> {
-    get_space_group_with_magnetic_symmetry(magnetic_symmetry, false, symprec)
+) -> Option<Symmetry> {
+    extract_symmetry(magnetic_symmetry, false, symprec)
 }
 
 /// Get space group from magnetic symmetry.
@@ -335,28 +338,20 @@ fn get_space_group_with_magnetic_symmetry(
 
     // Get primitive symmetry: (a, b, c) = (a_prim, b_prim, c_prim) @ tmat
     let mut tmat = [[0.0; 3]; 3];
-    let prim_sym = match prm_get_primitive_symmetry(&mut tmat, &sym, symprec) {
-        Some(ps) => ps,
-        None => {
-            debug::debug_print(format_args!(
-                "get_space_group_with_magnetic_symmetry: prm_get_primitive_symmetry failed (n_sym={})\n",
-                num_sym
-            ));
-            return None;
-        }
-    };
+    let prim_sym = prm_get_primitive_symmetry(&mut tmat, &sym, symprec);
 
-    // Search space group with primitive symmetry and unit lattice
-    let mut spacegroup = match spa_search_spacegroup_with_symmetry(&prim_sym, &unit_lat, symprec) {
-        Some(sg) => sg,
-        None => {
-            // Fallback: try direct Hall matching by point group
-            debug::debug_print(format_args!(
-                "get_space_group_with_magnetic_symmetry: trying fallback (n_prim={}, n_sym={})\n",
-                prim_sym.size, num_sym
-            ));
-            find_spacegroup_by_symmetry(&sym, &unit_lat, symprec)?
+    let mut spacegroup = if let Some(ref prim) = prim_sym {
+        match spa_search_spacegroup_with_symmetry(prim, &unit_lat, symprec) {
+            Some(sg) => sg,
+            None => {
+                // 标准空间群搜索失败 → 使用 fallback
+                return find_spacegroup_by_symmetry(&sym, &unit_lat, symprec)
+                    .map(|sg| (sg, sym));
+            }
         }
+    } else {
+        return find_spacegroup_by_symmetry(&sym, &unit_lat, symprec)
+            .map(|sg| (sg, sym));
     };
 
     // Refine bravais lattice and origin_shift
@@ -370,6 +365,63 @@ fn get_space_group_with_magnetic_symmetry(
     spacegroup.bravais_lattice = mat_multiply_matrix_d3(&inv_tmat, &spacegroup.bravais_lattice);
 
     Some((spacegroup, sym))
+}
+
+/// Fallback: 直接从对称操作匹配 Hall 编号，绕过完整的空间群搜索。
+/// 当 `spa_search_spacegroup_with_symmetry` 失败时使用。
+fn find_spacegroup_by_symmetry(
+    symmetry: &Symmetry,
+    lattice: &Mat3,
+    symprec: f64,
+) -> Option<Spacegroup> {
+    let mut origin_shift = [0.0; 3];
+    let mut conv_lattice = [[0.0; 3]; 3];
+    let mut tmat_int = [[0; 3]; 3];
+
+    let pointgroup = ptg_get_transformation_matrix(&mut tmat_int, &symmetry.rot, None);
+    if pointgroup.number == 0 {
+        return None;
+    }
+
+    let mut correction_mat = [[0.0; 3]; 3];
+    let centering = get_centering(&mut correction_mat, &tmat_int, pointgroup.laue);
+    if centering == Centering::Error {
+        return None;
+    }
+
+    let tmat = mat_multiply_matrix_id3(&tmat_int, &correction_mat);
+    conv_lattice = mat_multiply_matrix_d3(lattice, &tmat);
+
+    let conv_symmetry = get_initial_conventional_symmetry(centering, &tmat, symmetry)?;
+
+    // Try ALL 530 Hall numbers (not just the 230 representatives)
+    for hall in 1..=530 {
+        if hal_match_hall_symbol_db(
+            &mut origin_shift,
+            &conv_lattice,
+            hall,
+            centering,
+            &conv_symmetry,
+            symprec,
+        ) {
+            let spg_type = spgdb_get_spacegroup_type(hall);
+            let mut spacegroup = Spacegroup::new();
+            mat_copy_matrix_d3(&mut spacegroup.bravais_lattice, &conv_lattice);
+            mat_copy_vector_d3(&mut spacegroup.origin_shift, &origin_shift);
+            spacegroup.number = spg_type.number;
+            spacegroup.hall_number = hall;
+            spacegroup.pointgroup_number = spg_type.pointgroup_number;
+            spacegroup.schoenflies = spg_type.schoenflies;
+            spacegroup.hall_symbol = spg_type.hall_symbol;
+            spacegroup.international = spg_type.international;
+            spacegroup.international_long = spg_type.international_full;
+            spacegroup.international_short = spg_type.international_short;
+            spacegroup.choice = spg_type.choice;
+            return Some(spacegroup);
+        }
+    }
+
+    None
 }
 
 /// Determine MSG type. Returns None if failed.
