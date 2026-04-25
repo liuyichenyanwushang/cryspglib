@@ -5,16 +5,16 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Build & Test Commands
 
 ```bash
+rustup default nightly    # Required: edition 2024 needs nightly Rust
 cargo build              # Build the library
-cargo test               # Run all 69 tests (magnetic: 24+ end-to-end)
-cargo test test_fcc -- --nocapture  # FCC FM 测试
+cargo test               # Run all 66 tests + 1 doctest (ignored)
 cargo test -- --nocapture  # Run tests with debug output (eprintln visible)
 cargo test <test_name>   # Run a single test (e.g., `cargo test test_graphene_p6mmm`)
 cargo check              # Check compilation without building
 cargo clippy             # Run lints
 ```
 
-The project uses `edition = "2024"` (requires nightly Rust).
+The project uses `edition = "2024"` (requires nightly Rust). All commands must use nightly toolchain.
 
 ## Critical Convention: Matrix Layout `lattice[cart][vec]`
 
@@ -142,15 +142,24 @@ When debugging, compare Rust implementation against the C original line-by-line,
 
 ## Test Coverage
 
-Tests in `spacegroup.rs` verify the full pipeline end-to-end:
+Tests are inline (`#[cfg(test)] mod tests` in most `.rs` files) and in dedicated test files.
+
+**Non-magnetic space group tests** (in `spacegroup.rs`):
 - Cubic: simple (#221), bcc (#229), fcc (#225), diamond (#227), rocksalt (#225)
 - Hexagonal: graphene (#191), hcp (#194), AB-buckled silicene (#164)
 - Supercells: 2x2x2 simple cubic (#221), 2x2x2 CsCl (#221), 2x2x1 graphene (#191)
 
-Magnetic space group tests in `magnetic_spacegroup_test.rs`:
+**Magnetic space group tests** (in `magnetic_spacegroup_test.rs`):
 - Type-1/2/3 identification via Pm-3m (#221) symmetry operations from database
+- FCC FM [001] and [111] end-to-end tests
 - Public API `spg_get_magnetic_spacegroup_type_from_symmetry`
 - Edge cases: empty symmetry, missing identity
+
+**CoF3 tests** (in `cof3_test.rs`):
+- End-to-end CoF3 magnetic structure identification from POSCAR files
+- POSCAR test files in `test/CoF3/` (POSCAR, BPOSCAR, PPOSCAR)
+
+**Unit tests** for individual modules: `kgrid.rs`, `kpoint.rs`, `cell.rs`, `delaunay.rs`, `debug.rs`, `overlap.rs`, `symmetry.rs`.
 
 ## Magnetic Space Group: Complete Pipeline
 
@@ -221,6 +230,42 @@ C code key lines in `src_c/magnetic_spacegroup.txt`:
 - Line 112-113: `/* TODO(shinohara): add option to specify hall_number ... */`
 - Line 593-596: NULL dereference on failed search
 - Line 615-617: Dead NULL check (never reached)
+
+### Fixed: R-center hall number matching bug (2026-04-25)
+
+**Symptom**: CoF3 (R-3c rhombohedral) identified as #5 (C2 monoclinic) instead of #167 (R-3c).
+
+**Root cause**: `search_hall_number` in `spacegroup.rs` bypassed C's static `match_hall_symbol_db` intermediate layer
+(`spacegroup.c:991`) and called `hal_match_hall_symbol_db` directly. The intermediate layer does critical preprocessing:
+
+1. **Point-group filter** (`spacegroup.c:1005`): skips Hall numbers whose DB point group doesn't match
+2. **R-center centering expansion** (`spacegroup.c:1623` in `match_hall_symbol_db_change_of_basis_loop`):
+   `get_conventional_symmetry(change_of_basis, R_CENTER, conv_symmetry)` expands 12 primitive ops → 36 ops
+   with centering translations `(2/3,1/3,1/3)` and `(1/3,2/3,2/3)`
+
+Without expansion, `is_hall_symbol` compared DB's 36 ops against symmetry's 12 ops and failed immediately
+for all 7 rhombohedral Hall numbers (433, 436, 444, 450, 452, 458, 460).
+
+**Fix**: Ported three functions from C `spacegroup.c` to Rust `spacegroup.rs`:
+
+| New function | C source | Purpose |
+|-------------|----------|---------|
+| `match_hall_symbol_db_change_of_basis_loop` | `spacegroup.c:1610` | Generic change-of-basis loop with centering expansion |
+| `match_hall_symbol_db_rhombo` | `spacegroup.c:1554` | Rhombohedral dispatch (hex vs primitive setting) |
+| `match_hall_symbol_db` | `spacegroup.c:991` | Top-level dispatcher: point-group filter + holohedry routing |
+
+Also added `CHANGE_OF_BASIS_RHOMBO` (6 matrices) and `CHANGE_OF_BASIS_RHOMBO_HEX` (6 matrices) constants.
+
+`search_hall_number` now calls `match_hall_symbol_db` instead of `hal_match_hall_symbol_db` directly.
+
+**Why only RCenter was affected**: For all other centerings (Body, Face, A/B/C-Face),
+`get_initial_conventional_symmetry` already expands centering translations. RCenter was the
+only case where expansion was deliberately deferred (it depends on the change-of-basis matrix).
+
+**Pre-existing errors fixed in `hall_symbol.rs`** (unrelated to the bug, blocked compilation):
+- `mat_copy_matrix_d3` doesn't exist in mathfunc → replaced with `*bravais_lattice` (Mat3 is Copy)
+- `spgdb_get_operation_index` expects `usize`, caller passed `i32` → added `as usize` casts
+- Removed unused import `spgdb_get_operation`
 
 ## Notes
 

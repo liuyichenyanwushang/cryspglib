@@ -21,14 +21,14 @@ use crate::delaunay::del_layer_delaunay_reduce_2D;
 use crate::hall_symbol::hal_match_hall_symbol_db;
 use crate::mathfunc::{
     Mat3, Mat3I, Vec3, mat_cast_matrix_3d_to_3i, mat_cast_matrix_3i_to_3d,
-    mat_check_identity_matrix_d3, mat_check_identity_matrix_id3, mat_copy_matrix_d3,
-    mat_copy_vector_d3, mat_dabs, mat_get_determinant_d3, mat_get_determinant_i3, mat_get_metric,
+    mat_check_identity_matrix_d3, mat_check_identity_matrix_id3,
+    mat_dabs, mat_get_determinant_d3, mat_get_determinant_i3, mat_get_metric,
     mat_get_similar_matrix_d3, mat_inverse_matrix_d3, mat_is_int_matrix, mat_multiply_matrix_d3,
     mat_multiply_matrix_di3, mat_multiply_matrix_id3, mat_multiply_matrix_vector_d3,
 };
 use crate::niggli::niggli_reduce;
 use crate::pointgroup::{
-    Laue, ptg_get_pointsymmetry, ptg_get_transformation_matrix,
+    Holohedry, Laue, ptg_get_pointsymmetry, ptg_get_transformation_matrix,
 };
 use crate::primitive::Primitive;
 use crate::spg_database::{Centering, spgdb_get_spacegroup_type};
@@ -136,6 +136,30 @@ static CHANGE_OF_BASIS_MONOCLI: [Mat3; 48] = [
     [[1., 1., 0.], [0., 1., 0.], [0., 0., 1.]],
 ];
 
+// change_of_basis matrices for rhombohedral systems.
+// C: spacegroup.c:241-252
+static CHANGE_OF_BASIS_RHOMBO: [Mat3; 6] = [
+    [[1., 0., 0.], [0., 1., 0.], [0., 0., 1.]],
+    [[0., 0., 1.], [1., 0., 0.], [0., 1., 0.]],
+    [[0., 1., 0.], [0., 0., 1.], [1., 0., 0.]],
+    [[0., 0., -1.], [0., -1., 0.], [-1., 0., 0.]],
+    [[0., -1., 0.], [-1., 0., 0.], [0., 0., -1.]],
+    [[-1., 0., 0.], [0., 0., -1.], [0., -1., 0.]],
+];
+
+static CHANGE_OF_BASIS_RHOMBO_HEX: [Mat3; 6] = [
+    [[1., 0., 1.], [-1., 1., 1.], [0., -1., 1.]],
+    [[0., -1., 1.], [1., 0., 1.], [-1., 1., 1.]],
+    [[-1., 1., 1.], [0., -1., 1.], [1., 0., 1.]],
+    [[0., 1., -1.], [1., -1., -1.], [-1., 0., -1.]],
+    [[1., -1., -1.], [-1., 0., -1.], [0., 1., -1.]],
+    [[-1., 0., -1.], [0., 1., -1.], [1., -1., -1.]],
+];
+
+/// Rhombohedral Hall numbers with hexagonal (hP) setting.
+/// C: match_hall_symbol_db_rhombo, spacegroup.c:1562
+const RHOMBO_HEX_SETTING: [i32; 7] = [433, 436, 444, 450, 452, 458, 460];
+
 pub(crate) static SPACEGROUP_TO_HALL_NUMBER: [i32; 230] = [
     1, 2, 3, 6, 9, 18, 21, 30, 39, 57, 60, 63, 72, 81, 90, 108, 109, 112, 115, 116, 119, 122, 123,
     124, 125, 128, 134, 137, 143, 149, 155, 161, 164, 170, 173, 176, 182, 185, 191, 197, 203, 209,
@@ -169,9 +193,9 @@ static LAYER_GROUP_TO_HALL_NUMBER: [i32; 80] = [
 /// `bravais_lattice` 采用 `[cart][vec]` 布局（行=笛卡尔, 列=Bravais 基矢量）。
 #[derive(Clone, Debug)]
 pub struct Spacegroup {
-    pub number: i32,
-    pub hall_number: i32,
-    pub pointgroup_number: i32,
+    pub number: usize,
+    pub hall_number: usize,
+    pub pointgroup_number: usize,
     pub schoenflies: String,
     pub hall_symbol: String,
     pub international: String,
@@ -234,7 +258,7 @@ pub fn spa_search_spacegroup_with_symmetry(
 ) -> Option<Spacegroup> {
     let mut primitive = Primitive::new(1);
     let mut cell = Cell::new(1, TensorRank::NoSpin);
-    mat_copy_matrix_d3(&mut cell.lattice, prim_lat);
+    cell.lattice = *prim_lat;
     cell.position[0] = [0.0; 3];
     primitive.cell = Some(cell);
 
@@ -258,7 +282,7 @@ pub fn spa_transform_to_primitive(
 
     let mut tmat = [[0.0; 3]; 3];
     match centering {
-        Centering::Primitive => mat_copy_matrix_d3(&mut tmat, &tmat_inv),
+        Centering::Primitive => tmat = tmat_inv,
         Centering::AFace => tmat = mat_multiply_matrix_d3(&tmat_inv, &A_MAT),
         Centering::CFace => tmat = mat_multiply_matrix_d3(&tmat_inv, &C_MAT),
         Centering::Face => tmat = mat_multiply_matrix_d3(&tmat_inv, &F_MAT),
@@ -287,23 +311,23 @@ pub fn spa_transform_from_primitive(
     match centering {
         Centering::Primitive => {}
         Centering::AFace => {
-            mat_copy_matrix_d3(&mut tmat, &A_MAT);
+            tmat = A_MAT;
             inv_tmat = mat_inverse_matrix_d3(&A_MAT, 0.0).unwrap();
         }
         Centering::CFace => {
-            mat_copy_matrix_d3(&mut tmat, &C_MAT);
+            tmat = C_MAT;
             inv_tmat = mat_inverse_matrix_d3(&C_MAT, 0.0).unwrap();
         }
         Centering::Face => {
-            mat_copy_matrix_d3(&mut tmat, &F_MAT);
+            tmat = F_MAT;
             inv_tmat = mat_inverse_matrix_d3(&F_MAT, 0.0).unwrap();
         }
         Centering::Body => {
-            mat_copy_matrix_d3(&mut tmat, &I_MAT);
+            tmat = I_MAT;
             inv_tmat = mat_inverse_matrix_d3(&I_MAT, 0.0).unwrap();
         }
         Centering::RCenter => {
-            mat_copy_matrix_d3(&mut tmat, &R_MAT);
+            tmat = R_MAT;
             inv_tmat = mat_inverse_matrix_d3(&R_MAT, 0.0).unwrap();
         }
         _ => return None,
@@ -350,8 +374,8 @@ pub fn spa_copy_spacegroup(dst: &mut Spacegroup, src: &Spacegroup) {
     dst.international_long = src.international_long.clone();
     dst.international_short = src.international_short.clone();
     dst.choice = src.choice.clone();
-    mat_copy_matrix_d3(&mut dst.bravais_lattice, &src.bravais_lattice);
-    mat_copy_vector_d3(&mut dst.origin_shift, &src.origin_shift);
+    dst.bravais_lattice = src.bravais_lattice;
+    dst.origin_shift = src.origin_shift;
 }
 
 // --- Internal Functions ---
@@ -401,13 +425,13 @@ fn get_spacegroup(
     origin_shift: &Vec3,
     conv_lattice: &Mat3,
 ) -> Option<Spacegroup> {
-    let spg_type = spgdb_get_spacegroup_type(hall_number);
+    let spg_type = spgdb_get_spacegroup_type(hall_number as usize);
 
     let mut spacegroup = Spacegroup::new();
-    mat_copy_matrix_d3(&mut spacegroup.bravais_lattice, conv_lattice);
-    mat_copy_vector_d3(&mut spacegroup.origin_shift, origin_shift);
+    spacegroup.bravais_lattice = *conv_lattice;
+    spacegroup.origin_shift = *origin_shift;
     spacegroup.number = spg_type.number;
-    spacegroup.hall_number = hall_number;
+    spacegroup.hall_number = hall_number as usize;
     spacegroup.pointgroup_number = spg_type.pointgroup_number;
     spacegroup.schoenflies = spg_type.schoenflies;
     spacegroup.hall_symbol = spg_type.hall_symbol;
@@ -494,21 +518,16 @@ fn search_hall_number(
     let pointgroup = ptg_get_transformation_matrix(&mut tmat_int, &symmetry.rot, aperiodic_axis);
 
     if pointgroup.number == 0 {
-        eprintln!("  search_hall_number: pointgroup.number == 0");
         return 0;
     }
-    eprintln!("  search_hall_number: pointgroup.number={}, laue={:?}, tmat_int={:?}",
-        pointgroup.number, pointgroup.laue, tmat_int);
 
     let mut conv_lattice_tmp = [[0.0; 3]; 3];
 
     if pointgroup.laue == Laue::Laue1 || pointgroup.laue == Laue::Laue2M {
-        eprintln!("  search_hall_number: entering Laue1/Laue2M branch");
         conv_lattice_tmp =
             mat_multiply_matrix_di3(&primitive.cell.as_ref().unwrap().lattice, &tmat_int);
 
         if pointgroup.laue == Laue::Laue1 {
-            eprintln!("  search_hall_number: calling change_basis_tricli");
             if !change_basis_tricli(
                 &mut tmat_int,
                 &conv_lattice_tmp,
@@ -516,13 +535,11 @@ fn search_hall_number(
                 symprec,
                 aperiodic_axis,
             ) {
-                eprintln!("  search_hall_number: change_basis_tricli failed");
                 return 0;
             }
         }
 
         if pointgroup.laue == Laue::Laue2M {
-            eprintln!("  search_hall_number: calling change_basis_monocli");
             if !change_basis_monocli(
                 &mut tmat_int,
                 &conv_lattice_tmp,
@@ -530,7 +547,6 @@ fn search_hall_number(
                 symprec,
                 aperiodic_axis,
             ) {
-                eprintln!("  search_hall_number: change_basis_monocli failed");
                 return 0;
             }
         }
@@ -538,31 +554,29 @@ fn search_hall_number(
 
     let mut correction_mat = [[0.0; 3]; 3];
     let centering = get_centering(&mut correction_mat, &tmat_int, pointgroup.laue);
-    eprintln!("  search_hall_number: centering={:?}, correction_mat={:?}", centering, correction_mat);
     if centering == Centering::Error {
-        eprintln!("  search_hall_number: centering is Error");
         return 0;
     }
 
     let tmat = mat_multiply_matrix_id3(&tmat_int, &correction_mat);
     *conv_lattice = mat_multiply_matrix_d3(&primitive.cell.as_ref().unwrap().lattice, &tmat);
-    eprintln!("  search_hall_number: tmat={:?}", tmat);
-    eprintln!("  search_hall_number: conv_lattice={:?}", conv_lattice);
 
     let conv_symmetry = get_initial_conventional_symmetry(centering, &tmat, symmetry);
     if conv_symmetry.is_none() {
-        eprintln!("  search_hall_number: get_initial_conventional_symmetry failed");
         return 0;
     }
     let conv_symmetry = conv_symmetry.unwrap();
-    eprintln!("  search_hall_number: conv_symmetry.size = {}", conv_symmetry.size);
+
+    let holohedry = pointgroup.holohedry;
+    let pg_number = pointgroup.number;
 
     for &cand in candidates {
-        eprintln!("  search_hall_number: trying candidate hall number {}", cand);
-        if hal_match_hall_symbol_db(
+        if match_hall_symbol_db(
             origin_shift,
             conv_lattice,
             cand,
+            pg_number,
+            holohedry,
             centering,
             &conv_symmetry,
             symprec,
@@ -572,7 +586,6 @@ fn search_hall_number(
         }
     }
 
-    eprintln!("  search_hall_number: no candidate matched");
     0
 }
 
@@ -717,7 +730,7 @@ fn get_conventional_symmetry(
 }
 
 pub(crate) fn get_centering(correction_mat: &mut Mat3, tmat: &Mat3I, laue: Laue) -> Centering {
-    mat_copy_matrix_d3(correction_mat, &IDENTITY);
+    *correction_mat = IDENTITY;
     let det = mat_get_determinant_i3(tmat).abs();
     debug::debug_print(format_args!("laue class: {:?}\n", laue));
     debug::debug_print(format_args!("multiplicity: {}\n", det));
@@ -729,19 +742,19 @@ pub(crate) fn get_centering(correction_mat: &mut Mat3, tmat: &Mat3I, laue: Laue)
             if centering == Centering::AFace {
                 if laue == Laue::Laue2M {
                     debug::debug_print(format_args!("Monocli A to C\n"));
-                    mat_copy_matrix_d3(correction_mat, &MONOCLI_A2C);
+                    *correction_mat = MONOCLI_A2C;
                 } else {
-                    mat_copy_matrix_d3(correction_mat, &A2C);
+                    *correction_mat = A2C;
                 }
                 centering = Centering::CFace;
             }
             if centering == Centering::BFace {
-                mat_copy_matrix_d3(correction_mat, &B2C);
+                *correction_mat = B2C;
                 centering = Centering::CFace;
             }
             if laue == Laue::Laue2M && centering == Centering::Body {
                 debug::debug_print(format_args!("Monocli I to C\n"));
-                mat_copy_matrix_d3(correction_mat, &MONOCLI_I2C);
+                *correction_mat = MONOCLI_I2C;
                 centering = Centering::CFace;
             }
             centering
@@ -750,13 +763,13 @@ pub(crate) fn get_centering(correction_mat: &mut Mat3, tmat: &Mat3I, laue: Laue)
             let mut trans_corr_mat = [[0.0; 3]; 3];
             trans_corr_mat = mat_multiply_matrix_id3(tmat, &RHOMBO_OBVERSE);
             if mat_is_int_matrix(&trans_corr_mat, INT_PREC) {
-                mat_copy_matrix_d3(correction_mat, &RHOMBO_OBVERSE);
+                *correction_mat = RHOMBO_OBVERSE;
                 debug::debug_print(format_args!("R-center observe setting\n"));
                 return Centering::RCenter;
             }
             trans_corr_mat = mat_multiply_matrix_id3(tmat, &RHOMBO_REVERSE);
             if mat_is_int_matrix(&trans_corr_mat, INT_PREC) {
-                mat_copy_matrix_d3(correction_mat, &RHOMBO_REVERSE);
+                *correction_mat = RHOMBO_REVERSE;
                 debug::debug_print(format_args!("R-center reverse setting\n"));
                 return Centering::RCenter;
             }
@@ -906,6 +919,128 @@ fn is_equivalent_lattice(
     false
 }
 
+// ============================================================================
+// match_hall_symbol_db family — ported from C spacegroup.c:991-1679
+// ============================================================================
+
+/// Generic change-of-basis loop over candidate orientation matrices.
+/// Expands symmetry with centering translations when `centering == RCenter`.
+/// C: `match_hall_symbol_db_change_of_basis_loop`, spacegroup.c:1610
+fn match_hall_symbol_db_change_of_basis_loop(
+    origin_shift: &mut Vec3,
+    conv_lattice: &mut Mat3,
+    change_of_basis: &[Mat3],
+    hall_number: i32,
+    centering: Centering,
+    conv_symmetry: &Symmetry,
+    symprec: f64,
+) -> bool {
+    let centering_for_symmetry = if centering == Centering::RCenter {
+        Centering::RCenter
+    } else {
+        Centering::Primitive
+    };
+
+    for cob in change_of_basis {
+        // Expand symmetry with centering translations.
+        // RCenter: 12 ops → 36 ops via get_conventional_symmetry.
+        let Some(changed_sym) =
+            get_conventional_symmetry(cob, centering_for_symmetry, conv_symmetry)
+        else {
+            continue;
+        };
+        let mut changed_lat = mat_multiply_matrix_d3(&*conv_lattice, cob);
+        // Pass original `centering` (not `centering_for_symmetry`) to matching:
+        // for RCenter this means the DB expects RCenter operations.
+        if hal_match_hall_symbol_db(
+            origin_shift,
+            &mut changed_lat,
+            hall_number,
+            centering,
+            &changed_sym,
+            symprec,
+        ) {
+            *conv_lattice = changed_lat;
+            return true;
+        }
+    }
+    false
+}
+
+/// Rhombohedral Hall symbol matching.
+/// Handles both hexagonal (hP) and rhombohedral (a=b=c) settings.
+/// C: `match_hall_symbol_db_rhombo`, spacegroup.c:1554
+fn match_hall_symbol_db_rhombo(
+    origin_shift: &mut Vec3,
+    conv_lattice: &mut Mat3,
+    hall_number: i32,
+    conv_symmetry: &Symmetry,
+    symprec: f64,
+) -> bool {
+    if RHOMBO_HEX_SETTING.contains(&hall_number) {
+        // Hexagonal setting: use rhombo_hex change-of-basis + RCenter expansion.
+        // C: spacegroup.c:1565-1568
+        match_hall_symbol_db_change_of_basis_loop(
+            origin_shift,
+            conv_lattice,
+            &CHANGE_OF_BASIS_RHOMBO_HEX,
+            hall_number,
+            Centering::RCenter,
+            conv_symmetry,
+            symprec,
+        )
+    } else {
+        // Rhombohedral (a=b=c) setting: primitive centering.
+        // C: spacegroup.c:1576-1578
+        match_hall_symbol_db_change_of_basis_loop(
+            origin_shift,
+            conv_lattice,
+            &CHANGE_OF_BASIS_RHOMBO,
+            hall_number,
+            Centering::Primitive,
+            conv_symmetry,
+            symprec,
+        )
+    }
+}
+
+/// Top-level Hall symbol dispatcher with point-group filter and holohedry routing.
+/// C: `match_hall_symbol_db`, spacegroup.c:991
+fn match_hall_symbol_db(
+    origin_shift: &mut Vec3,
+    conv_lattice: &mut Mat3,
+    hall_number: i32,
+    pointgroup_number: usize,
+    holohedry: Holohedry,
+    centering: Centering,
+    conv_symmetry: &Symmetry,
+    symprec: f64,
+) -> bool {
+    // Point-group filter: skip Hall numbers whose point group doesn't match.
+    let spg_type = spgdb_get_spacegroup_type(hall_number as usize);
+    if pointgroup_number != spg_type.pointgroup_number {
+        return false;
+    }
+
+    // Dispatch: rhombohedral RCenter cases get centering expansion;
+    // all others delegate to hal_match_hall_symbol_db directly (as before).
+    if holohedry == Holohedry::Trigo
+        && centering == Centering::RCenter
+        && RHOMBO_HEX_SETTING.contains(&hall_number)
+    {
+        match_hall_symbol_db_rhombo(origin_shift, conv_lattice, hall_number, conv_symmetry, symprec)
+    } else {
+        hal_match_hall_symbol_db(
+            origin_shift,
+            conv_lattice,
+            hall_number,
+            centering,
+            conv_symmetry,
+            symprec,
+        )
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -935,7 +1070,7 @@ mod tests {
     /// 验证空间群识别结果
     fn assert_spacegroup(
         spg: &Spacegroup,
-        expected_number: i32,
+        expected_number: usize,
         expected_short: &str,
         label: &str,
     ) {
@@ -966,10 +1101,6 @@ mod tests {
 
         let spg = search_spacegroup(&lattice, &positions, &types)
             .expect("Simple cubic: spacegroup search returned None");
-        eprintln!(
-            "Simple cubic: #{}, hall={}, short='{}'",
-            spg.number, spg.hall_number, spg.international_short.trim()
-        );
         assert_spacegroup(&spg, 221, "Pm-3m", "simple cubic");
     }
 
@@ -982,10 +1113,6 @@ mod tests {
 
         let spg = search_spacegroup(&lattice, &positions, &types)
             .expect("BCC: spacegroup search returned None");
-        eprintln!(
-            "BCC: #{}, hall={}, short='{}'",
-            spg.number, spg.hall_number, spg.international_short.trim()
-        );
         assert_spacegroup(&spg, 229, "Im-3m", "BCC");
     }
 
@@ -1003,10 +1130,6 @@ mod tests {
 
         let spg = search_spacegroup(&lattice, &positions, &types)
             .expect("FCC: spacegroup search returned None");
-        eprintln!(
-            "FCC: #{}, hall={}, short='{}'",
-            spg.number, spg.hall_number, spg.international_short.trim()
-        );
         assert_spacegroup(&spg, 225, "Fm-3m", "FCC");
     }
 
@@ -1028,10 +1151,6 @@ mod tests {
 
         let spg = search_spacegroup(&lattice, &positions, &types)
             .expect("Diamond: spacegroup search returned None");
-        eprintln!(
-            "Diamond: #{}, hall={}, short='{}'",
-            spg.number, spg.hall_number, spg.international_short.trim()
-        );
         assert_spacegroup(&spg, 227, "Fd-3m", "diamond");
     }
 
@@ -1061,10 +1180,6 @@ mod tests {
 
         let spg = search_spacegroup(&lattice, &positions, &types)
             .expect("Graphene: spacegroup search returned None");
-        eprintln!(
-            "Graphene: #{}, hall={}, short='{}'",
-            spg.number, spg.hall_number, spg.international_short.trim()
-        );
         assert_spacegroup(&spg, 191, "P6/mmm", "graphene");
     }
 
@@ -1081,10 +1196,6 @@ mod tests {
 
         let spg = search_spacegroup(&lattice, &positions, &types)
             .expect("Silicene: spacegroup search returned None");
-        eprintln!(
-            "Silicene: #{}, hall={}, short='{}'",
-            spg.number, spg.hall_number, spg.international_short.trim()
-        );
         // D6h → D3d（保留3重轴和反演，失去6重轴和水平镜面）
         assert_spacegroup(&spg, 164, "P-3m1", "silicene");
     }
@@ -1100,10 +1211,6 @@ mod tests {
 
         let spg = search_spacegroup(&lattice, &positions, &types)
             .expect("HCP: spacegroup search returned None");
-        eprintln!(
-            "HCP: #{}, hall={}, short='{}'",
-            spg.number, spg.hall_number, spg.international_short.trim()
-        );
         assert_spacegroup(&spg, 194, "P6_3/mmc", "HCP");
     }
 
@@ -1135,10 +1242,6 @@ mod tests {
 
         let spg = search_spacegroup(&lattice, &positions, &types)
             .expect("Supercell 2x2x2: spacegroup search returned None");
-        eprintln!(
-            "Supercell 2x2x2 simple cubic: #{}, hall={}, short='{}'",
-            spg.number, spg.hall_number, spg.international_short.trim()
-        );
         assert_spacegroup(&spg, 221, "Pm-3m", "supercell 2x2x2 simple cubic");
     }
 
@@ -1184,10 +1287,6 @@ mod tests {
 
         let spg = search_spacegroup(&lattice, &positions, &types)
             .expect("Supercell 2x2x2 CsCl: spacegroup search returned None");
-        eprintln!(
-            "Supercell 2x2x2 CsCl: #{}, hall={}, short='{}'",
-            spg.number, spg.hall_number, spg.international_short.trim()
-        );
         assert_spacegroup(&spg, 221, "Pm-3m", "supercell 2x2x2 CsCl");
     }
 
@@ -1221,10 +1320,6 @@ mod tests {
 
         let spg = search_spacegroup(&super_lattice, &positions, &types)
             .expect("Supercell 2x2x1 graphene: spacegroup search returned None");
-        eprintln!(
-            "Supercell 2x2x1 graphene: #{}, hall={}, short='{}'",
-            spg.number, spg.hall_number, spg.international_short.trim()
-        );
         assert_spacegroup(&spg, 191, "P6/mmm", "supercell 2x2x1 graphene");
     }
 
@@ -1248,10 +1343,6 @@ mod tests {
 
         let spg = search_spacegroup(&lattice, &positions, &types)
             .expect("NaCl: spacegroup search returned None");
-        eprintln!(
-            "NaCl: #{}, hall={}, short='{}'",
-            spg.number, spg.hall_number, spg.international_short.trim()
-        );
         assert_spacegroup(&spg, 225, "Fm-3m", "NaCl");
     }
 

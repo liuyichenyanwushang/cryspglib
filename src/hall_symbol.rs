@@ -10,11 +10,11 @@
 use crate::cell::{cel_is_overlap, cel_layer_is_overlap, AperiodicAxis};
 use crate::debug;
 use crate::mathfunc::{
-    Mat3, Mat3I, Vec3, mat_cast_matrix_3i_to_3d, mat_check_identity_matrix_i3, mat_copy_matrix_d3,
+    Mat3, Mat3I, Vec3, mat_cast_matrix_3i_to_3d, mat_check_identity_matrix_i3,
     mat_dmod1, mat_get_determinant_i3, mat_get_similar_matrix_d3, mat_multiply_matrix_d3,
     mat_multiply_matrix_vector_d3, mat_multiply_matrix_vector_id3,
 };
-use crate::spg_database::{Centering, spgdb_get_operation, spgdb_get_operation_index,spgdb_get_operation_by_index};
+use crate::spg_database::{Centering, spgdb_get_operation_index, spgdb_get_operation_by_index};
 use crate::symmetry::Symmetry;
 
 // ============================================================================
@@ -7565,7 +7565,7 @@ fn find_hall_symbol(
     let mut primitive_lattice = [[0.0; 3]; 3];
 
     match centering {
-        Centering::Primitive => mat_copy_matrix_d3(&mut primitive_lattice, bravais_lattice),
+        Centering::Primitive => primitive_lattice = *bravais_lattice,
         Centering::Body => primitive_lattice = mat_multiply_matrix_d3(bravais_lattice, &M_BCC_INV),
         Centering::Face => primitive_lattice = mat_multiply_matrix_d3(bravais_lattice, &M_FCC_INV),
         Centering::AFace => primitive_lattice = mat_multiply_matrix_d3(bravais_lattice, &M_AC_INV),
@@ -7954,7 +7954,7 @@ fn is_hall_symbol(
     vspu: &[[f64; 9]; 3],
     _symprec: f64,
 ) -> bool {
-    let (op_count, _op_start) = spgdb_get_operation_index(hall_number);
+    let (op_count, _op_start) = spgdb_get_operation_index(hall_number as usize);
     if op_count == 0 {
         return false;
     }
@@ -8049,7 +8049,7 @@ fn get_origin_shift(
     vspu: &[[f64; 9]; 3],
 ) -> bool {
     // FIX: Handle Option return
-    let (count, start_index) = spgdb_get_operation_index(hall_number);
+    let (count, start_index) = spgdb_get_operation_index(hall_number as usize);
     if count == 0 {
         return false;
     }
@@ -8177,7 +8177,7 @@ fn is_match_database(
     symprec: f64,
 ) -> bool {
     // FIX: Handle Option return
-    let (count, start_index) = spgdb_get_operation_index(hall_number);
+    let (count, start_index) = spgdb_get_operation_index(hall_number as usize);
     if count == 0 {
         return false;
     }
