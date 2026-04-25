@@ -29,6 +29,7 @@ pub mod msg_database;
 #[cfg(test)]
 pub mod magnetic_spacegroup_test;
 pub mod cof3_test;
+pub mod crps4_test;
 pub mod la2nio4_test;
 pub mod niggli;
 pub mod overlap;
