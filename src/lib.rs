@@ -28,6 +28,8 @@ pub mod mathfunc;
 pub mod msg_database;
 #[cfg(test)]
 pub mod magnetic_spacegroup_test;
+pub mod cof3_test;
+pub mod la2nio4_test;
 pub mod niggli;
 pub mod overlap;
 pub mod pointgroup;
@@ -43,10 +45,7 @@ pub mod symmetry;
 use crate::cell::{cel_any_overlap_with_same_type, cel_layer_any_overlap_with_same_type, AperiodicAxis, Cell, TensorRank};
 use crate::delaunay::del_delaunay_reduce;
 use crate::determination::det_determine_all;
-use crate::mathfunc::{
-    mat_copy_matrix_d3, mat_copy_vector_d3,
-    mat_inverse_matrix_d3, mat_multiply_matrix_d3, Mat3, Mat3I, Vec3,
-};
+use crate::mathfunc::{mat_inverse_matrix_d3, mat_multiply_matrix_d3, Mat3, Mat3I, Vec3};
 use crate::niggli::niggli_reduce;
 use crate::pointgroup::{ptg_get_pointgroup, ptg_get_transformation_matrix};
 use crate::primitive::{Primitive, prm_get_primitive_symmetry};
@@ -120,9 +119,9 @@ pub enum SpglibError {
 #[derive(Debug, Clone)]
 pub struct SpglibDataset {
     /// 空间群编号 (1–230)
-    pub spacegroup_number: i32,
+    pub spacegroup_number: usize,
     /// Hall 编号 (1–530)
-    pub hall_number: i32,
+    pub hall_number: usize,
     /// 国际符号 (最多 11 字符)
     pub international_symbol: String,
     /// Hall 符号 (最多 17 字符)
@@ -173,9 +172,9 @@ pub struct SpglibDataset {
 #[derive(Debug, Clone)]
 pub struct SpglibSpacegroupType {
     /// 空间群编号 (1–230)
-    pub number: i32,
+    pub number: usize,
     /// Hall 编号
-    pub hall_number: i32,
+    pub hall_number: usize,
     /// Schoenflies 符号
     pub schoenflies: String,
     /// Hall 符号
@@ -202,13 +201,13 @@ pub struct SpglibSpacegroupType {
 #[derive(Debug, Clone)]
 pub struct SpglibMagneticDataset {
     /// UNI 编号 (1–1651)
-    pub uni_number: i32,
+    pub uni_number: usize,
     /// 磁性空间群类型
-    pub msg_type: i32,
+    pub msg_type: MagneticType,
     /// Hall 编号
-    pub hall_number: i32,
+    pub hall_number: usize,
     /// 张量秩
-    pub tensor_rank: i32,
+    pub tensor_rank: crate::cell::TensorRank,
     /// 对称操作数
     pub n_operations: usize,
     /// 旋转矩阵
@@ -216,7 +215,7 @@ pub struct SpglibMagneticDataset {
     /// 平移矢量
     pub translations: Vec<Vec3>,
     /// 时间反演 (±1)
-    pub time_reversals: Vec<i32>,
+    pub time_reversals: Vec<bool>,
     /// 原子数
     pub n_atoms: usize,
     /// 对等原子
@@ -241,21 +240,36 @@ pub struct SpglibMagneticDataset {
     pub std_rotation_matrix: Mat3,
 }
 
+/// 磁性空间群类型。
+#[derive(Debug, Clone, Copy, PartialEq)]
+pub enum MagneticType {
+    /// 非磁 (UNI=0)
+    NonMagnetic = 0,
+    /// Type-1: 普通磁结构，无时间反演对称性
+    Ordinary = 1,
+    /// Type-2: 灰色磁结构（顺磁），含纯时间反演操作
+    Grey = 2,
+    /// Type-3: 黑白磁结构，反转动
+    BlackWhite = 3,
+    /// Type-4: 黑白磁结构，反平移
+    AntiTranslation = 4,
+}
+
 /// 磁性空间群类型（从数据库查询）。
 #[derive(Debug, Clone)]
 pub struct SpglibMagneticSpacegroupType {
     /// UNI 编号
-    pub uni_number: i32,
+    pub uni_number: usize,
     /// Litvin 编号
-    pub litvin_number: i32,
+    pub litvin_number: usize,
     /// BNS 符号 (最多 8 字符)
     pub bns_number: String,
     /// OG 符号 (最多 12 字符)
     pub og_number: String,
     /// 晶体学编号 (1–230)
-    pub number: i32,
+    pub number: usize,
     /// 磁性类型 (1-4)
-    pub type_: i32,
+    pub type_: MagneticType,
 }
 
 // ========================================================================
@@ -417,7 +431,7 @@ pub fn spgat_get_symmetry(
 /// 从空间群数据库获取对称操作。
 ///
 /// 根据 Hall 编号直接返回所有空间群操作。
-pub fn spg_get_symmetry_from_database(hall_number: i32) -> Option<Symmetry> {
+pub fn spg_get_symmetry_from_database(hall_number: usize) -> Option<Symmetry> {
     spgdb_get_spacegroup_operations(hall_number)
 }
 
@@ -429,7 +443,7 @@ pub fn spg_get_hall_number_from_symmetry(
     rotations: &[Mat3I],
     translations: &[Vec3],
     symprec: f64,
-) -> Result<i32, SpglibError> {
+) -> Result<usize, SpglibError> {
     let lattice: Mat3 = [[1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0]];
     let hall_number = get_hall_number_from_symmetry(
         rotations, translations, &lattice, false, symprec,
@@ -562,7 +576,7 @@ pub fn spg_get_international(
     position: &[Vec3],
     types: &[i32],
     symprec: f64,
-) -> Result<(i32, String), SpglibError> {
+) -> Result<(usize, String), SpglibError> {
     get_international(lattice, position, types, symprec, -1.0)
 }
 
@@ -573,7 +587,7 @@ pub fn spgat_get_international(
     types: &[i32],
     symprec: f64,
     angle_tolerance: f64,
-) -> Result<(i32, String), SpglibError> {
+) -> Result<(usize, String), SpglibError> {
     get_international(lattice, position, types, symprec, angle_tolerance)
 }
 
@@ -585,7 +599,7 @@ pub fn spg_get_schoenflies(
     position: &[Vec3],
     types: &[i32],
     symprec: f64,
-) -> Result<(i32, String), SpglibError> {
+) -> Result<(usize, String), SpglibError> {
     get_schoenflies(lattice, position, types, symprec, -1.0)
 }
 
@@ -596,7 +610,7 @@ pub fn spgat_get_schoenflies(
     types: &[i32],
     symprec: f64,
     angle_tolerance: f64,
-) -> Result<(i32, String), SpglibError> {
+) -> Result<(usize, String), SpglibError> {
     get_schoenflies(lattice, position, types, symprec, angle_tolerance)
 }
 
@@ -624,7 +638,7 @@ pub fn spgat_get_multiplicity(
 }
 
 /// 根据 Hall 编号获取空间群类型信息。
-pub fn spg_get_spacegroup_type(hall_number: i32) -> Result<SpglibSpacegroupType, SpglibError> {
+pub fn spg_get_spacegroup_type(hall_number: usize) -> Result<SpglibSpacegroupType, SpglibError> {
     if hall_number > 0 && hall_number < 531 {
         get_spacegroup_type(hall_number)
     } else {
@@ -639,7 +653,7 @@ pub fn spg_get_spacegroup_type(hall_number: i32) -> Result<SpglibSpacegroupType,
 /// symbol 最多 6 字符。
 pub fn spg_get_pointgroup(
     rotations: &[Mat3I],
-) -> Result<(String, Mat3I, i32), SpglibError> {
+) -> Result<(String, Mat3I, usize), SpglibError> {
     let mut transform_mat = [[0; 3]; 3];
     let pointgroup = ptg_get_transformation_matrix(
         &mut transform_mat, rotations, None, /* aperiodic_axis */
@@ -660,7 +674,7 @@ pub fn spg_get_pointgroup(
 ///
 /// 根据 UNI 编号查询磁性空间群类型信息。返回默认值（全零）表示未找到。
 pub fn spg_get_magnetic_spacegroup_type(
-    uni_number: i32,
+    uni_number: usize,
 ) -> SpglibMagneticSpacegroupType {
     let msgtype = crate::msg_database::msgdb_get_magnetic_spacegroup_type(uni_number);
     SpglibMagneticSpacegroupType {
@@ -679,7 +693,7 @@ pub fn spg_get_magnetic_spacegroup_type(
 pub fn spg_get_magnetic_spacegroup_type_from_symmetry(
     rotations: &[Mat3I],
     translations: &[Vec3],
-    time_reversals: Option<&[i32]>,
+    time_reversals: Option<&[bool]>,
     lattice: &Mat3,
     symprec: f64,
 ) -> SpglibMagneticSpacegroupType {
@@ -688,7 +702,7 @@ pub fn spg_get_magnetic_spacegroup_type_from_symmetry(
     for i in 0..n_ops {
         mag_sym.rot[i] = rotations[i];
         mag_sym.trans[i] = translations[i];
-        mag_sym.timerev[i] = time_reversals.map_or(0, |tr| tr[i]);
+        mag_sym.timerev[i] = time_reversals.map_or(false, |tr| tr[i]);
     }
 
     match crate::magnetic_spacegroup::msg_identify_magnetic_space_group_type(
@@ -701,7 +715,7 @@ pub fn spg_get_magnetic_spacegroup_type_from_symmetry(
             bns_number: String::new(),
             og_number: String::new(),
             number: 0,
-            type_: 0,
+            type_: MagneticType::NonMagnetic,
         },
     }
 }
@@ -709,17 +723,17 @@ pub fn spg_get_magnetic_spacegroup_type_from_symmetry(
 /// 磁空间群 + 对称操作的完整分析结果。
 pub struct SpglibMagneticSymmetry {
     /// 空间群编号 (1-230)
-    pub spacegroup_number: i32,
+    pub spacegroup_number: usize,
     /// 国际符号（短）
     pub international_short: String,
     /// Hall 编号 (1-530)
-    pub hall_number: i32,
+    pub hall_number: usize,
     /// Hall 符号
     pub hall_symbol: String,
     /// 磁空间群 UNI 编号 (0 表示未找到)
-    pub uni_number: i32,
+    pub uni_number: usize,
     /// 磁性类型: 0=非磁, 1=ordinary, 2=grey, 3=black-white, 4=anti-translation
-    pub magnetic_type: i32,
+    pub magnetic_type: MagneticType,
     /// BNS 符号（如 "221.93"）
     pub bns_number: String,
     /// OG 符号（如 "221.2.1595"）
@@ -730,8 +744,8 @@ pub struct SpglibMagneticSymmetry {
     pub rotations: Vec<Mat3I>,
     /// 平移向量 (分数坐标)
     pub translations: Vec<Vec3>,
-    /// 时间反演标记 (0=ordinary, 1=anti)
-    pub time_reversals: Vec<i32>,
+    /// 时间反演标记 (false=ordinary, true=anti)
+    pub time_reversals: Vec<bool>,
 }
 
 /// 从晶格 + 原子位置 + 磁矩分析磁空间群和对称操作。
@@ -791,7 +805,7 @@ pub fn spg_get_magnetic_dataset(
         // 无磁矩: 只返回非磁结果
         let rot = (0..nonspin_sym.size).map(|i| nonspin_sym.rot[i]).collect();
         let trans = (0..nonspin_sym.size).map(|i| nonspin_sym.trans[i]).collect();
-        let timerev = vec![0; nonspin_sym.size];
+        let timerev = vec![false; nonspin_sym.size];
         let spg_type = crate::spg_database::spgdb_get_spacegroup_type(hall_number);
         return Some(SpglibMagneticSymmetry {
             spacegroup_number: spg.number,
@@ -799,7 +813,7 @@ pub fn spg_get_magnetic_dataset(
             hall_number,
             hall_symbol: spg_type.hall_symbol.trim().to_string(),
             uni_number: 0,
-            magnetic_type: 0,
+            magnetic_type: MagneticType::NonMagnetic,
             bns_number: String::new(),
             og_number: String::new(),
             num_operations: nonspin_sym.size,
@@ -844,7 +858,7 @@ pub fn spg_get_magnetic_dataset(
         for (j, &idx) in valid.iter().enumerate() {
             fallback.rot[j] = nonspin_sym.rot[idx];
             fallback.trans[j] = nonspin_sym.trans[idx];
-            fallback.timerev[j] = tr[idx];
+            fallback.timerev[j] = tr[idx] != 0;
         }
         (fallback, true)
     } else {
@@ -852,9 +866,13 @@ pub fn spg_get_magnetic_dataset(
     };
 
     // --- 4. 磁空间群识别 ---
-    let ds = crate::magnetic_spacegroup::msg_identify_magnetic_space_group_type(
+    // 用已求得的非磁 Hall 编号作为 parent_hall_number fallback。
+    // 当 FSG 空间群搜索失败时（如多原子磁细胞的原胞约化限制），
+    // fallback 直接使用非磁母空间群来搜索 UNI 候选。
+    let ds = crate::magnetic_spacegroup::msg_identify_with_parent_hall(
         lattice,
         &final_mag_sym,
+        Some(hall_number),
         symprec,
     );
     let (uni_number, magnetic_type, bns_number, og_number) = match ds {
@@ -876,10 +894,10 @@ pub fn spg_get_magnetic_dataset(
                     let n_xsg = xsg.size;
                     let n_msg = final_mag_sym.size;
                     if n_fsg == n_xsg {
-                        if n_msg == n_fsg { 1 } else if n_msg == 2 * n_fsg { 2 } else { 0 }
-                    } else if n_fsg == 2 * n_xsg { 3 } else { 0 }
+                        if n_msg == n_fsg { MagneticType::Ordinary } else if n_msg == 2 * n_fsg { MagneticType::Grey } else { MagneticType::NonMagnetic }
+                    } else if n_fsg == 2 * n_xsg { MagneticType::BlackWhite } else { MagneticType::NonMagnetic }
                 }
-                _ => 0,
+                _ => MagneticType::NonMagnetic,
             };
             (0, fallback_type, String::new(), String::new())
         }
@@ -1007,17 +1025,17 @@ pub fn spg_format_magnetic_symmetry(result: &SpglibMagneticSymmetry) -> String {
     let _ = writeln!(s, "  Hall symbol:     {}", result.hall_symbol);
 
     // 磁空间群信息
-    if result.magnetic_type > 0 {
+    if result.magnetic_type != MagneticType::NonMagnetic {
         let type_str = match result.magnetic_type {
-            1 => "Type-1 (ordinary, no time reversal)",
-            2 => "Type-2 (grey, with pure 1')",
-            3 => "Type-3 (black-white, anti-rotation)",
-            4 => "Type-4 (black-white, anti-translation)",
-            _ => "unknown",
+            MagneticType::Ordinary => "Type-1 (ordinary, no time reversal)",
+            MagneticType::Grey => "Type-2 (grey, with pure 1')",
+            MagneticType::BlackWhite => "Type-3 (black-white, anti-rotation)",
+            MagneticType::AntiTranslation => "Type-4 (black-white, anti-translation)",
+            MagneticType::NonMagnetic => "none",
         };
         let _ = writeln!(s, "--- Magnetic space group ---");
         let _ = writeln!(s, "  UNI number:      {}", result.uni_number);
-        let _ = writeln!(s, "  Magnetic type:   {} ({})", result.magnetic_type, type_str);
+        let _ = writeln!(s, "  Magnetic type:   {} ({})", result.magnetic_type as i32, type_str);
         let _ = writeln!(s, "  BNS symbol:      {}", result.bns_number);
         let _ = writeln!(s, "  OG number:       {}", result.og_number);
     } else {
@@ -1030,7 +1048,7 @@ pub fn spg_format_magnetic_symmetry(result: &SpglibMagneticSymmetry) -> String {
         let r = &result.rotations[i];
         let t = &result.translations[i];
         let tr = result.time_reversals[i];
-        let timerev_str = if tr == 1 { "'" } else { " " };
+        let timerev_str = if tr { "'" } else { " " };
         let _ = writeln!(
             s,
             "  {}. rot=[{:2},{:2},{:2};{:2},{:2},{:2};{:2},{:2},{:2}] trans=[{:.3},{:.3},{:.3}]{}",
@@ -1072,13 +1090,22 @@ pub fn spg_read_structure(data: &str) -> Option<(Mat3, Vec<Vec3>, Vec<i32>, Opti
     let scale: f64 = lines.get(1)?.trim().parse().ok()?;
 
     // lattice vectors
-    let mut lattice = [[0.0; 3]; 3];
+    // POSCAR 格式: 每行是一个晶格矢量（行向量）
+    // 我们的 lattice[cart][vec] 需要列=矢量，所以读取后需转置
+    let mut rows = [[0.0; 3]; 3];
     for i in 0..3 {
         let parts: Vec<f64> = lines[i + 2].split_whitespace().filter_map(|x| x.parse().ok()).collect();
         if parts.len() < 3 {
             return None;
         }
-        lattice[i] = [parts[0], parts[1], parts[2]];
+        rows[i] = [parts[0], parts[1], parts[2]];
+    }
+    // 转置: lattice[cart][vec] ← 行向量
+    let mut lattice = [[0.0; 3]; 3];
+    for i in 0..3 {
+        for j in 0..3 {
+            lattice[i][j] = rows[j][i];
+        }
     }
     // apply scale
     if scale != 1.0 {
@@ -1170,9 +1197,8 @@ fn element_to_number(symbol: &str) -> i32 {
 /// Delaunay 晶格约化。
 ///
 pub fn spg_delaunay_reduce(lattice: &mut Mat3, symprec: f64) -> Result<(), SpglibError> {
-    let mut red_lattice = [[0.0; 3]; 3];
-    if del_delaunay_reduce(&mut red_lattice, lattice, symprec) {
-        mat_copy_matrix_d3(lattice, &red_lattice);
+    if let Some(reduced) = del_delaunay_reduce(lattice, symprec) {
+        *lattice = reduced;
         Ok(())
     } else {
         Err(SpglibError::DelaunayFailed)
@@ -1362,10 +1388,10 @@ fn get_dataset(
 
 /// 将 Cell 数据设置到输入晶胞。
 fn cel_set_cell(cell: &mut Cell, lattice: &Mat3, position: &[Vec3], types: &[i32]) {
-    mat_copy_matrix_d3(&mut cell.lattice, lattice);
+    cell.lattice = *lattice;
     for i in 0..cell.size {
         cell.types[i] = types[i];
-        mat_copy_vector_d3(&mut cell.position[i], &position[i]);
+        cell.position[i] = position[i];
     }
 }
 
@@ -1377,11 +1403,11 @@ fn cel_set_layer_cell(
     types: &[i32],
     aperiodic_axis: Option<AperiodicAxis>,
 ) {
-    mat_copy_matrix_d3(&mut cell.lattice, lattice);
+    cell.lattice = *lattice;
     cell.aperiodic_axis = aperiodic_axis;
     for i in 0..cell.size {
         cell.types[i] = types[i];
-        mat_copy_vector_d3(&mut cell.position[i], &position[i]);
+        cell.position[i] = position[i];
     }
 }
 
@@ -1507,10 +1533,10 @@ fn standardize_primitive(
         .ok_or(SpglibError::CellStandardizationFailed)?;
 
     let mut bravais = Cell::new(dataset.n_std_atoms, TensorRank::NoSpin);
-    mat_copy_matrix_d3(&mut bravais.lattice, &dataset.std_lattice);
+    bravais.lattice = dataset.std_lattice;
     for i in 0..dataset.n_std_atoms {
         bravais.types[i] = dataset.std_types[i];
-        mat_copy_vector_d3(&mut bravais.position[i], &dataset.std_positions[i]);
+        bravais.position[i] = dataset.std_positions[i];
     }
 
     let mut mapping_table: Vec<usize> = vec![0; bravais.size];
@@ -1545,10 +1571,10 @@ fn standardize_cell(
 
     let n_std = dataset.n_std_atoms;
     let mut cell = Cell::new(n_std, TensorRank::NoSpin);
-    mat_copy_matrix_d3(&mut cell.lattice, &dataset.std_lattice);
+    cell.lattice = dataset.std_lattice;
     for i in 0..n_std {
         cell.types[i] = dataset.std_types[i];
-        mat_copy_vector_d3(&mut cell.position[i], &dataset.std_positions[i]);
+        cell.position[i] = dataset.std_positions[i];
     }
     Ok(cell)
 }
@@ -1568,10 +1594,10 @@ fn get_standardized_cell(
 
     let num_atom = position.len();
     let mut cell = Cell::new(num_atom, TensorRank::NoSpin);
-    mat_copy_matrix_d3(&mut cell.lattice, lattice);
+    cell.lattice = *lattice;
     for i in 0..num_atom {
         cell.types[i] = types[i];
-        mat_copy_vector_d3(&mut cell.position[i], &position[i]);
+        cell.position[i] = position[i];
     }
 
     let mut mapping_table: Vec<usize> = vec![0; num_atom];
@@ -1606,7 +1632,7 @@ fn get_international(
     types: &[i32],
     symprec: f64,
     angle_tolerance: f64,
-) -> Result<(i32, String), SpglibError> {
+) -> Result<(usize, String), SpglibError> {
     let dataset = get_dataset(lattice, position, types, None, 0, symprec, angle_tolerance)?;
     if dataset.spacegroup_number > 0 {
         Ok((dataset.spacegroup_number, dataset.international_symbol))
@@ -1622,7 +1648,7 @@ fn get_schoenflies(
     types: &[i32],
     symprec: f64,
     angle_tolerance: f64,
-) -> Result<(i32, String), SpglibError> {
+) -> Result<(usize, String), SpglibError> {
     let dataset = get_dataset(lattice, position, types, None, 0, symprec, angle_tolerance)?;
     if dataset.spacegroup_number > 0 {
         if let Ok(spgtype) = get_spacegroup_type(dataset.hall_number) {
@@ -1633,7 +1659,7 @@ fn get_schoenflies(
 }
 
 /// 获取 Hall 编号对应的 Centering。
-fn get_centering(hall_number: i32) -> Option<Centering> {
+fn get_centering(hall_number: usize) -> Option<Centering> {
     Some(spgdb_get_spacegroup_type(hall_number).centering)
 }
 
@@ -1644,7 +1670,7 @@ fn get_hall_number_from_symmetry(
     lattice: &Mat3,
     transform_lattice_by_tmat: bool,
     symprec: f64,
-) -> Result<i32, SpglibError> {
+) -> Result<usize, SpglibError> {
     let num_ops = rotations.len();
     let mut symmetry = Symmetry::new(num_ops);
     for i in 0..num_ops {
@@ -1670,8 +1696,8 @@ fn get_hall_number_from_symmetry(
 }
 
 /// 获取 SpglibSpacegroupType。
-fn get_spacegroup_type(hall_number: i32) -> Result<SpglibSpacegroupType, SpglibError> {
-    if hall_number <= 0 || hall_number >= 531 {
+fn get_spacegroup_type(hall_number: usize) -> Result<SpglibSpacegroupType, SpglibError> {
+    if hall_number == 0 || hall_number >= 531 {
         return Err(SpglibError::SpacegroupSearchFailed);
     }
 
@@ -1709,10 +1735,10 @@ fn get_ir_reciprocal_mesh(
 ) -> Result<usize, SpglibError> {
     let dataset = get_dataset(lattice, position, types, None, 0, symprec, angle_tolerance)?;
 
-    use crate::mathfunc::{MatINT, mat_copy_matrix_i3};
+    use crate::mathfunc::MatINT;
     let mut rotations = MatINT::new(dataset.n_operations);
     for i in 0..dataset.n_operations {
-        mat_copy_matrix_i3(&mut rotations.mat[i], &dataset.rotations[i]);
+        rotations.mat[i] = dataset.rotations[i];
     }
     let rot_reciprocal = crate::kpoint::kpt_get_point_group_reciprocal(
         &rotations,
@@ -1739,10 +1765,10 @@ fn get_dense_ir_reciprocal_mesh(
 ) -> Result<usize, SpglibError> {
     let dataset = get_dataset(lattice, position, types, None, 0, symprec, angle_tolerance)?;
 
-    use crate::mathfunc::{MatINT, mat_copy_matrix_i3};
+    use crate::mathfunc::MatINT;
     let mut rotations = MatINT::new(dataset.n_operations);
     for i in 0..dataset.n_operations {
-        mat_copy_matrix_i3(&mut rotations.mat[i], &dataset.rotations[i]);
+        rotations.mat[i] = dataset.rotations[i];
     }
     let rot_reciprocal = crate::kpoint::kpt_get_point_group_reciprocal(
         &rotations,
