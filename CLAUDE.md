@@ -6,8 +6,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ```bash
 cargo build              # Build the library
-cargo test               # Run all 69 tests (magnetic: ~24 end-to-end)
-cargo test test_fcc -- --nocapture  # FCC FM 测试（含已知 bug 的原始输出）
+cargo test               # Run all 69 tests (magnetic: 24+ end-to-end)
+cargo test test_fcc -- --nocapture  # FCC FM 测试
 cargo test -- --nocapture  # Run tests with debug output (eprintln visible)
 cargo test <test_name>   # Run a single test (e.g., `cargo test test_graphene_p6mmm`)
 cargo check              # Check compilation without building
@@ -152,111 +152,75 @@ Magnetic space group tests in `magnetic_spacegroup_test.rs`:
 - Public API `spg_get_magnetic_spacegroup_type_from_symmetry`
 - Edge cases: empty symmetry, missing identity
 
-## Magnetic Space Group Status
+## Magnetic Space Group: Complete Pipeline
 
-Magnetic space group identification is fully functional for direct magnetic symmetry analysis.
+End-to-end: **POSCAR-like input → non-magnetic space group + magnetic space group (BNS) + symmetry operations**.
 
-### Implemented Components
-
-| Component | Lines | Description |
-|-----------|-------|-------------|
-| `convert_msgdb.py` | ~200 | Python script to auto-convert C data arrays to Rust static data |
-| `msg_database_gen.rs` | **28,319** | Generated static arrays (6 arrays: 1652 MSG types, 531 Hall mappings, 76683 encoded operations, etc.) |
-| `msg_database.rs` | ~120 | Database query functions |
-| `magnetic_spacegroup.rs` | ~500 | Magnetic identification pipeline: FSG/XSG extraction, type classification (1-4), database matching, auto-detect lower-symmetry parent |
-| `magnetic_spacegroup_test.rs` | ~600 | 24 tests: Type-1/2/3, Fe/Cu AFM, FCC FM, end-to-end, edge cases |
-| `spin.rs` | ~650 | Magnetic symmetry from site tensors (`spn_get_operations_with_site_tensors`) |
-| `lib.rs` public API | ~400 | `SpglibMagneticSymmetry`, `spg_get_magnetic_dataset`, `spg_read_structure`, `spg_format_magnetic_symmetry` |
-
-### Public API: End-to-End Pipeline
+### API
 
 ```rust
-/// 从晶格 + 原子位置 + 磁矩分析磁空间群和对称操作。
 pub fn spg_get_magnetic_dataset(
-    lattice: &Mat3,
-    positions: &[Vec3],
-    types: &[i32],
-    magnetic_moments: Option<&[[f64; 3]]>,  // None = 非磁
-    symprec: f64,
+    lattice, positions, types, magnetic_moments, symprec
 ) -> Option<SpglibMagneticSymmetry>;
 
-/// 从类似 POSCAR 的格式解析结构。
-pub fn spg_read_structure(data: &str) -> Option<(Mat3, Vec<Vec3>, Vec<i32>, Option<Vec<[f64; 3]>>)>;
+pub fn spg_read_structure(data) -> Option<(Mat3, Vec<Vec3>, Vec<i32>, Option<Vec<[f64;3]>>)>;
 
-/// 格式化输出（类似 phonopy --symmetry 风格）。
-pub fn spg_format_magnetic_symmetry(result: &SpglibMagneticSymmetry) -> String;
+pub fn spg_format_magnetic_symmetry(result) -> String;
 ```
 
-管线流程:
-1. `prm_get_primitive` + `spa_search_spacegroup` → 非磁空间群
-2. `sym_get_operation` → 非磁对称操作
-3. `spn_get_operations_with_site_tensors` → 磁对称操作（含 timerev 标记）
-4. `msg_identify_magnetic_space_group_type` → 磁空间群 UNI + BNS 符号
-
-### Database Architecture
+### Pipeline Flow
 
 ```
-HALL_MAPPING[hall_number] → [min_uni, max_uni]        # Hall → UNI range
-UNI_MAPPING[uni_number]   → [num_halls, first_hall]    # UNI → Hall mapping
-OPERATION_INDEX[uni][offset] → [count, start]           # UNI → operation index
+POSCAR → Cell (TensorRank::NonCollinear)
+  → prm_get_primitive + spa_search_spacegroup → 非磁空间群
+  → sym_get_operation(&cell)                  → 非磁对称操作（常规晶胞基）
+  → spn_get_operations_with_site_tensors      → 磁对称操作（含 timerev 标记）
+  → reduce_to_primitive_magsym                → 纯平移约化到原胞表示
+  → msg_identify_magnetic_space_group_type    → 磁空间群 UNI + BNS
 ```
 
-Each operation in `MAGNETIC_SYMMETRY_OPERATIONS` is a single i32 encoding:
-- Rotation matrix (base-3) + translation vector (base-12) + time-reversal flag
+### Key Fixes Made
 
-### Verified Test Cases (69 tests)
+| # | Problem | Fix | Impact |
+|---|---------|-----|--------|
+| 1 | `spn_get_operations_with_site_tensors` 用原胞基旋转映射常规晶胞位置 | 改用 `sym_get_operation(&cell)` 常规晶胞对称操作 | FCC ops: 4→64, BCC ops: 正确 |
+| 2 | 磁匹配要求 `changed_symmetry` 与 DB 操作数严格相等 | `is_subset` 替换 `is_equal`，允许子集匹配 | 磁矩破缺对称性时可匹配 DB |
+| 3 | `changed_symmetry` 是常规晶胞表示，DB 用原胞表示 | `reduce_to_primitive_magsym` 用纯平移约化到原胞 | FCC 64→16 ops 正确匹配 |
 
-| Test | Structure | Non-mag Spg | Magnetic Result |
-|------|-----------|------------|----------------|
-| Type-1/2/3 (database ops) | Pm-3m hall 517 | #221 | UNI 1594-1598 |
-| Fe [1,0,0] body center | 1 atom @ SC body center | Pm-3m (#221) | P4/mmm (#123), Type-3 |
-| Fe [1,1,1] body center | 1 atom @ SC body center | Pm-3m (#221) | R-3m (#166), UNI=1331 |
-| Co AFM [111] BCC | 2 atoms BCC | Im-3m (#229) | R-3m (#166), UNI=1331 |
-| 8-atom AFM [111] | 8 atoms SC | Pm-3m (#221) | 24 ops (collinear AFM) |
-| 8-atom AFM [001] | 8 atoms SC | Pm-3m (#221) | 32 ops (z-axis collinear AFM) |
-| FCC FM [001] | 4 atoms FCC | Fm-3m (#225) | Type-4, 4 ops, UNI=0 |
-| FCC FM [111] | 4 atoms FCC | Fm-3m (#225) | Type-4, 4 ops, UNI=0 |
-| End-to-end POSCAR | Fe SC body center | Pm-3m (#221) | 16 ops, Type-3 |
-| End-to-end POSCAR AFM | Fe BCC AFM | Im-3m (#229) | R-3m, UNI=1331 |
+### `reduce_to_primitive_magsym` (核心修复)
 
-### Known Issue: `spn_get_operations_with_site_tensors` Base Mismatch
+检测磁对称操作中的纯平移（identity + timerev=0），通过它们将操作约化到最短 translation
+并去重，实现从常规晶胞到原胞的表示转换。例如 FCC 4 原子晶胞的 64 个操作含 4 个中心化
+平移，约化后得到 16 个原胞操作。
 
-**问题描述**: `spn_get_operations_with_site_tensors` 接收的「非磁对称操作」来自**原胞**
-（`sym_get_operation` on primitive cell），但这些操作是在原胞的晶格基（如 FCC 的菱面体基）
-下的整数旋转矩阵。而函数内部的原子位置匹配 (`apply_symmetry_to_position`) 直接用这些
-旋转矩阵去映射**常规晶胞**（如 FCC 的立方基）的原子坐标分数——基矢不同导致位置映射失败。
+### Verified Test Results (69 tests)
 
-**影响**: 对面心/体心等非常规原胞（BCC、FCC 等），`spn_get_operations_with_site_tensors`
-只能找到少量磁对称操作（如 FCC 铁磁只有 4 个），因为大多数操作的位置映射不正确。
+| Test | Structure | Non-mag | Magnetic Space Group | BNS |
+|------|-----------|---------|--------------------|-----|
+| Type-1/2/3 (DB ops) | Pm-3m hall 517 | #221 | UNI 1594-1598 | 221.92-221.96 |
+| Fe [1,0,0] | 1 atom @ SC body center | Pm-3m (#221) | P4/mmm (#123) Type-3 | - |
+| Fe [1,1,1] | 1 atom @ SC body center | Pm-3m (#221) | R-3m (#166) UNI=1331 | 166.101 |
+| Co AFM [111] | 2 atoms BCC | Im-3m (#229) | R-3m (#166) UNI=1331 | 166.101 |
+| FCC FM [001] | 4 atoms FCC | Fm-3m (#225) | P4/mmm (#123) UNI=1005 | 123.345 |
+| FCC FM [111] | 4 atoms FCC | Fm-3m (#225) | R-3m (#166) UNI=1331 | 166.101 |
+| End-to-end POSCAR | Fe SC body center [001] | Pm-3m (#221) | P4/mmm (#123) UNI=1005 | 123.345 |
+| End-to-end POSCAR AFM | Fe BCC AFM [111] | Im-3m (#229) | R-3m (#166) UNI=1331 | 166.101 |
 
-**具体表现 (FCC FM [001])**:
-- 非磁: Fm-3m (#225)，常规晶胞 4 原子，原胞 1 原子
-- `sym_get_operation` → 48 个原胞对称操作（菱面体基）
-- `spn_get_operations_with_site_tensors`: 用这 48 个操作去匹配 4 个立方基原子的磁矩
-- 位置匹配无法正确对应 → 只保留 4 个有效操作 → Type-4
-- 实际上 FCC 铁磁应有更多对称操作
+### C Code Comparison
 
-**根因**: `spin.rs` 中 `get_operations` 函数的原子位置循环:
-```rust
-// rot 来自原胞（如菱面体基），position 来自常规晶胞（立方基）
-apply_symmetry_to_position(&mut pos, &cell.position[j],
-    &sym_nonspin.rot[i], &sym_nonspin.trans[i]);  // 基矢不匹配
-```
+The original C spglib has the SAME limitations and is WORSE:
 
-**修复方向**: 将原胞旋转矩阵转换到常规晶胞基后，用转换后的矩阵进行位置匹配：
-```rust
-// 先用 lattice 将旋转从原胞基转到笛卡尔，再转到常规晶胞基
-let rot_conventional = convert_to_conventional_basis(sym_nonspin.rot[i], lattice, prim_lattice);
-apply_symmetry_to_position(&mut pos, &cell.position[j], &rot_conventional, &trans);
-```
+| Issue | C code | Rust |
+|-------|--------|------|
+| Space-group search from magnetic symmetry | NULL crash (no check) | Graceful `Option::None` |
+| `parent_hall_number` fallback | TODO comment only | Implemented |
+| Pure translation reduction | Not implemented | `reduce_to_primitive_magsym` |
+| Subset matching vs exact | Exact only | `is_subset` + `is_equal` |
 
-**修复**: `spg_get_magnetic_dataset` 中改用常规晶胞 (`sym_get_operation(&cell)`) 
-获取对称操作而非原胞 (`sym_get_operation(prim_cell)`)，确保旋转矩阵在正确基下。
-
-**FCC FM [001]**: 64 ops (vs 之前 4 ops), **FCC FM [111]**: 48 ops (vs 之前 4 ops)
-两个都正确分类为 Type-3。
-
-**当前状态**: ✅ 已修复
+C code key lines in `src_c/magnetic_spacegroup.txt`:
+- Line 112-113: `/* TODO(shinohara): add option to specify hall_number ... */`
+- Line 593-596: NULL dereference on failed search
+- Line 615-617: Dead NULL check (never reached)
 
 ## Notes
 
