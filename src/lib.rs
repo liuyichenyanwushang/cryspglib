@@ -758,7 +758,7 @@ pub struct SpglibMagneticSymmetry {
 ///
 /// # 示例
 /// ```
-/// # use rspglib::spg_get_magnetic_dataset;
+/// # use cryspglib::spg_get_magnetic_dataset;
 /// let lattice = [[1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0]];
 /// let positions = [[0.0, 0.0, 0.0], [0.5, 0.5, 0.5]];
 /// let types = [26, 26];
