@@ -7,7 +7,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ```bash
 rustup default nightly    # Required: edition 2024 needs nightly Rust
 cargo build              # Build the library
-cargo test               # Run all 66 tests + 1 doctest (ignored)
+cargo test               # Run all 70 tests + 1 doctest (ignored)
 cargo test -- --nocapture  # Run tests with debug output (eprintln visible)
 cargo test <test_name>   # Run a single test (e.g., `cargo test test_graphene_p6mmm`)
 cargo check              # Check compilation without building
@@ -156,8 +156,16 @@ Tests are inline (`#[cfg(test)] mod tests` in most `.rs` files) and in dedicated
 - Edge cases: empty symmetry, missing identity
 
 **CoF3 tests** (in `cof3_test.rs`):
-- End-to-end CoF3 magnetic structure identification from POSCAR files
+- Non-magnetic: R-3c (#167) with 24 atoms (18 F + 6 Cr)
+- Magnetic: Cr AFM [001] alternating ±z → Type-1, UNI=1333, BNS=167.103
 - POSCAR test files in `test/CoF3/` (POSCAR, BPOSCAR, PPOSCAR)
+
+**CrPS₄ tests** (in `crps4_test.rs`):
+- Monoclinic C2 (#5) with 48 atoms (8 Cr + 8 P + 32 S)
+- Primitive cell validation against phonopy PPOSCAR (12 atoms)
+
+**La₂NiO₄ tests** (in `la2nio4_test.rs`):
+- Tetragonal P4₂/ncm (#138) with 28 atoms (8 La + 4 Ni + 16 O)
 
 **Unit tests** for individual modules: `kgrid.rs`, `kpoint.rs`, `cell.rs`, `delaunay.rs`, `debug.rs`, `overlap.rs`, `symmetry.rs`.
 
@@ -171,9 +179,7 @@ End-to-end: **POSCAR-like input → non-magnetic space group + magnetic space gr
 pub fn spg_get_magnetic_dataset(
     lattice, positions, types, magnetic_moments, symprec
 ) -> Option<SpglibMagneticSymmetry>;
-
 pub fn spg_read_structure(data) -> Option<(Mat3, Vec<Vec3>, Vec<i32>, Option<Vec<[f64;3]>>)>;
-
 pub fn spg_format_magnetic_symmetry(result) -> String;
 ```
 
@@ -188,84 +194,24 @@ POSCAR → Cell (TensorRank::NonCollinear)
   → msg_identify_magnetic_space_group_type    → 磁空间群 UNI + BNS
 ```
 
-### Key Fixes Made
+### Critical Design Rules
 
-| # | Problem | Fix | Impact |
-|---|---------|-----|--------|
-| 1 | `spn_get_operations_with_site_tensors` 用原胞基旋转映射常规晶胞位置 | 改用 `sym_get_operation(&cell)` 常规晶胞对称操作 | FCC ops: 4→64, BCC ops: 正确 |
-| 2 | 磁匹配要求 `changed_symmetry` 与 DB 操作数严格相等 | `is_subset` 替换 `is_equal`，允许子集匹配 | 磁矩破缺对称性时可匹配 DB |
-| 3 | `changed_symmetry` 是常规晶胞表示，DB 用原胞表示 | `reduce_to_primitive_magsym` 用纯平移约化到原胞 | FCC 64→16 ops 正确匹配 |
+1. **Must use `sym_get_operation(&cell)` for non-magnetic symmetry**, not `sym_get_operation` on the primitive cell. Using primitive cell basis to map conventional cell positions gives wrong rotation mapping (FCC drops from 64 to 4 ops).
 
-### `reduce_to_primitive_magsym` (核心修复)
+2. **Magnetic matching uses subset, not equality.** Magnetic moments may break some symmetries, so `changed_symmetry` may have fewer operations than the database. Use `is_subset` instead of `is_equal` when matching against DB.
 
-检测磁对称操作中的纯平移（identity + timerev=0），通过它们将操作约化到最短 translation
-并去重，实现从常规晶胞到原胞的表示转换。例如 FCC 4 原子晶胞的 64 个操作含 4 个中心化
-平移，约化后得到 16 个原胞操作。
+3. **`reduce_to_primitive_magsym` is mandatory** before calling `msg_identify_magnetic_space_group_type`. The non-magnetic symmetry operations come in the conventional cell representation (e.g., FCC 4-atom cell has 64 ops with 4 centering translations), but the magnetic DB uses primitive cell representation (16 ops). This function detects pure translations (identity rotation) and reduces operations to shortest translations with deduplication.
 
-### Verified Test Results (69 tests)
+Key rules for lattice translation collection:
+- timerev=0 identity ops → always included as reduction translations
+- timerev=1 identity ops with **non-zero** translation (e.g., BCC (0.5,0.5,0.5) with spin flip in AFM) → included, since they represent centering translations that carry spin reversal
+- timerev=1 identity ops with **zero** translation → excluded, as these are part of Type-2 (Grey) group structure, not lattice translations
 
-| Test | Structure | Non-mag | Magnetic Space Group | BNS |
-|------|-----------|---------|--------------------|-----|
-| Type-1/2/3 (DB ops) | Pm-3m hall 517 | #221 | UNI 1594-1598 | 221.92-221.96 |
-| Fe [1,0,0] | 1 atom @ SC body center | Pm-3m (#221) | P4/mmm (#123) Type-3 | - |
-| Fe [1,1,1] | 1 atom @ SC body center | Pm-3m (#221) | R-3m (#166) UNI=1331 | 166.101 |
-| Co AFM [111] | 2 atoms BCC | Im-3m (#229) | R-3m (#166) UNI=1331 | 166.101 |
-| FCC FM [001] | 4 atoms FCC | Fm-3m (#225) | P4/mmm (#123) UNI=1005 | 123.345 |
-| FCC FM [111] | 4 atoms FCC | Fm-3m (#225) | R-3m (#166) UNI=1331 | 166.101 |
-| End-to-end POSCAR | Fe SC body center [001] | Pm-3m (#221) | P4/mmm (#123) UNI=1005 | 123.345 |
-| End-to-end POSCAR AFM | Fe BCC AFM [111] | Im-3m (#229) | R-3m (#166) UNI=1331 | 166.101 |
+When applying such a translation `(lt, ltr)`: `(R, t, tr) → (R, t - lt, tr XOR ltr)`.
 
-### C Code Comparison
+4. **Always call `match_hall_symbol_db`** (not `hal_match_hall_symbol_db` directly) in `search_hall_number`. The intermediate layer does: (a) point-group filter to skip unmatching Hall numbers, (b) centering expansion for RCenter (expands 12 primitive ops → 36 with centering translations `(2/3,1/3,1/3)` and `(1/3,2/3,2/3)`). Without expansion, all 7 rhombohedral Hall numbers fail matching because DB ops (36) can't match symmetry ops (12). Other centerings are pre-expanded by `get_initial_conventional_symmetry`.
 
-The original C spglib has the SAME limitations and is WORSE:
-
-| Issue | C code | Rust |
-|-------|--------|------|
-| Space-group search from magnetic symmetry | NULL crash (no check) | Graceful `Option::None` |
-| `parent_hall_number` fallback | TODO comment only | Implemented |
-| Pure translation reduction | Not implemented | `reduce_to_primitive_magsym` |
-| Subset matching vs exact | Exact only | `is_subset` + `is_equal` |
-
-C code key lines in `src_c/magnetic_spacegroup.txt`:
-- Line 112-113: `/* TODO(shinohara): add option to specify hall_number ... */`
-- Line 593-596: NULL dereference on failed search
-- Line 615-617: Dead NULL check (never reached)
-
-### Fixed: R-center hall number matching bug (2026-04-25)
-
-**Symptom**: CoF3 (R-3c rhombohedral) identified as #5 (C2 monoclinic) instead of #167 (R-3c).
-
-**Root cause**: `search_hall_number` in `spacegroup.rs` bypassed C's static `match_hall_symbol_db` intermediate layer
-(`spacegroup.c:991`) and called `hal_match_hall_symbol_db` directly. The intermediate layer does critical preprocessing:
-
-1. **Point-group filter** (`spacegroup.c:1005`): skips Hall numbers whose DB point group doesn't match
-2. **R-center centering expansion** (`spacegroup.c:1623` in `match_hall_symbol_db_change_of_basis_loop`):
-   `get_conventional_symmetry(change_of_basis, R_CENTER, conv_symmetry)` expands 12 primitive ops → 36 ops
-   with centering translations `(2/3,1/3,1/3)` and `(1/3,2/3,2/3)`
-
-Without expansion, `is_hall_symbol` compared DB's 36 ops against symmetry's 12 ops and failed immediately
-for all 7 rhombohedral Hall numbers (433, 436, 444, 450, 452, 458, 460).
-
-**Fix**: Ported three functions from C `spacegroup.c` to Rust `spacegroup.rs`:
-
-| New function | C source | Purpose |
-|-------------|----------|---------|
-| `match_hall_symbol_db_change_of_basis_loop` | `spacegroup.c:1610` | Generic change-of-basis loop with centering expansion |
-| `match_hall_symbol_db_rhombo` | `spacegroup.c:1554` | Rhombohedral dispatch (hex vs primitive setting) |
-| `match_hall_symbol_db` | `spacegroup.c:991` | Top-level dispatcher: point-group filter + holohedry routing |
-
-Also added `CHANGE_OF_BASIS_RHOMBO` (6 matrices) and `CHANGE_OF_BASIS_RHOMBO_HEX` (6 matrices) constants.
-
-`search_hall_number` now calls `match_hall_symbol_db` instead of `hal_match_hall_symbol_db` directly.
-
-**Why only RCenter was affected**: For all other centerings (Body, Face, A/B/C-Face),
-`get_initial_conventional_symmetry` already expands centering translations. RCenter was the
-only case where expansion was deliberately deferred (it depends on the change-of-basis matrix).
-
-**Pre-existing errors fixed in `hall_symbol.rs`** (unrelated to the bug, blocked compilation):
-- `mat_copy_matrix_d3` doesn't exist in mathfunc → replaced with `*bravais_lattice` (Mat3 is Copy)
-- `spgdb_get_operation_index` expects `usize`, caller passed `i32` → added `as usize` casts
-- Removed unused import `spgdb_get_operation`
+5. **UNI matching must prioritize parent Hall number.** After primitive reduction, `changed_symmetry` has the same operations regardless of centering (e.g., P-3c1 reduced=12 ≡ R-3c reduced=12). Since `is_subset` allows matching both, the result is non-unique (e.g., CoF3 AFM [001] matches both 165.91 Hall=457 and 167.103 Hall=460). The parent (non-magnetic) Hall number breaks this tie—the magnetic space group must be a subgroup of the parent. `msg_identify_with_parent_hall` now tries `parent_hall_number` first for UNI candidates, only falling back to the FSG-discovered Hall number if the parent gives no match.
 
 ## Notes
 

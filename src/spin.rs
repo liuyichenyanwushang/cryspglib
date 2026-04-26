@@ -5,7 +5,7 @@
 use crate::cell::{Cell, TensorRank, cel_is_overlap_with_same_type};
 use crate::debug;
 use crate::mathfunc::{
-    Mat3, Mat3I, Vec3, mat_check_identity_matrix_i3, mat_copy_matrix_d3, mat_dabs,
+    Mat3, Mat3I, Vec3, mat_check_identity_matrix_i3, mat_dabs,
     mat_get_determinant_d3, mat_inverse_matrix_d3, mat_multiply_matrix_d3, mat_multiply_matrix_id3,
     mat_multiply_matrix_vector_id3, mat_nint,
 };
@@ -60,17 +60,20 @@ pub fn spn_get_operations_with_site_tensors(
 
     let pure_trans = spn_collect_pure_translations_from_magnetic_symmetry(&magnetic_symmetry)?;
 
-    let multi = prm_get_primitive_lattice_vectors(
-        prim_lattice,
+    let Some((found_lattice, multi)) = prm_get_primitive_lattice_vectors(
         cell,
         &pure_trans,
         symprec,
         angle_tolerance,
-    );
+    ) else {
+        return None;
+    };
+
+    *prim_lattice = found_lattice;
 
     /* By definition, change of number of pure translations would */
     /* not be allowed. */
-    if multi != pure_trans.len() as i32 {
+    if multi != pure_trans.len() {
         return None;
     }
 
@@ -86,7 +89,7 @@ pub fn spn_collect_pure_translations_from_magnetic_symmetry(
     for i in 0..sym_msg.size {
         /* Take translation with rot=identity and timerev=false */
         /* time reversal should be considered for type-IV magnetic space group */
-        if mat_check_identity_matrix_i3(&IDENTITY, &sym_msg.rot[i]) && sym_msg.timerev[i] == 0 {
+        if mat_check_identity_matrix_i3(&IDENTITY, &sym_msg.rot[i]) && !sym_msg.timerev[i] {
             pure_trans.push(sym_msg.trans[i]);
         }
     }
@@ -111,7 +114,7 @@ pub fn spn_get_idealized_cell(
     is_axial: bool,
 ) -> Option<Cell> {
     let mut exact_cell = Cell::new(cell.size, cell.tensor_rank);
-    mat_copy_matrix_d3(&mut exact_cell.lattice, &cell.lattice);
+    exact_cell.lattice = cell.lattice;
     exact_cell.aperiodic_axis = cell.aperiodic_axis;
     exact_cell.types = cell.types.clone();
 
@@ -378,9 +381,9 @@ fn get_operations(
         magnetic_symmetry.rot[i] = rotations[i];
         magnetic_symmetry.trans[i] = trans[i];
         if with_time_reversal {
-            magnetic_symmetry.timerev[i] = (1 - spin_flips[i]) / 2;
+            magnetic_symmetry.timerev[i] = spin_flips[i] == -1;
         } else {
-            magnetic_symmetry.timerev[i] = 0;
+            magnetic_symmetry.timerev[i] = false;
         }
         debug::debug_print(format_args!("-- {} -- \n", i));
         debug::debug_print_matrix_i3(&magnetic_symmetry.rot[i]);
@@ -521,11 +524,11 @@ fn get_operation_sign_on_scalar(
     is_axial: bool,
     mag_symprec: f64,
 ) -> i32 {
-    for timerev in 0..=1 {
+    for &timerev in &[false, true] {
         let spin_j_ops =
             apply_symmetry_to_site_scalar(spin_j, rot_cart, timerev, with_time_reversal, is_axial);
         if is_zero(spin_k - spin_j_ops, mag_symprec) {
-            return 1 - 2 * timerev; // Spin-flip
+            return if timerev { -1 } else { 1 }; // Spin-flip
         }
     }
     0
@@ -540,7 +543,7 @@ fn get_operation_sign_on_vector(
     is_axial: bool,
     mag_symprec: f64,
 ) -> i32 {
-    for timerev in 0..=1 {
+    for &timerev in &[false, true] {
         let mut vec_j_ops = [0.0; 3];
         apply_symmetry_to_site_vector(
             &mut vec_j_ops,
@@ -556,7 +559,7 @@ fn get_operation_sign_on_vector(
             diff[s] = vectors[3 * k + s] - vec_j_ops[s];
         }
         if is_zero_d3(&diff, mag_symprec) {
-            return 1 - 2 * timerev; // Spin-flip
+            return if timerev { -1 } else { 1 }; // Spin-flip
         }
     }
     0
@@ -572,11 +575,11 @@ fn apply_symmetry_to_position(pos_dst: &mut Vec3, pos_src: &Vec3, rot: &Mat3I, t
 fn apply_symmetry_to_site_scalar(
     src: f64,
     rot_cart: &Mat3,
-    timerev: i32,
+    timerev: bool,
     with_time_reversal: bool,
     is_axial: bool,
 ) -> f64 {
-    let mut dst = if with_time_reversal && timerev != 0 {
+    let mut dst = if with_time_reversal && timerev {
         -src
     } else {
         src
@@ -594,7 +597,7 @@ fn apply_symmetry_to_site_vector(
     idx: usize,
     tensors: &[f64],
     rot_cart: &Mat3,
-    timerev: i32,
+    timerev: bool,
     with_time_reversal: bool,
     is_axial: bool,
 ) {
@@ -607,7 +610,7 @@ fn apply_symmetry_to_site_vector(
     *dst = crate::mathfunc::mat_multiply_matrix_vector_d3(rot_cart, &vec);
 
     for s in 0..3 {
-        if with_time_reversal && timerev != 0 {
+        if with_time_reversal && timerev {
             dst[s] *= -1.0;
         }
         if is_axial {
