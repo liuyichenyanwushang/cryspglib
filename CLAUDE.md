@@ -7,7 +7,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ```bash
 rustup default nightly    # Required: edition 2024 needs nightly Rust
 cargo build              # Build the library
-cargo test               # Run all 70 tests + 1 doctest (ignored)
+cargo test               # Run all 70 tests + 1 doctest
 cargo test -- --nocapture  # Run tests with debug output (eprintln visible)
 cargo test <test_name>   # Run a single test (e.g., `cargo test test_graphene_p6mmm`)
 cargo check              # Check compilation without building

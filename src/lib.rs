@@ -757,12 +757,14 @@ pub struct SpglibMagneticSymmetry {
 /// 返回包含非磁空间群、磁空间群、对称操作的结构。
 ///
 /// # 示例
-/// ```ignore
+/// ```
+/// # use rspglib::spg_get_magnetic_dataset;
 /// let lattice = [[1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0]];
 /// let positions = [[0.0, 0.0, 0.0], [0.5, 0.5, 0.5]];
 /// let types = [26, 26];
 /// let moments = [[1.0, 0.0, 0.0], [-1.0, 0.0, 0.0]];
 /// let result = spg_get_magnetic_dataset(&lattice, &positions, &types, Some(&moments), 1e-5);
+/// # assert!(result.is_some());
 /// ```
 pub fn spg_get_magnetic_dataset(
     lattice: &Mat3,
