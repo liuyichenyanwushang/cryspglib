@@ -5,7 +5,7 @@
 use crate::debug;
 use crate::kgrid;
 use crate::mathfunc::{
-    MatINT, mat_alloc_matint, mat_check_identity_matrix_i3, mat_copy_matrix_i3, mat_dabs,
+    MatINT, mat_check_identity_matrix_i3, mat_dabs,
     mat_multiply_matrix_i3, mat_multiply_matrix_vector_d3,
     mat_multiply_matrix_vector_i3, mat_multiply_matrix_vector_id3, mat_nint, mat_norm_squared_d3,
     mat_transpose_matrix_i3,
@@ -356,17 +356,17 @@ fn get_point_group_reciprocal(rotations: &MatINT, is_time_reversal: i32) -> Opti
         rotations.size
     };
 
-    let mut rot_reciprocal = mat_alloc_matint(size);
+    let mut rot_reciprocal = MatINT::new(size);
     let mut unique_rot = vec![-1; size];
 
     for i in 0..rotations.size {
         // 倒易空间的旋转矩阵是实空间旋转矩阵的转置
         let t = mat_transpose_matrix_i3(&rotations.mat[i]);
-        mat_copy_matrix_i3(&mut rot_reciprocal.mat[i], &t);
+        rot_reciprocal.mat[i] = t;
 
         if is_time_reversal != 0 {
             let inv_rot = mat_multiply_matrix_i3(&inversion, &rot_reciprocal.mat[i]);
-            mat_copy_matrix_i3(&mut rot_reciprocal.mat[rotations.size + i], &inv_rot);
+            rot_reciprocal.mat[rotations.size + i] = inv_rot;
         }
     }
 
@@ -389,12 +389,9 @@ fn get_point_group_reciprocal(rotations: &MatINT, is_time_reversal: i32) -> Opti
         }
     }
 
-    let mut rot_return = mat_alloc_matint(num_rot);
+    let mut rot_return = MatINT::new(num_rot);
     for i in 0..num_rot {
-        mat_copy_matrix_i3(
-            &mut rot_return.mat[i],
-            &rot_reciprocal.mat[unique_rot[i] as usize],
-        );
+        rot_return.mat[i] = rot_reciprocal.mat[unique_rot[i] as usize];
     }
 
     Some(rot_return)
@@ -442,12 +439,9 @@ fn get_point_group_reciprocal_with_q(
         }
     }
 
-    let mut rot_reciprocal_q = mat_alloc_matint(num_rot);
+    let mut rot_reciprocal_q = MatINT::new(num_rot);
     for i in 0..num_rot {
-        mat_copy_matrix_i3(
-            &mut rot_reciprocal_q.mat[i],
-            &rot_reciprocal.mat[ir_rot[i] as usize],
-        );
+        rot_reciprocal_q.mat[i] = rot_reciprocal.mat[ir_rot[i] as usize];
     }
 
     Some(rot_reciprocal_q)

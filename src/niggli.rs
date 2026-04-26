@@ -6,7 +6,7 @@
 
 use crate::cell::AperiodicAxis;
 use crate::debug;
-use crate::mathfunc::{Mat3, mat_copy_matrix_d3, mat_get_metric, mat_multiply_matrix_d3};
+use crate::mathfunc::{Mat3, mat_get_metric, mat_multiply_matrix_d3};
 use std::env;
 
 // 版本常量
@@ -190,7 +190,7 @@ pub fn niggli_reduce(lattice: &mut Mat3, eps: f64, aperiodic_axis: Option<Aperio
     debug_show(-1, &p);
 
     // Finalize: copy back to lattice
-    mat_copy_matrix_d3(lattice, &p.lattice);
+    *lattice = p.lattice;
 
     succeeded
 }

@@ -9,7 +9,6 @@ use crate::debug;
 use crate::mathfunc::{
     Mat3, Mat3I, Vec3, mat_cast_matrix_3d_to_3i, mat_cast_matrix_3i_to_3d,
     mat_check_identity_matrix_d3, mat_check_identity_matrix_i3,
-    mat_copy_matrix_d3, mat_copy_matrix_i3, mat_copy_vector_d3,
     mat_cross_product_d3, mat_dmod1, mat_get_determinant_i3, mat_get_metric,
     mat_inverse_matrix_d3, mat_multiply_matrix_d3, mat_multiply_matrix_di3,
     mat_multiply_matrix_id3, mat_multiply_matrix_vector_d3,

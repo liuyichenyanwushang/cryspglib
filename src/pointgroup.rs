@@ -3,7 +3,7 @@
 use crate::cell::AperiodicAxis;
 use crate::debug;
 use crate::mathfunc::{
-    Mat3I, mat_add_matrix_i3, mat_check_identity_matrix_i3, mat_copy_matrix_i3,
+    Mat3I, mat_add_matrix_i3, mat_check_identity_matrix_i3,
     mat_get_determinant_i3, mat_get_trace_i3, mat_multiply_matrix_i3,
     mat_multiply_matrix_vector_i3, mat_norm_squared_i3,
 };
@@ -41,7 +41,7 @@ pub enum Laue {
 
 #[derive(Clone, Debug)]
 pub struct Pointgroup {
-    pub number: i32,
+    pub number: usize,
     pub symbol: String,
     pub schoenflies: String,
     pub holohedry: Holohedry,
@@ -294,7 +294,7 @@ static POINTGROUP_DATA: [PointgroupType; 33] = [
 static IDENTITY: [[i32; 3]; 3] = [[1, 0, 0], [0, 1, 0], [0, 0, 1]];
 static INVERSION: [[i32; 3]; 3] = [[-1, 0, 0], [0, -1, 0], [0, 0, -1]];
 
-static ROT_AXES: [[i32; 3]; NUM_ROT_AXES] = [
+pub(crate) static ROT_AXES: [[i32; 3]; NUM_ROT_AXES] = [
     [1, 0, 0],
     [0, 1, 0],
     [0, 0, 1],
@@ -382,7 +382,7 @@ pub fn ptg_get_transformation_matrix(
     let pg_num = get_pointgroup_number_by_rotations(rotations);
 
     if pg_num > 0 && (aperiodic_axis.is_none() || pg_num < 28) {
-        let pointgroup = ptg_get_pointgroup(pg_num);
+        let pointgroup = ptg_get_pointgroup(pg_num as usize);
         let pointsym = ptg_get_pointsymmetry(rotations);
         let mut axes = [0; 3];
         get_axes(&mut axes, pointgroup.laue, &pointsym, aperiodic_axis);
@@ -396,7 +396,7 @@ pub fn ptg_get_transformation_matrix(
     }
 }
 
-pub fn ptg_get_pointgroup(pointgroup_number: i32) -> Pointgroup {
+pub fn ptg_get_pointgroup(pointgroup_number: usize) -> Pointgroup {
     let idx = pointgroup_number as usize;
     let pg_type = &POINTGROUP_DATA[idx];
 
@@ -741,17 +741,7 @@ fn laue_one_axis(axes: &mut [usize; 3], pointsym: &PointSymmetry, rot_order: i32
             axes[0] = tmp_axes[0];
             axes[1] = tmp_axes[1];
 
-            // Final check and swap
-            set_transformation_matrix(&mut t_mat, axes);
-            if mat_get_determinant_i3(&t_mat) < 0 {
-                let tmp = axes[0];
-                axes[0] = axes[1];
-                axes[1] = tmp;
-            }
 
-            debug::debug_print(format_args!("axes[0] = {}\n", axes[0]));
-            debug::debug_print(format_args!("axes[1] = {}\n", axes[1]));
-            debug::debug_print(format_args!("axes[2] = {}\n", axes[2]));
             return true;
         }
     }
@@ -828,6 +818,7 @@ fn get_orthogonal_axis(ortho_axes: &mut [usize], proper_rot: &Mat3I, rot_order: 
             num_ortho_axis += 1;
         }
     }
+
     num_ortho_axis
 }
 
@@ -835,7 +826,7 @@ fn get_proper_rotation(prop_rot: &mut Mat3I, rot: &Mat3I) {
     if mat_get_determinant_i3(rot) == -1 {
         *prop_rot = mat_multiply_matrix_i3(&INVERSION, rot);
     } else {
-        mat_copy_matrix_i3(prop_rot, rot);
+        *prop_rot = *rot;
     }
 }
 

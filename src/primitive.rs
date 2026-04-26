@@ -11,14 +11,14 @@ use crate::debug;
 use crate::delaunay::{del_delaunay_reduce, del_layer_delaunay_reduce};
 use crate::mathfunc::{
     Mat3, Vec3, mat_cast_matrix_3d_to_3i, mat_cast_matrix_3i_to_3d, mat_check_identity_matrix_i3,
-    mat_copy_matrix_d3, mat_copy_vector_d3, mat_dabs, mat_dmod1, mat_get_determinant_d3,
+    mat_dabs, mat_dmod1, mat_get_determinant_d3,
     mat_get_determinant_i3, mat_inverse_matrix_d3, mat_multiply_matrix_d3, mat_multiply_matrix_di3,
     mat_multiply_matrix_vector_d3, mat_nint,
 };
 use crate::symmetry::{Symmetry, sym_get_pure_translation, sym_reduce_pure_translation};
 
 const REDUCE_RATE: f64 = 0.95;
-const NUM_ATTEMPT: i32 = 20;
+const NUM_ATTEMPT: i32 = 100;
 
 pub struct Primitive {
     pub cell: Option<Cell>,
@@ -47,16 +47,17 @@ pub fn prm_get_primitive(cell: &Cell, symprec: f64, angle_tolerance: f64) -> Opt
 }
 
 pub fn prm_get_primitive_with_pure_trans(
-    primitive: &mut Primitive,
     cell: &Cell,
     pure_trans: &[Vec3],
     symprec: f64,
     angle_tolerance: f64,
-) -> bool {
+) -> Option<Primitive> {
+    let mut primitive = Primitive::new(cell.size);
+
     if pure_trans.len() == 1 {
         primitive.cell = get_cell_with_smallest_lattice(cell, symprec);
         if primitive.cell.is_none() {
-            return false;
+            return None;
         }
         for i in 0..cell.size {
             primitive.mapping_table[i] = i as i32;
@@ -71,9 +72,8 @@ pub fn prm_get_primitive_with_pure_trans(
             angle_tolerance,
         );
         if primitive.cell.is_none() {
-            return false;
+            return None;
         }
-        // Convert usize mapping to i32
         for i in 0..cell.size {
             primitive.mapping_table[i] = mapping_table_usize[i] as i32;
         }
@@ -81,9 +81,9 @@ pub fn prm_get_primitive_with_pure_trans(
 
     primitive.tolerance = symprec;
     primitive.angle_tolerance = angle_tolerance;
-    mat_copy_matrix_d3(&mut primitive.orig_lattice, &cell.lattice);
+    primitive.orig_lattice = cell.lattice;
 
-    true
+    Some(primitive)
 }
 
 pub fn prm_get_primitive_symmetry(
@@ -132,13 +132,12 @@ pub fn prm_get_primitive_symmetry(
 }
 
 pub fn prm_get_primitive_lattice_vectors(
-    prim_lattice: &mut Mat3,
     cell: &Cell,
     pure_trans: &[Vec3],
     symprec: f64,
     angle_tolerance: f64,
-) -> i32 {
-    get_primitive_lattice_vectors(prim_lattice, cell, pure_trans, symprec, angle_tolerance)
+) -> Option<(Mat3, usize)> {
+    get_primitive_lattice_vectors(cell, pure_trans, symprec, angle_tolerance)
 }
 
 // --- Internal Functions ---
@@ -146,14 +145,12 @@ pub fn prm_get_primitive_lattice_vectors(
 fn get_primitive(cell: &Cell, symprec: f64, angle_tolerance: f64) -> Option<Primitive> {
     debug::debug_print(format_args!("get_primitive (tolerance = {}):\n", symprec));
 
-    let mut primitive = Primitive::new(cell.size);
     let mut tolerance = symprec;
 
     for attempt in 0..NUM_ATTEMPT {
         debug::debug_print(format_args!("get_primitive (attempt = {}):\n", attempt));
         if let Some(pure_trans) = sym_get_pure_translation(cell, tolerance) {
-            if prm_get_primitive_with_pure_trans(
-                &mut primitive,
+            if let Some(primitive) = prm_get_primitive_with_pure_trans(
                 cell,
                 &pure_trans,
                 tolerance,
@@ -174,23 +171,18 @@ fn get_cell_with_smallest_lattice(cell: &Cell, symprec: f64) -> Option<Cell> {
     debug::debug_print(format_args!("get_cell_with_smallest_lattice:\n"));
 
     let aperiodic_axis = cell.aperiodic_axis;
-    let mut min_lat = [[0.0; 3]; 3];
 
-    let success = if aperiodic_axis.is_none() {
-        del_delaunay_reduce(&mut min_lat, &cell.lattice, symprec)
+    let min_lat = if aperiodic_axis.is_none() {
+        del_delaunay_reduce(&cell.lattice, symprec)?
     } else {
-        del_layer_delaunay_reduce(&mut min_lat, &cell.lattice, aperiodic_axis, symprec)
+        del_layer_delaunay_reduce(&cell.lattice, aperiodic_axis, symprec)?
     };
-
-    if !success {
-        return None;
-    }
 
     let inv_lat = mat_inverse_matrix_d3(&min_lat, 0.0)?;
     let trans_mat = mat_multiply_matrix_d3(&inv_lat, &cell.lattice);
 
     let mut smallest_cell = Cell::new(cell.size, cell.tensor_rank);
-    mat_copy_matrix_d3(&mut smallest_cell.lattice, &min_lat);
+    smallest_cell.lattice = min_lat;
 
     for i in 0..cell.size {
         smallest_cell.types[i] = cell.types[i];
@@ -216,30 +208,25 @@ fn get_primitive_cell(
 ) -> Option<Cell> {
     debug::debug_print(format_args!("get_primitive_cell:\n"));
 
-    let mut prim_lattice = [[0.0; 3]; 3];
-    let multi = get_primitive_lattice_vectors(
-        &mut prim_lattice,
+    let Some((prim_lattice, _)) = get_primitive_lattice_vectors(
         cell,
         pure_trans,
         symprec,
         angle_tolerance,
-    );
-
-    if multi == 0 {
+    ) else {
         debug::debug_print(format_args!("spglib: Primitive cell could not be found\n"));
         return None;
-    }
+    };
 
     cel_trim_cell(mapping_table, &prim_lattice, cell, symprec)
 }
 
 fn get_primitive_lattice_vectors(
-    prim_lattice: &mut Mat3,
     cell: &Cell,
     pure_trans: &[Vec3],
     symprec: f64,
     angle_tolerance: f64,
-) -> i32 {
+) -> Option<(Mat3, usize)> {
     let mut tolerance = symprec;
     let mut pure_trans_reduced = pure_trans.to_vec();
 
@@ -247,20 +234,19 @@ fn get_primitive_lattice_vectors(
         let multi = pure_trans_reduced.len();
         let vectors = get_translation_candidates(&pure_trans_reduced);
 
-        if find_primitive_lattice_vectors(prim_lattice, &vectors, cell, tolerance) {
-            // FIX: Create a copy of prim_lattice to avoid simultaneous mutable and immutable borrow
-            let lattice_copy = *prim_lattice;
-            let success = if cell.aperiodic_axis.is_none() {
-                del_delaunay_reduce(prim_lattice, &lattice_copy, symprec)
+        if let Some(found) = find_primitive_lattice_vectors(&vectors, cell, tolerance) {
+            let lattice_copy = found;
+            if let Some(reduced) = if cell.aperiodic_axis.is_none() {
+                println!("reduced={:?}",del_delaunay_reduce(&lattice_copy, symprec));
+                del_delaunay_reduce(&lattice_copy, symprec)
             } else {
-                del_layer_delaunay_reduce(prim_lattice, &lattice_copy, cell.aperiodic_axis, symprec)
-            };
-
-            if success {
-                return multi as i32;
+                del_layer_delaunay_reduce(&lattice_copy, cell.aperiodic_axis, symprec)
+            } {
+                return Some((reduced, multi));
+            } else {
+                return None;
             }
         } else {
-            // Try reducing pure translations
             if let Some(reduced) =
                 sym_reduce_pure_translation(cell, &pure_trans_reduced, tolerance, angle_tolerance)
             {
@@ -273,19 +259,18 @@ fn get_primitive_lattice_vectors(
                 ));
                 tolerance *= REDUCE_RATE;
             } else {
-                return 0;
+                return None;
             }
         }
     }
-    0
+    None
 }
 
 fn find_primitive_lattice_vectors(
-    prim_lattice: &mut Mat3,
     vectors: &[Vec3],
     cell: &Cell,
     symprec: f64,
-) -> bool {
+) -> Option<Mat3> {
     debug::debug_print(format_args!("find_primitive_lattice_vectors:\n"));
 
     let size = vectors.len();
@@ -351,7 +336,7 @@ fn find_primitive_lattice_vectors(
         debug::debug_print(format_args!(
             "spglib: Primitive lattice vectors could not be found\n"
         ));
-        return false;
+        return None;
     }
 
     let mut relative_lattice = [[0.0; 3]; 3];
@@ -375,8 +360,7 @@ fn find_primitive_lattice_vectors(
         }
     }
 
-    *prim_lattice = mat_multiply_matrix_d3(&cell.lattice, &relative_lattice);
-    true
+    Some(mat_multiply_matrix_d3(&cell.lattice, &relative_lattice))
 }
 
 fn get_translation_candidates(pure_trans: &[Vec3]) -> Vec<Vec3> {
@@ -440,7 +424,7 @@ fn get_primitive_in_translation_space(
             if prim_cell.size != 1 {
                 return false;
             }
-            mat_copy_matrix_d3(t_mat_inv, &prim_cell.lattice);
+            *t_mat_inv = prim_cell.lattice;
             return true;
         }
     }

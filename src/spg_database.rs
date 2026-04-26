@@ -1,7 +1,7 @@
 //! Automatically generated from spg_database.c
 //! DO NOT EDIT MANUALLY
 
-use crate::mathfunc::{Mat3I, Vec3, mat_copy_matrix_i3, mat_copy_vector_d3};
+use crate::mathfunc::{Mat3I, Vec3};
 use crate::symmetry::Symmetry;
 
 #[derive(Debug, Clone, Copy, PartialEq)]
@@ -19,7 +19,7 @@ pub enum Centering {
 /// Raw space group type data as stored in the database.
 #[derive(Debug, Clone, Copy)]
 pub struct RawSpacegroupType {
-    pub number: i32,
+    pub number: usize,
     pub schoenflies: &'static str,
     pub hall_symbol: &'static str,
     pub international: &'static str,
@@ -27,7 +27,7 @@ pub struct RawSpacegroupType {
     pub international_short: &'static str,
     pub choice: &'static str,
     pub centering: Centering,
-    pub pointgroup_number: i32,
+    pub pointgroup_number: usize,
 }
 
 pub static SPACEGROUP_TYPES: [RawSpacegroupType; 531] = [
@@ -8876,42 +8876,28 @@ pub fn spgdb_get_operation_by_index(index: usize) -> Option<(Mat3I, Vec3)> {
 }
 
 /// 根据 Hall 编号获取单个对称操作
-pub fn spgdb_get_operation(hall_number: i32) -> Option<(Mat3I, Vec3)> {
-    let idx = if hall_number > 0 && hall_number <= 530 {
-        hall_number as usize
-    } else if hall_number < 0 && hall_number >= -116 {
-        (-hall_number) as usize
+pub fn spgdb_get_operation(hall_number: usize) -> Option<(Mat3I, Vec3)> {
+    if hall_number > 0 && hall_number <= 530 {
+        let idx = SYMMETRY_OPERATION_INDEX[hall_number][1] as usize;
+        let code = SYMMETRY_OPERATIONS[idx];
+        Some(spgdb_decode_symmetry(code))
     } else {
-        return None;
-    };
-    let code = if hall_number > 0 {
-        SYMMETRY_OPERATIONS[SYMMETRY_OPERATION_INDEX[idx][1] as usize]
-    } else {
-        SYMMETRY_OPERATIONS[LAYER_SYMMETRY_OPERATION_INDEX[idx][1] as usize]
-    };
-    Some(spgdb_decode_symmetry(code))
+        None
+    }
 }
 
 /// 获取 Hall 编号对应的操作索引范围 (count, start_index)
-pub fn spgdb_get_operation_index(hall_number: i32) -> (usize, usize) {
-    let idx = if hall_number > 0 && hall_number <= 530 {
-        hall_number as usize
-    } else if hall_number < 0 && hall_number >= -116 {
-        (-hall_number) as usize
-    } else {
-        return (0, 0);
-    };
-    if hall_number > 0 {
-        let entry = SYMMETRY_OPERATION_INDEX[idx];
+pub fn spgdb_get_operation_index(hall_number: usize) -> (usize, usize) {
+    if hall_number > 0 && hall_number <= 530 {
+        let entry = SYMMETRY_OPERATION_INDEX[hall_number];
         (entry[0] as usize, entry[1] as usize)
     } else {
-        let entry = LAYER_SYMMETRY_OPERATION_INDEX[idx];
-        (entry[0] as usize, entry[1] as usize)
+        (0, 0)
     }
 }
 
 /// 获取 Hall 编号对应的完整对称操作集合
-pub fn spgdb_get_spacegroup_operations(hall_number: i32) -> Option<Symmetry> {
+pub fn spgdb_get_spacegroup_operations(hall_number: usize) -> Option<Symmetry> {
     let (count, start) = spgdb_get_operation_index(hall_number);
     if count == 0 {
         return None;
@@ -8920,8 +8906,8 @@ pub fn spgdb_get_spacegroup_operations(hall_number: i32) -> Option<Symmetry> {
     for i in 0..count {
         let code = SYMMETRY_OPERATIONS[start + i];
         let (rot, trans) = spgdb_decode_symmetry(code);
-        mat_copy_matrix_i3(&mut symmetry.rot[i], &rot);
-        mat_copy_vector_d3(&mut symmetry.trans[i], &trans);
+        symmetry.rot[i] = rot;
+        symmetry.trans[i] = trans;
     }
     Some(symmetry)
 }
@@ -8929,7 +8915,7 @@ pub fn spgdb_get_spacegroup_operations(hall_number: i32) -> Option<Symmetry> {
 /// 空间群类型信息，包含处理后的字符串
 #[derive(Debug, Clone)]
 pub struct SpacegroupType {
-    pub number: i32,
+    pub number: usize,
     pub schoenflies: String,
     pub hall_symbol: String,
     pub international: String,
@@ -8937,7 +8923,7 @@ pub struct SpacegroupType {
     pub international_short: String,
     pub choice: String,
     pub centering: Centering,
-    pub pointgroup_number: i32,
+    pub pointgroup_number: usize,
 }
 
 /// 去除字符串尾部的空格（原地修改字符串）
@@ -8960,11 +8946,9 @@ fn replace_equal_char(s: &mut String) {
 }
 
 /// 获取 Hall 编号对应的空间群类型信息
-pub fn spgdb_get_spacegroup_type(hall_number: i32) -> SpacegroupType {
+pub fn spgdb_get_spacegroup_type(hall_number: usize) -> SpacegroupType {
     let raw = if hall_number > 0 && hall_number <= 530 {
-        &SPACEGROUP_TYPES[hall_number as usize]
-    } else if hall_number < 0 && hall_number >= -116 {
-        &LAYER_GROUP_TYPES[(-hall_number) as usize]
+        &SPACEGROUP_TYPES[hall_number]
     } else {
         &SPACEGROUP_TYPES[0] // CENTERING_ERROR 条目
     };

@@ -23,7 +23,7 @@ pub fn ssm_get_exact_positions(
     conv_prim: &Cell,
     conv_sym: &Symmetry,
     num_pure_trans: i32,
-    hall_number: i32,
+    hall_number: usize,
     symprec: f64,
 ) -> Option<(Vec<Vec3>, Vec<i32>, Vec<i32>, Vec<String>)> {
     let mut tolerance = symprec;
@@ -258,7 +258,7 @@ fn set_wyckoffs_labels(
     conv_prim: &Cell,
     conv_sym: &Symmetry,
     num_pure_trans: i32,
-    hall_number: i32,
+    hall_number: usize,
     symprec: f64,
 ) -> Option<(Vec<i32>, Vec<String>)> {
     let n = conv_prim.size;
@@ -329,7 +329,7 @@ fn get_wyckoff_notation(
     conv_sym: &Symmetry,
     ref_multiplicity: i32,
     bravais_lattice: &Mat3,
-    hall_number: i32,
+    hall_number: usize,
     symprec: f64,
 ) -> Option<(i32, String)> {
     debug::debug_print(format_args!("get_Wyckoff_notation\n"));
@@ -345,7 +345,7 @@ fn get_wyckoff_notation(
         }
     }
 
-    let (indices_wyc_start, indices_wyc_count) = ssmdb_get_wyckoff_indices(hall_number);
+    let (indices_wyc_start, indices_wyc_count) = ssmdb_get_wyckoff_indices(hall_number as i32);
     for i in 0..indices_wyc_count {
         let idx = (indices_wyc_start + i) as usize;
         let (rot, trans, multiplicity) = ssmdb_get_coordinate(idx);
@@ -385,7 +385,7 @@ fn get_layer_wyckoff_notation(
     conv_sym: &Symmetry,
     ref_multiplicity: i32,
     bravais_lattice: &Mat3,
-    hall_number: i32,
+    hall_number: usize,
     aperiodic: AperiodicAxis,
     symprec: f64,
 ) -> Option<(i32, String)> {
@@ -401,7 +401,7 @@ fn get_layer_wyckoff_notation(
         }
     }
 
-    let (indices_wyc_start, indices_wyc_count) = ssmdb_get_wyckoff_indices(hall_number);
+    let (indices_wyc_start, indices_wyc_count) = ssmdb_get_wyckoff_indices(hall_number as i32);
     for i in 0..indices_wyc_count {
         let idx = (indices_wyc_start + i) as usize;
         let (rot, trans, multiplicity) = ssmdb_get_coordinate(idx);

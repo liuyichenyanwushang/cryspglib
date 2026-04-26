@@ -9,7 +9,7 @@
 use crate::cell::AperiodicAxis;
 use crate::debug;
 use crate::mathfunc::{
-    Mat3, Mat3I, Vec3, mat_cast_matrix_3d_to_3i, mat_copy_matrix_d3, mat_copy_vector_d3,
+    Mat3, Mat3I, Vec3, mat_cast_matrix_3d_to_3i,
     mat_get_determinant_d3, mat_get_determinant_i3, mat_inverse_matrix_d3, mat_multiply_matrix_d3,
     mat_norm_squared_d3,
 };
@@ -38,40 +38,38 @@ fn get_num_attempts() -> i32 {
 /// min_lattice: 输出的约化后晶格
 /// lattice: 输入晶格
 /// symprec: 对称性判定精度
-pub fn del_delaunay_reduce(min_lattice: &mut Mat3, lattice: &Mat3, symprec: f64) -> bool {
+pub fn del_delaunay_reduce(lattice: &Mat3, symprec: f64) -> Option<Mat3> {
     debug::debug_print(format_args!(
         "del_delaunay_reduce (tolerance = {}):\n",
         symprec
     ));
-    delaunay_reduce(min_lattice, lattice, -1, symprec)
+    delaunay_reduce(lattice, -1, symprec)
 }
 
 /// 层状结构的 Delaunay 约化
 /// aperiodic_axis: 非周期轴
 pub fn del_layer_delaunay_reduce(
-    min_lattice: &mut Mat3,
     lattice: &Mat3,
     aperiodic_axis: Option<AperiodicAxis>,
     symprec: f64,
-) -> bool {
+) -> Option<Mat3> {
     debug::debug_print(format_args!(
         "del_layer_delaunay_reduce (tolerance = {}):\n",
         symprec
     ));
     let ap_i32 = aperiodic_axis.map_or(-1, |ap| ap.axis_index() as i32);
-    delaunay_reduce(min_lattice, lattice, ap_i32, symprec)
+    delaunay_reduce(lattice, ap_i32, symprec)
 }
 
 /// Delaunay 约化核心逻辑
 /// Reference: International table A.
 fn delaunay_reduce(
-    red_lattice: &mut Mat3,
     lattice: &Mat3,
     aperiodic_axis: i32,
     symprec: f64,
-) -> bool {
+) -> Option<Mat3> {
     let mut orig_lattice = [[0.0; 3]; 3];
-    mat_copy_matrix_d3(&mut orig_lattice, lattice);
+    orig_lattice = *lattice;
 
     // 扩展基 basis[4][3]
     let mut basis: [[f64; 3]; 4] = [[0.0; 3]; 4];
@@ -93,7 +91,7 @@ fn delaunay_reduce(
     }
 
     if !succeeded {
-        return false;
+        return None;
     }
 
     get_delaunay_shortest_vectors(&mut basis, lattice_rank, symprec);
@@ -101,6 +99,7 @@ fn delaunay_reduce(
     // 将 basis 的前三个向量复制回 red_lattice
     // 注意：C 代码中 basis[j][i] -> red_lattice[i][j]，即转置关系
     // basis 是行向量列表 (4x3)，red_lattice 是列向量矩阵 (3x3)
+    let mut red_lattice = [[0.0; 3]; 3];
     for i in 0..3 {
         for j in 0..3 {
             red_lattice[i][j] = basis[j][i];
@@ -118,10 +117,10 @@ fn delaunay_reduce(
         }
     }
 
-    let volume = mat_get_determinant_d3(red_lattice);
+    let volume = mat_get_determinant_d3(&red_lattice);
     if volume.abs() < symprec {
         debug::info_print(format_args!("spglib: Minimum lattice has no volume.\n"));
-        return false;
+        return None;
     }
 
     // 保持体积为正（右手系）
@@ -135,20 +134,20 @@ fn delaunay_reduce(
 
     // 验证变换矩阵是否为幺模矩阵 (行列式为 +/- 1)
     // M_new = M_trans * M_orig => M_trans = M_new * M_orig^-1
-    if let Some(inv_red) = mat_inverse_matrix_d3(red_lattice, symprec) {
+    if let Some(inv_red) = mat_inverse_matrix_d3(&red_lattice, symprec) {
         let tmp_mat = mat_multiply_matrix_d3(&inv_red, &orig_lattice);
         let tmp_mat_int = mat_cast_matrix_3d_to_3i(&tmp_mat);
         if mat_get_determinant_i3(&tmp_mat_int).abs() != 1 {
             debug::info_print(format_args!(
                 "spglib: Determinant of Delaunay change of basis matrix has to be 1 or -1.\n"
             ));
-            return false;
+            return None;
         }
     } else {
-        return false;
+        return None;
     }
 
-    true
+    Some(red_lattice)
 }
 
 /// 从 Delaunay 集合中搜索最短向量
@@ -158,8 +157,8 @@ fn get_delaunay_shortest_vectors(basis: &mut [[f64; 3]; 4], lattice_rank: usize,
     let mut b: [[f64; 3]; 7] = [[0.0; 3]; 7];
 
     // b[0] = basis[0], b[1] = basis[1]
-    mat_copy_vector_d3(&mut b[0], &basis[0]);
-    mat_copy_vector_d3(&mut b[1], &basis[1]);
+    b[0] = basis[0];
+    b[1] = basis[1];
 
     // b[2] = basis[0] + basis[1]
     for i in 0..3 {
@@ -167,8 +166,8 @@ fn get_delaunay_shortest_vectors(basis: &mut [[f64; 3]; 4], lattice_rank: usize,
     }
 
     // b[3] = basis[2], b[4] = basis[3]
-    mat_copy_vector_d3(&mut b[3], &basis[2]);
-    mat_copy_vector_d3(&mut b[4], &basis[3]);
+    b[3] = basis[2];
+    b[4] = basis[3];
 
     // b[5] = basis[1] + basis[2]
     for i in 0..3 {
@@ -227,9 +226,9 @@ fn get_delaunay_shortest_vectors(basis: &mut [[f64; 3]; 4], lattice_rank: usize,
 
         if mat_get_determinant_d3(&tmpmat).abs() > symprec {
             // 找到线性无关组，更新 basis
-            mat_copy_vector_d3(&mut basis[0], &b[0]);
-            mat_copy_vector_d3(&mut basis[1], &b[1]);
-            mat_copy_vector_d3(&mut basis[2], &b[i]);
+            basis[0] = b[0];
+            basis[1] = b[1];
+            basis[2] = b[i];
             return;
         }
     }
@@ -463,7 +462,7 @@ fn get_delaunay_shortest_vectors_2d(
 
     // b[0..3] = basis[0..3]
     for i in 0..3 {
-        mat_copy_vector_d3(&mut b[i], &basis[i]);
+        b[i] = basis[i];
     }
     // b[3] = basis[0] + basis[1]
     for i in 0..3 {
@@ -496,8 +495,8 @@ fn get_delaunay_shortest_vectors_2d(
             tmpmat[j][2] = b[i][j];
         }
         if mat_get_determinant_d3(&tmpmat).abs() > symprec {
-            mat_copy_vector_d3(&mut basis[0], &b[0]);
-            mat_copy_vector_d3(&mut basis[1], &b[i]);
+            basis[0] = b[0];
+            basis[1] = b[i];
             break;
         }
     }
@@ -522,9 +521,9 @@ mod tests {
     fn test_delaunay_reduce_simple() {
         // 构造一个简单的正交晶格，不需要约化
         let lattice: Mat3 = [[1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0]];
-        let mut min_lattice = [[0.0; 3]; 3];
-        let res = del_delaunay_reduce(&mut min_lattice, &lattice, 1e-5);
-        assert!(res);
+        let min_lattice = del_delaunay_reduce(&lattice, 1e-5);
+        assert!(min_lattice.is_some());
+        let min_lattice = min_lattice.unwrap();
         // 结果应该保持不变（或仅仅是基向量顺序变化，对于单位阵应该不变）
         // 注意：Delaunay 约化可能会改变基向量的符号或顺序，但对于单位阵，
         // 扩展基是 (1,0,0), (0,1,0), (0,0,1), (-1,-1,-1)。
@@ -539,9 +538,9 @@ mod tests {
         // b = (1, 1, 0) -> 应该被约化为 (0, 1, 0)
         // c = (0, 0, 1)
         let lattice: Mat3 = [[1.0, 1.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0]];
-        let mut min_lattice = [[0.0; 3]; 3];
-        let res = del_delaunay_reduce(&mut min_lattice, &lattice, 1e-5);
-        assert!(res);
+        let min_lattice = del_delaunay_reduce(&lattice, 1e-5);
+        assert!(min_lattice.is_some());
+        let min_lattice = min_lattice.unwrap();
 
         // 检查结果是否更正交
         // 期望结果可能是 [[1, 0, 0], [0, 1, 0], [0, 0, 1]] 或者类似的等价形式

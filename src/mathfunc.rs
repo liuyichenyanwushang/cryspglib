@@ -52,6 +52,25 @@ pub fn mat_get_determinant_d3(a: &Mat3) -> f64 {
         + a[0][2] * (a[1][0] * a[2][1] - a[1][1] * a[2][0])
 }
 
+/// 旋转操作类型: Proper (det=1) 或 Improper (det=-1)
+#[derive(Debug, Clone, Copy, PartialEq)]
+pub enum RotationClass {
+    Proper = 1,
+    Improper = -1,
+}
+
+impl RotationClass {
+    pub fn from_det(det: i32) -> Self {
+        if det == 1 { RotationClass::Proper } else { RotationClass::Improper }
+    }
+}
+
+/// 判断是否为 proper 旋转 (det=1)
+#[inline]
+pub fn is_proper(rot: &Mat3I) -> bool {
+    mat_get_determinant_i3(rot) == 1
+}
+
 /// 计算 3x3 int 矩阵的行列式
 #[inline]
 pub fn mat_get_determinant_i3(a: &Mat3I) -> i32 {
@@ -64,30 +83,6 @@ pub fn mat_get_determinant_i3(a: &Mat3I) -> i32 {
 #[inline]
 pub fn mat_get_trace_i3(a: &Mat3I) -> i32 {
     a[0][0] + a[1][1] + a[2][2]
-}
-
-/// 复制 3x3 double 矩阵
-#[inline]
-pub fn mat_copy_matrix_d3(a: &mut Mat3, b: &Mat3) {
-    *a = *b;
-}
-
-/// 复制 3x3 int 矩阵
-#[inline]
-pub fn mat_copy_matrix_i3(a: &mut Mat3I, b: &Mat3I) {
-    *a = *b;
-}
-
-/// 复制 double 向量
-#[inline]
-pub fn mat_copy_vector_d3(a: &mut Vec3, b: &Vec3) {
-    *a = *b;
-}
-
-/// 复制 int 向量
-#[inline]
-pub fn mat_copy_vector_i3(a: &mut Vec3I, b: &Vec3I) {
-    *a = *b;
 }
 
 /// 检查两个 int 矩阵是否相同
@@ -412,18 +407,6 @@ impl VecDBL {
     }
 }
 
-// 辅助函数：模拟 C 的 mat_alloc_MatINT
-// 建议直接使用 MatINT::new
-pub fn mat_alloc_matint(size: usize) -> MatINT {
-    MatINT::new(size)
-}
-
-// 辅助函数：模拟 C 的 mat_alloc_VecDBL
-// 建议直接使用 VecDBL::new
-pub fn mat_alloc_vecdbl(size: usize) -> VecDBL {
-    VecDBL::new(size)
-}
-
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -447,8 +430,7 @@ mod tests {
     #[test]
     fn test_copy() {
         let src: Mat3 = [[1.0, 2.0, 3.0], [4.0, 5.0, 6.0], [7.0, 8.0, 9.0]];
-        let mut dst: Mat3 = [[0.0; 3]; 3];
-        mat_copy_matrix_d3(&mut dst, &src);
+        let dst = src;
         assert_eq!(src, dst);
     }
 
@@ -545,11 +527,11 @@ mod tests {
 
     #[test]
     fn test_alloc_structs() {
-        let m = mat_alloc_matint(5);
+        let m = MatINT::new(5);
         assert_eq!(m.size, 5);
         assert_eq!(m.mat.len(), 5);
 
-        let v = mat_alloc_vecdbl(3);
+        let v = VecDBL::new(3);
         assert_eq!(v.size, 3);
         assert_eq!(v.vec.len(), 3);
         

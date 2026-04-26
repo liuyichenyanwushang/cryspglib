@@ -5,7 +5,7 @@
 
 use crate::cell::{AperiodicAxis, Cell};
 use crate::mathfunc::{
-    Mat3, Vec3, mat_copy_matrix_d3, mat_multiply_matrix_vector_d3, mat_multiply_matrix_vector_id3,
+    Mat3, Vec3, mat_multiply_matrix_vector_d3, mat_multiply_matrix_vector_id3,
     mat_nint, mat_norm_squared_d3,
 };
 use std::cmp::Ordering;
@@ -64,7 +64,7 @@ impl OverlapChecker {
             argsort_work: vec![ValueWithIndex::default(); size],
         };
 
-        mat_copy_matrix_d3(&mut checker.lattice, &cell.lattice);
+        checker.lattice = cell.lattice;
 
         // 获取排序排列
         // 注意：这里直接使用 checker 内部的 buffer

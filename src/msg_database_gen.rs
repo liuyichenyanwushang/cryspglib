@@ -3,12 +3,12 @@
 
 #[derive(Debug, Clone, Copy)]
 pub struct MagneticSpacegroupType {
-    pub uni_number: i32,
-    pub litvin_number: i32,
+    pub uni_number: usize,
+    pub litvin_number: usize,
     pub bns_number: &'static str,
     pub og_number: &'static str,
-    pub number: i32,
-    pub type_: i32,
+    pub number: usize,
+    pub type_: MagneticType,
 }
 
 pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
@@ -18,7 +18,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "",
         og_number: "",
         number: 0,
-        type_: 0,
+        type_: MagneticType::NonMagnetic,
     },
     MagneticSpacegroupType {
         uni_number: 1,
@@ -26,7 +26,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "1.1",
         og_number: "1.1.1",
         number: 1,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 2,
@@ -34,7 +34,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "1.2",
         og_number: "1.2.2",
         number: 1,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 3,
@@ -42,7 +42,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "1.3",
         og_number: "1.3.3",
         number: 1,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 4,
@@ -50,7 +50,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "2.4",
         og_number: "2.1.4",
         number: 2,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 5,
@@ -58,7 +58,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "2.5",
         og_number: "2.2.5",
         number: 2,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 6,
@@ -66,7 +66,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "2.6",
         og_number: "2.3.6",
         number: 2,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 7,
@@ -74,7 +74,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "2.7",
         og_number: "2.4.7",
         number: 2,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 8,
@@ -82,7 +82,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "3.1",
         og_number: "3.1.8",
         number: 3,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 9,
@@ -90,7 +90,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "3.2",
         og_number: "3.2.9",
         number: 3,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 10,
@@ -98,7 +98,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "3.3",
         og_number: "3.3.10",
         number: 3,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 11,
@@ -106,7 +106,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "3.4",
         og_number: "3.4.11",
         number: 3,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 12,
@@ -114,7 +114,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "3.5",
         og_number: "3.5.12",
         number: 3,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 13,
@@ -122,7 +122,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "3.6",
         og_number: "5.5.23",
         number: 3,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 14,
@@ -130,7 +130,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "4.7",
         og_number: "4.1.15",
         number: 4,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 15,
@@ -138,7 +138,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "4.8",
         og_number: "4.2.16",
         number: 4,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 16,
@@ -146,7 +146,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "4.9",
         og_number: "4.3.17",
         number: 4,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 17,
@@ -154,7 +154,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "4.10",
         og_number: "4.4.18",
         number: 4,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 18,
@@ -162,7 +162,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "4.11",
         og_number: "3.7.14",
         number: 4,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 19,
@@ -170,7 +170,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "4.12",
         og_number: "5.6.24",
         number: 4,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 20,
@@ -178,7 +178,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "5.13",
         og_number: "5.1.19",
         number: 5,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 21,
@@ -186,7 +186,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "5.14",
         og_number: "5.2.20",
         number: 5,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 22,
@@ -194,7 +194,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "5.15",
         og_number: "5.3.21",
         number: 5,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 23,
@@ -202,7 +202,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "5.16",
         og_number: "5.4.22",
         number: 5,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 24,
@@ -210,7 +210,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "5.17",
         og_number: "3.6.13",
         number: 5,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 25,
@@ -218,7 +218,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "6.18",
         og_number: "6.1.25",
         number: 6,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 26,
@@ -226,7 +226,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "6.19",
         og_number: "6.2.26",
         number: 6,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 27,
@@ -234,7 +234,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "6.20",
         og_number: "6.3.27",
         number: 6,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 28,
@@ -242,7 +242,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "6.21",
         og_number: "6.4.28",
         number: 6,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 29,
@@ -250,7 +250,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "6.22",
         og_number: "6.5.29",
         number: 6,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 30,
@@ -258,7 +258,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "6.23",
         og_number: "8.5.42",
         number: 6,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 31,
@@ -266,7 +266,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "7.24",
         og_number: "7.1.32",
         number: 7,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 32,
@@ -274,7 +274,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "7.25",
         og_number: "7.2.33",
         number: 7,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 33,
@@ -282,7 +282,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "7.26",
         og_number: "7.3.34",
         number: 7,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 34,
@@ -290,7 +290,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "7.27",
         og_number: "7.4.35",
         number: 7,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 35,
@@ -298,7 +298,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "7.28",
         og_number: "6.7.31",
         number: 7,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 36,
@@ -306,7 +306,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "7.29",
         og_number: "7.5.36",
         number: 7,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 37,
@@ -314,7 +314,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "7.30",
         og_number: "9.4.48",
         number: 7,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 38,
@@ -322,7 +322,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "7.31",
         og_number: "8.7.44",
         number: 7,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 39,
@@ -330,7 +330,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "8.32",
         og_number: "8.1.38",
         number: 8,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 40,
@@ -338,7 +338,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "8.33",
         og_number: "8.2.39",
         number: 8,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 41,
@@ -346,7 +346,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "8.34",
         og_number: "8.3.40",
         number: 8,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 42,
@@ -354,7 +354,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "8.35",
         og_number: "8.4.41",
         number: 8,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 43,
@@ -362,7 +362,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "8.36",
         og_number: "6.6.30",
         number: 8,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 44,
@@ -370,7 +370,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "9.37",
         og_number: "9.1.45",
         number: 9,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 45,
@@ -378,7 +378,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "9.38",
         og_number: "9.2.46",
         number: 9,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 46,
@@ -386,7 +386,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "9.39",
         og_number: "9.3.47",
         number: 9,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 47,
@@ -394,7 +394,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "9.40",
         og_number: "8.6.43",
         number: 9,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 48,
@@ -402,7 +402,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "9.41",
         og_number: "7.6.37",
         number: 9,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 49,
@@ -410,7 +410,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "10.42",
         og_number: "10.1.49",
         number: 10,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 50,
@@ -418,7 +418,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "10.43",
         og_number: "10.2.50",
         number: 10,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 51,
@@ -426,7 +426,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "10.44",
         og_number: "10.3.51",
         number: 10,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 52,
@@ -434,7 +434,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "10.45",
         og_number: "10.4.52",
         number: 10,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 53,
@@ -442,7 +442,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "10.46",
         og_number: "10.5.53",
         number: 10,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 54,
@@ -450,7 +450,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "10.47",
         og_number: "10.6.54",
         number: 10,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 55,
@@ -458,7 +458,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "10.48",
         og_number: "10.7.55",
         number: 10,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 56,
@@ -466,7 +466,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "10.49",
         og_number: "12.7.72",
         number: 10,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 57,
@@ -474,7 +474,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "11.50",
         og_number: "11.1.59",
         number: 11,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 58,
@@ -482,7 +482,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "11.51",
         og_number: "11.2.60",
         number: 11,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 59,
@@ -490,7 +490,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "11.52",
         og_number: "11.3.61",
         number: 11,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 60,
@@ -498,7 +498,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "11.53",
         og_number: "11.4.62",
         number: 11,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 61,
@@ -506,7 +506,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "11.54",
         og_number: "11.5.63",
         number: 11,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 62,
@@ -514,7 +514,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "11.55",
         og_number: "11.6.64",
         number: 11,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 63,
@@ -522,7 +522,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "11.56",
         og_number: "10.9.57",
         number: 11,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 64,
@@ -530,7 +530,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "11.57",
         og_number: "12.9.74",
         number: 11,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 65,
@@ -538,7 +538,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "12.58",
         og_number: "12.1.66",
         number: 12,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 66,
@@ -546,7 +546,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "12.59",
         og_number: "12.2.67",
         number: 12,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 67,
@@ -554,7 +554,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "12.60",
         og_number: "12.3.68",
         number: 12,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 68,
@@ -562,7 +562,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "12.61",
         og_number: "12.4.69",
         number: 12,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 69,
@@ -570,7 +570,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "12.62",
         og_number: "12.5.70",
         number: 12,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 70,
@@ -578,7 +578,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "12.63",
         og_number: "12.6.71",
         number: 12,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 71,
@@ -586,7 +586,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "12.64",
         og_number: "10.8.56",
         number: 12,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 72,
@@ -594,7 +594,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "13.65",
         og_number: "13.1.77",
         number: 13,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 73,
@@ -602,7 +602,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "13.66",
         og_number: "13.2.78",
         number: 13,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 74,
@@ -610,7 +610,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "13.67",
         og_number: "13.3.79",
         number: 13,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 75,
@@ -618,7 +618,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "13.68",
         og_number: "13.4.80",
         number: 13,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 76,
@@ -626,7 +626,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "13.69",
         og_number: "13.5.81",
         number: 13,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 77,
@@ -634,7 +634,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "13.70",
         og_number: "13.6.82",
         number: 13,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 78,
@@ -642,7 +642,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "13.71",
         og_number: "13.7.83",
         number: 13,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 79,
@@ -650,7 +650,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "13.72",
         og_number: "10.10.58",
         number: 13,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 80,
@@ -658,7 +658,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "13.73",
         og_number: "12.10.75",
         number: 13,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 81,
@@ -666,7 +666,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "13.74",
         og_number: "15.6.97",
         number: 13,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 82,
@@ -674,7 +674,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "14.75",
         og_number: "14.1.86",
         number: 14,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 83,
@@ -682,7 +682,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "14.76",
         og_number: "14.2.87",
         number: 14,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 84,
@@ -690,7 +690,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "14.77",
         og_number: "14.3.88",
         number: 14,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 85,
@@ -698,7 +698,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "14.78",
         og_number: "14.4.89",
         number: 14,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 86,
@@ -706,7 +706,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "14.79",
         og_number: "14.5.90",
         number: 14,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 87,
@@ -714,7 +714,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "14.80",
         og_number: "14.6.91",
         number: 14,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 88,
@@ -722,7 +722,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "14.81",
         og_number: "13.9.85",
         number: 14,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 89,
@@ -730,7 +730,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "14.82",
         og_number: "11.7.65",
         number: 14,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 90,
@@ -738,7 +738,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "14.83",
         og_number: "12.11.76",
         number: 14,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 91,
@@ -746,7 +746,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "14.84",
         og_number: "15.7.98",
         number: 14,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 92,
@@ -754,7 +754,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "15.85",
         og_number: "15.1.92",
         number: 15,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 93,
@@ -762,7 +762,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "15.86",
         og_number: "15.2.93",
         number: 15,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 94,
@@ -770,7 +770,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "15.87",
         og_number: "15.3.94",
         number: 15,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 95,
@@ -778,7 +778,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "15.88",
         og_number: "15.4.95",
         number: 15,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 96,
@@ -786,7 +786,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "15.89",
         og_number: "15.5.96",
         number: 15,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 97,
@@ -794,7 +794,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "15.90",
         og_number: "12.8.73",
         number: 15,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 98,
@@ -802,7 +802,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "15.91",
         og_number: "13.8.84",
         number: 15,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 99,
@@ -810,7 +810,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "16.1",
         og_number: "16.1.99",
         number: 16,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 100,
@@ -818,7 +818,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "16.2",
         og_number: "16.2.100",
         number: 16,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 101,
@@ -826,7 +826,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "16.3",
         og_number: "16.3.101",
         number: 16,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 102,
@@ -834,7 +834,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "16.4",
         og_number: "16.4.102",
         number: 16,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 103,
@@ -842,7 +842,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "16.5",
         og_number: "21.6.134",
         number: 16,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 104,
@@ -850,7 +850,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "16.6",
         og_number: "23.4.148",
         number: 16,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 105,
@@ -858,7 +858,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "17.7",
         og_number: "17.1.106",
         number: 17,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 106,
@@ -866,7 +866,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "17.8",
         og_number: "17.2.107",
         number: 17,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 107,
@@ -874,7 +874,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "17.9",
         og_number: "17.3.108",
         number: 17,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 108,
@@ -882,7 +882,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "17.10",
         og_number: "17.4.109",
         number: 17,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 109,
@@ -890,7 +890,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "17.11",
         og_number: "17.5.110",
         number: 17,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 110,
@@ -898,7 +898,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "17.12",
         og_number: "16.7.105",
         number: 17,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 111,
@@ -906,7 +906,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "17.13",
         og_number: "21.10.138",
         number: 17,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 112,
@@ -914,7 +914,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "17.14",
         og_number: "20.5.126",
         number: 17,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 113,
@@ -922,7 +922,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "17.15",
         og_number: "24.5.154",
         number: 17,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 114,
@@ -930,7 +930,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "18.16",
         og_number: "18.1.113",
         number: 18,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 115,
@@ -938,7 +938,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "18.17",
         og_number: "18.2.114",
         number: 18,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 116,
@@ -946,7 +946,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "18.18",
         og_number: "18.3.115",
         number: 18,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 117,
@@ -954,7 +954,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "18.19",
         og_number: "18.4.116",
         number: 18,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 118,
@@ -962,7 +962,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "18.20",
         og_number: "17.7.112",
         number: 18,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 119,
@@ -970,7 +970,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "18.21",
         og_number: "18.5.117",
         number: 18,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 120,
@@ -978,7 +978,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "18.22",
         og_number: "20.7.128",
         number: 18,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 121,
@@ -986,7 +986,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "18.23",
         og_number: "21.9.137",
         number: 18,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 122,
@@ -994,7 +994,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "18.24",
         og_number: "23.5.149",
         number: 18,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 123,
@@ -1002,7 +1002,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "19.25",
         og_number: "19.1.119",
         number: 19,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 124,
@@ -1010,7 +1010,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "19.26",
         og_number: "19.2.120",
         number: 19,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 125,
@@ -1018,7 +1018,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "19.27",
         og_number: "19.3.121",
         number: 19,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 126,
@@ -1026,7 +1026,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "19.28",
         og_number: "18.6.118",
         number: 19,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 127,
@@ -1034,7 +1034,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "19.29",
         og_number: "20.6.127",
         number: 19,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 128,
@@ -1042,7 +1042,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "19.30",
         og_number: "24.4.153",
         number: 19,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 129,
@@ -1050,7 +1050,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "20.31",
         og_number: "20.1.122",
         number: 20,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 130,
@@ -1058,7 +1058,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "20.32",
         og_number: "20.2.123",
         number: 20,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 131,
@@ -1066,7 +1066,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "20.33",
         og_number: "20.3.124",
         number: 20,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 132,
@@ -1074,7 +1074,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "20.34",
         og_number: "20.4.125",
         number: 20,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 133,
@@ -1082,7 +1082,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "20.35",
         og_number: "21.8.136",
         number: 20,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 134,
@@ -1090,7 +1090,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "20.36",
         og_number: "17.6.111",
         number: 20,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 135,
@@ -1098,7 +1098,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "20.37",
         og_number: "22.5.144",
         number: 20,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 136,
@@ -1106,7 +1106,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "21.38",
         og_number: "21.1.129",
         number: 21,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 137,
@@ -1114,7 +1114,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "21.39",
         og_number: "21.2.130",
         number: 21,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 138,
@@ -1122,7 +1122,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "21.40",
         og_number: "21.3.131",
         number: 21,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 139,
@@ -1130,7 +1130,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "21.41",
         og_number: "21.4.132",
         number: 21,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 140,
@@ -1138,7 +1138,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "21.42",
         og_number: "21.5.133",
         number: 21,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 141,
@@ -1146,7 +1146,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "21.43",
         og_number: "16.5.103",
         number: 21,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 142,
@@ -1154,7 +1154,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "21.44",
         og_number: "22.4.143",
         number: 21,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 143,
@@ -1162,7 +1162,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "22.45",
         og_number: "22.1.140",
         number: 22,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 144,
@@ -1170,7 +1170,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "22.46",
         og_number: "22.2.141",
         number: 22,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 145,
@@ -1178,7 +1178,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "22.47",
         og_number: "22.3.142",
         number: 22,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 146,
@@ -1186,7 +1186,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "22.48",
         og_number: "16.6.104",
         number: 22,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 147,
@@ -1194,7 +1194,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "23.49",
         og_number: "23.1.145",
         number: 23,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 148,
@@ -1202,7 +1202,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "23.50",
         og_number: "23.2.146",
         number: 23,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 149,
@@ -1210,7 +1210,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "23.51",
         og_number: "23.3.147",
         number: 23,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 150,
@@ -1218,7 +1218,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "23.52",
         og_number: "21.7.135",
         number: 23,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 151,
@@ -1226,7 +1226,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "24.53",
         og_number: "24.1.150",
         number: 24,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 152,
@@ -1234,7 +1234,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "24.54",
         og_number: "24.2.151",
         number: 24,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 153,
@@ -1242,7 +1242,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "24.55",
         og_number: "24.3.152",
         number: 24,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 154,
@@ -1250,7 +1250,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "24.56",
         og_number: "21.11.139",
         number: 24,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 155,
@@ -1258,7 +1258,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "25.57",
         og_number: "25.1.155",
         number: 25,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 156,
@@ -1266,7 +1266,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "25.58",
         og_number: "25.2.156",
         number: 25,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 157,
@@ -1274,7 +1274,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "25.59",
         og_number: "25.3.157",
         number: 25,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 158,
@@ -1282,7 +1282,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "25.60",
         og_number: "25.4.158",
         number: 25,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 159,
@@ -1290,7 +1290,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "25.61",
         og_number: "25.5.159",
         number: 25,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 160,
@@ -1298,7 +1298,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "25.62",
         og_number: "25.6.160",
         number: 25,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 161,
@@ -1306,7 +1306,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "25.63",
         og_number: "35.6.241",
         number: 25,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 162,
@@ -1314,7 +1314,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "25.64",
         og_number: "38.7.271",
         number: 25,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 163,
@@ -1322,7 +1322,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "25.65",
         og_number: "44.5.328",
         number: 25,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 164,
@@ -1330,7 +1330,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "26.66",
         og_number: "26.1.168",
         number: 26,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 165,
@@ -1338,7 +1338,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "26.67",
         og_number: "26.2.169",
         number: 26,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 166,
@@ -1346,7 +1346,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "26.68",
         og_number: "26.3.170",
         number: 26,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 167,
@@ -1354,7 +1354,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "26.69",
         og_number: "26.4.171",
         number: 26,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 168,
@@ -1362,7 +1362,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "26.70",
         og_number: "26.5.172",
         number: 26,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 169,
@@ -1370,7 +1370,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "26.71",
         og_number: "26.6.173",
         number: 26,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 170,
@@ -1378,7 +1378,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "26.72",
         og_number: "26.7.174",
         number: 26,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 171,
@@ -1386,7 +1386,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "26.73",
         og_number: "25.10.164",
         number: 26,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 172,
@@ -1394,7 +1394,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "26.74",
         og_number: "38.11.275",
         number: 26,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 173,
@@ -1402,7 +1402,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "26.75",
         og_number: "39.10.287",
         number: 26,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 174,
@@ -1410,7 +1410,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "26.76",
         og_number: "36.6.254",
         number: 26,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 175,
@@ -1418,7 +1418,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "26.77",
         og_number: "46.8.345",
         number: 26,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 176,
@@ -1426,7 +1426,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "27.78",
         og_number: "27.1.178",
         number: 27,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 177,
@@ -1434,7 +1434,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "27.79",
         og_number: "27.2.179",
         number: 27,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 178,
@@ -1442,7 +1442,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "27.80",
         og_number: "27.3.180",
         number: 27,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 179,
@@ -1450,7 +1450,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "27.81",
         og_number: "27.4.181",
         number: 27,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 180,
@@ -1458,7 +1458,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "27.82",
         og_number: "25.11.165",
         number: 27,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 181,
@@ -1466,7 +1466,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "27.83",
         og_number: "27.5.182",
         number: 27,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 182,
@@ -1474,7 +1474,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "27.84",
         og_number: "37.5.262",
         number: 27,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 183,
@@ -1482,7 +1482,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "27.85",
         og_number: "39.12.289",
         number: 27,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 184,
@@ -1490,7 +1490,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "27.86",
         og_number: "45.5.335",
         number: 27,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 185,
@@ -1498,7 +1498,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "28.87",
         og_number: "28.1.185",
         number: 28,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 186,
@@ -1506,7 +1506,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "28.88",
         og_number: "28.2.186",
         number: 28,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 187,
@@ -1514,7 +1514,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "28.89",
         og_number: "28.3.187",
         number: 28,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 188,
@@ -1522,7 +1522,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "28.90",
         og_number: "28.4.188",
         number: 28,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 189,
@@ -1530,7 +1530,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "28.91",
         og_number: "28.5.189",
         number: 28,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 190,
@@ -1538,7 +1538,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "28.92",
         og_number: "25.12.166",
         number: 28,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 191,
@@ -1546,7 +1546,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "28.93",
         og_number: "28.6.190",
         number: 28,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 192,
@@ -1554,7 +1554,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "28.94",
         og_number: "28.7.191",
         number: 28,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 193,
@@ -1562,7 +1562,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "28.95",
         og_number: "40.6.296",
         number: 28,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 194,
@@ -1570,7 +1570,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "28.96",
         og_number: "39.7.284",
         number: 28,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 195,
@@ -1578,7 +1578,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "28.97",
         og_number: "35.10.245",
         number: 28,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 196,
@@ -1586,7 +1586,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "28.98",
         og_number: "46.6.343",
         number: 28,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 197,
@@ -1594,7 +1594,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "29.99",
         og_number: "29.1.198",
         number: 29,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 198,
@@ -1602,7 +1602,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "29.100",
         og_number: "29.2.199",
         number: 29,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 199,
@@ -1610,7 +1610,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "29.101",
         og_number: "29.3.200",
         number: 29,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 200,
@@ -1618,7 +1618,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "29.102",
         og_number: "29.4.201",
         number: 29,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 201,
@@ -1626,7 +1626,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "29.103",
         og_number: "29.5.202",
         number: 29,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 202,
@@ -1634,7 +1634,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "29.104",
         og_number: "26.10.177",
         number: 29,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 203,
@@ -1642,7 +1642,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "29.105",
         og_number: "29.6.203",
         number: 29,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 204,
@@ -1650,7 +1650,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "29.106",
         og_number: "28.10.194",
         number: 29,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 205,
@@ -1658,7 +1658,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "29.107",
         og_number: "41.7.306",
         number: 29,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 206,
@@ -1666,7 +1666,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "29.108",
         og_number: "39.11.288",
         number: 29,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 207,
@@ -1674,7 +1674,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "29.109",
         og_number: "36.7.255",
         number: 29,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 208,
@@ -1682,7 +1682,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "29.110",
         og_number: "45.6.336",
         number: 29,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 209,
@@ -1690,7 +1690,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "30.111",
         og_number: "30.1.205",
         number: 30,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 210,
@@ -1698,7 +1698,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "30.112",
         og_number: "30.2.206",
         number: 30,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 211,
@@ -1706,7 +1706,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "30.113",
         og_number: "30.3.207",
         number: 30,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 212,
@@ -1714,7 +1714,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "30.114",
         og_number: "30.4.208",
         number: 30,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 213,
@@ -1722,7 +1722,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "30.115",
         og_number: "30.5.209",
         number: 30,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 214,
@@ -1730,7 +1730,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "30.116",
         og_number: "30.6.210",
         number: 30,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 215,
@@ -1738,7 +1738,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "30.117",
         og_number: "27.7.184",
         number: 30,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 216,
@@ -1746,7 +1746,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "30.118",
         og_number: "28.12.196",
         number: 30,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 217,
@@ -1754,7 +1754,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "30.119",
         og_number: "38.12.276",
         number: 30,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 218,
@@ -1762,7 +1762,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "30.120",
         og_number: "41.9.308",
         number: 30,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 219,
@@ -1770,7 +1770,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "30.121",
         og_number: "37.6.263",
         number: 30,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 220,
@@ -1778,7 +1778,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "30.122",
         og_number: "46.9.346",
         number: 30,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 221,
@@ -1786,7 +1786,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "31.123",
         og_number: "31.1.212",
         number: 31,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 222,
@@ -1794,7 +1794,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "31.124",
         og_number: "31.2.213",
         number: 31,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 223,
@@ -1802,7 +1802,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "31.125",
         og_number: "31.3.214",
         number: 31,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 224,
@@ -1810,7 +1810,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "31.126",
         og_number: "31.4.215",
         number: 31,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 225,
@@ -1818,7 +1818,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "31.127",
         og_number: "31.5.216",
         number: 31,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 226,
@@ -1826,7 +1826,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "31.128",
         og_number: "26.9.176",
         number: 31,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 227,
@@ -1834,7 +1834,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "31.129",
         og_number: "31.6.217",
         number: 31,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 228,
@@ -1842,7 +1842,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "31.130",
         og_number: "28.11.195",
         number: 31,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 229,
@@ -1850,7 +1850,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "31.131",
         og_number: "40.8.298",
         number: 31,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 230,
@@ -1858,7 +1858,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "31.132",
         og_number: "38.10.274",
         number: 31,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 231,
@@ -1866,7 +1866,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "31.133",
         og_number: "36.8.256",
         number: 31,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 232,
@@ -1874,7 +1874,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "31.134",
         og_number: "44.6.329",
         number: 31,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 233,
@@ -1882,7 +1882,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "32.135",
         og_number: "32.1.219",
         number: 32,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 234,
@@ -1890,7 +1890,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "32.136",
         og_number: "32.2.220",
         number: 32,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 235,
@@ -1898,7 +1898,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "32.137",
         og_number: "32.3.221",
         number: 32,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 236,
@@ -1906,7 +1906,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "32.138",
         og_number: "32.4.222",
         number: 32,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 237,
@@ -1914,7 +1914,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "32.139",
         og_number: "32.5.223",
         number: 32,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 238,
@@ -1922,7 +1922,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "32.140",
         og_number: "28.9.193",
         number: 32,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 239,
@@ -1930,7 +1930,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "32.141",
         og_number: "35.11.246",
         number: 32,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 240,
@@ -1938,7 +1938,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "32.142",
         og_number: "41.6.305",
         number: 32,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 241,
@@ -1946,7 +1946,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "32.143",
         og_number: "45.7.337",
         number: 32,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 242,
@@ -1954,7 +1954,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "33.144",
         og_number: "33.1.226",
         number: 33,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 243,
@@ -1962,7 +1962,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "33.145",
         og_number: "33.2.227",
         number: 33,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 244,
@@ -1970,7 +1970,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "33.146",
         og_number: "33.3.228",
         number: 33,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 245,
@@ -1978,7 +1978,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "33.147",
         og_number: "33.4.229",
         number: 33,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 246,
@@ -1986,7 +1986,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "33.148",
         og_number: "33.5.230",
         number: 33,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 247,
@@ -1994,7 +1994,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "33.149",
         og_number: "31.7.218",
         number: 33,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 248,
@@ -2002,7 +2002,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "33.150",
         og_number: "29.7.204",
         number: 33,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 249,
@@ -2010,7 +2010,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "33.151",
         og_number: "32.6.224",
         number: 33,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 250,
@@ -2018,7 +2018,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "33.152",
         og_number: "40.7.297",
         number: 33,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 251,
@@ -2026,7 +2026,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "33.153",
         og_number: "41.8.307",
         number: 33,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 252,
@@ -2034,7 +2034,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "33.154",
         og_number: "36.9.257",
         number: 33,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 253,
@@ -2042,7 +2042,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "33.155",
         og_number: "46.7.344",
         number: 33,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 254,
@@ -2050,7 +2050,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "34.156",
         og_number: "34.1.231",
         number: 34,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 255,
@@ -2058,7 +2058,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "34.157",
         og_number: "34.2.232",
         number: 34,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 256,
@@ -2066,7 +2066,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "34.158",
         og_number: "34.3.233",
         number: 34,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 257,
@@ -2074,7 +2074,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "34.159",
         og_number: "34.4.234",
         number: 34,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 258,
@@ -2082,7 +2082,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "34.160",
         og_number: "30.7.211",
         number: 34,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 259,
@@ -2090,7 +2090,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "34.161",
         og_number: "32.7.225",
         number: 34,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 260,
@@ -2098,7 +2098,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "34.162",
         og_number: "40.9.299",
         number: 34,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 261,
@@ -2106,7 +2106,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "34.163",
         og_number: "37.7.264",
         number: 34,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 262,
@@ -2114,7 +2114,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "34.164",
         og_number: "44.7.330",
         number: 34,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 263,
@@ -2122,7 +2122,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "35.165",
         og_number: "35.1.236",
         number: 35,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 264,
@@ -2130,7 +2130,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "35.166",
         og_number: "35.2.237",
         number: 35,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 265,
@@ -2138,7 +2138,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "35.167",
         og_number: "35.3.238",
         number: 35,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 266,
@@ -2146,7 +2146,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "35.168",
         og_number: "35.4.239",
         number: 35,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 267,
@@ -2154,7 +2154,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "35.169",
         og_number: "35.5.240",
         number: 35,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 268,
@@ -2162,7 +2162,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "35.170",
         og_number: "25.7.161",
         number: 35,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 269,
@@ -2170,7 +2170,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "35.171",
         og_number: "42.5.313",
         number: 35,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 270,
@@ -2178,7 +2178,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "36.172",
         og_number: "36.1.249",
         number: 36,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 271,
@@ -2186,7 +2186,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "36.173",
         og_number: "36.2.250",
         number: 36,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 272,
@@ -2194,7 +2194,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "36.174",
         og_number: "36.3.251",
         number: 36,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 273,
@@ -2202,7 +2202,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "36.175",
         og_number: "36.4.252",
         number: 36,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 274,
@@ -2210,7 +2210,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "36.176",
         og_number: "36.5.253",
         number: 36,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 275,
@@ -2218,7 +2218,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "36.177",
         og_number: "35.8.243",
         number: 36,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 276,
@@ -2226,7 +2226,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "36.178",
         og_number: "26.8.175",
         number: 36,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 277,
@@ -2234,7 +2234,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "36.179",
         og_number: "42.7.315",
         number: 36,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 278,
@@ -2242,7 +2242,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "37.180",
         og_number: "37.1.258",
         number: 37,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 279,
@@ -2250,7 +2250,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "37.181",
         og_number: "37.2.259",
         number: 37,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 280,
@@ -2258,7 +2258,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "37.182",
         og_number: "37.3.260",
         number: 37,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 281,
@@ -2266,7 +2266,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "37.183",
         og_number: "37.4.261",
         number: 37,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 282,
@@ -2274,7 +2274,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "37.184",
         og_number: "35.9.244",
         number: 37,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 283,
@@ -2282,7 +2282,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "37.185",
         og_number: "27.6.183",
         number: 37,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 284,
@@ -2290,7 +2290,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "37.186",
         og_number: "42.8.316",
         number: 37,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 285,
@@ -2298,7 +2298,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "38.187",
         og_number: "38.1.265",
         number: 38,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 286,
@@ -2306,7 +2306,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "38.188",
         og_number: "38.2.266",
         number: 38,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 287,
@@ -2314,7 +2314,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "38.189",
         og_number: "38.3.267",
         number: 38,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 288,
@@ -2322,7 +2322,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "38.190",
         og_number: "38.4.268",
         number: 38,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 289,
@@ -2330,7 +2330,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "38.191",
         og_number: "38.5.269",
         number: 38,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 290,
@@ -2338,7 +2338,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "38.192",
         og_number: "38.6.270",
         number: 38,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 291,
@@ -2346,7 +2346,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "38.193",
         og_number: "25.8.162",
         number: 38,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 292,
@@ -2354,7 +2354,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "38.194",
         og_number: "42.6.314",
         number: 38,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 293,
@@ -2362,7 +2362,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "39.195",
         og_number: "39.1.278",
         number: 39,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 294,
@@ -2370,7 +2370,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "39.196",
         og_number: "39.2.279",
         number: 39,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 295,
@@ -2378,7 +2378,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "39.197",
         og_number: "39.3.280",
         number: 39,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 296,
@@ -2386,7 +2386,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "39.198",
         og_number: "39.4.281",
         number: 39,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 297,
@@ -2394,7 +2394,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "39.199",
         og_number: "39.5.282",
         number: 39,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 298,
@@ -2402,7 +2402,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "39.200",
         og_number: "39.6.283",
         number: 39,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 299,
@@ -2410,7 +2410,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "39.201",
         og_number: "25.13.167",
         number: 39,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 300,
@@ -2418,7 +2418,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "39.202",
         og_number: "42.9.317",
         number: 39,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 301,
@@ -2426,7 +2426,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "40.203",
         og_number: "40.1.291",
         number: 40,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 302,
@@ -2434,7 +2434,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "40.204",
         og_number: "40.2.292",
         number: 40,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 303,
@@ -2442,7 +2442,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "40.205",
         og_number: "40.3.293",
         number: 40,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 304,
@@ -2450,7 +2450,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "40.206",
         og_number: "40.4.294",
         number: 40,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 305,
@@ -2458,7 +2458,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "40.207",
         og_number: "40.5.295",
         number: 40,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 306,
@@ -2466,7 +2466,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "40.208",
         og_number: "38.9.273",
         number: 40,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 307,
@@ -2474,7 +2474,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "40.209",
         og_number: "28.8.192",
         number: 40,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 308,
@@ -2482,7 +2482,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "40.210",
         og_number: "42.10.318",
         number: 40,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 309,
@@ -2490,7 +2490,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "41.211",
         og_number: "41.1.300",
         number: 41,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 310,
@@ -2498,7 +2498,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "41.212",
         og_number: "41.2.301",
         number: 41,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 311,
@@ -2506,7 +2506,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "41.213",
         og_number: "41.3.302",
         number: 41,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 312,
@@ -2514,7 +2514,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "41.214",
         og_number: "41.4.303",
         number: 41,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 313,
@@ -2522,7 +2522,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "41.215",
         og_number: "41.5.304",
         number: 41,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 314,
@@ -2530,7 +2530,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "41.216",
         og_number: "39.9.286",
         number: 41,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 315,
@@ -2538,7 +2538,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "41.217",
         og_number: "28.13.197",
         number: 41,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 316,
@@ -2546,7 +2546,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "41.218",
         og_number: "42.11.319",
         number: 41,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 317,
@@ -2554,7 +2554,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "42.219",
         og_number: "42.1.309",
         number: 42,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 318,
@@ -2562,7 +2562,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "42.220",
         og_number: "42.2.310",
         number: 42,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 319,
@@ -2570,7 +2570,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "42.221",
         og_number: "42.3.311",
         number: 42,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 320,
@@ -2578,7 +2578,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "42.222",
         og_number: "42.4.312",
         number: 42,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 321,
@@ -2586,7 +2586,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "42.223",
         og_number: "25.9.163",
         number: 42,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 322,
@@ -2594,7 +2594,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "43.224",
         og_number: "43.1.320",
         number: 43,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 323,
@@ -2602,7 +2602,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "43.225",
         og_number: "43.2.321",
         number: 43,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 324,
@@ -2610,7 +2610,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "43.226",
         og_number: "43.3.322",
         number: 43,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 325,
@@ -2618,7 +2618,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "43.227",
         og_number: "43.4.323",
         number: 43,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 326,
@@ -2626,7 +2626,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "43.228",
         og_number: "34.5.235",
         number: 43,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 327,
@@ -2634,7 +2634,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "44.229",
         og_number: "44.1.324",
         number: 44,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 328,
@@ -2642,7 +2642,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "44.230",
         og_number: "44.2.325",
         number: 44,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 329,
@@ -2650,7 +2650,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "44.231",
         og_number: "44.3.326",
         number: 44,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 330,
@@ -2658,7 +2658,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "44.232",
         og_number: "44.4.327",
         number: 44,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 331,
@@ -2666,7 +2666,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "44.233",
         og_number: "35.7.242",
         number: 44,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 332,
@@ -2674,7 +2674,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "44.234",
         og_number: "38.8.272",
         number: 44,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 333,
@@ -2682,7 +2682,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "45.235",
         og_number: "45.1.331",
         number: 45,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 334,
@@ -2690,7 +2690,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "45.236",
         og_number: "45.2.332",
         number: 45,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 335,
@@ -2698,7 +2698,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "45.237",
         og_number: "45.3.333",
         number: 45,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 336,
@@ -2706,7 +2706,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "45.238",
         og_number: "45.4.334",
         number: 45,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 337,
@@ -2714,7 +2714,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "45.239",
         og_number: "35.13.248",
         number: 45,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 338,
@@ -2722,7 +2722,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "45.240",
         og_number: "39.13.290",
         number: 45,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 339,
@@ -2730,7 +2730,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "46.241",
         og_number: "46.1.338",
         number: 46,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 340,
@@ -2738,7 +2738,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "46.242",
         og_number: "46.2.339",
         number: 46,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 341,
@@ -2746,7 +2746,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "46.243",
         og_number: "46.3.340",
         number: 46,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 342,
@@ -2754,7 +2754,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "46.244",
         og_number: "46.4.341",
         number: 46,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 343,
@@ -2762,7 +2762,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "46.245",
         og_number: "46.5.342",
         number: 46,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 344,
@@ -2770,7 +2770,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "46.246",
         og_number: "35.12.247",
         number: 46,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 345,
@@ -2778,7 +2778,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "46.247",
         og_number: "38.13.277",
         number: 46,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 346,
@@ -2786,7 +2786,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "46.248",
         og_number: "39.8.285",
         number: 46,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 347,
@@ -2794,7 +2794,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "47.249",
         og_number: "47.1.347",
         number: 47,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 348,
@@ -2802,7 +2802,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "47.250",
         og_number: "47.2.348",
         number: 47,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 349,
@@ -2810,7 +2810,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "47.251",
         og_number: "47.3.349",
         number: 47,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 350,
@@ -2818,7 +2818,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "47.252",
         og_number: "47.4.350",
         number: 47,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 351,
@@ -2826,7 +2826,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "47.253",
         og_number: "47.5.351",
         number: 47,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 352,
@@ -2834,7 +2834,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "47.254",
         og_number: "47.6.352",
         number: 47,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 353,
@@ -2842,7 +2842,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "47.255",
         og_number: "65.9.553",
         number: 47,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 354,
@@ -2850,7 +2850,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "47.256",
         og_number: "71.6.626",
         number: 47,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 355,
@@ -2858,7 +2858,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "48.257",
         og_number: "48.1.358",
         number: 48,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 356,
@@ -2866,7 +2866,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "48.258",
         og_number: "48.2.359",
         number: 48,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 357,
@@ -2874,7 +2874,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "48.259",
         og_number: "48.3.360",
         number: 48,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 358,
@@ -2882,7 +2882,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "48.260",
         og_number: "48.4.361",
         number: 48,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 359,
@@ -2890,7 +2890,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "48.261",
         og_number: "48.5.362",
         number: 48,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 360,
@@ -2898,7 +2898,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "48.262",
         og_number: "50.10.386",
         number: 48,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 361,
@@ -2906,7 +2906,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "48.263",
         og_number: "66.13.576",
         number: 48,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 362,
@@ -2914,7 +2914,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "48.264",
         og_number: "71.9.629",
         number: 48,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 363,
@@ -2922,7 +2922,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "49.265",
         og_number: "49.1.364",
         number: 49,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 364,
@@ -2930,7 +2930,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "49.266",
         og_number: "49.2.365",
         number: 49,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 365,
@@ -2938,7 +2938,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "49.267",
         og_number: "49.3.366",
         number: 49,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 366,
@@ -2946,7 +2946,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "49.268",
         og_number: "49.4.367",
         number: 49,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 367,
@@ -2954,7 +2954,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "49.269",
         og_number: "49.5.368",
         number: 49,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 368,
@@ -2962,7 +2962,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "49.270",
         og_number: "49.6.369",
         number: 49,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 369,
@@ -2970,7 +2970,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "49.271",
         og_number: "49.7.370",
         number: 49,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 370,
@@ -2978,7 +2978,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "49.272",
         og_number: "49.8.371",
         number: 49,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 371,
@@ -2986,7 +2986,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "49.273",
         og_number: "47.10.356",
         number: 49,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 372,
@@ -2994,7 +2994,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "49.274",
         og_number: "67.9.585",
         number: 49,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 373,
@@ -3002,7 +3002,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "49.275",
         og_number: "66.8.571",
         number: 49,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 374,
@@ -3010,7 +3010,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "49.276",
         og_number: "72.8.637",
         number: 49,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 375,
@@ -3018,7 +3018,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "50.277",
         og_number: "50.1.377",
         number: 50,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 376,
@@ -3026,7 +3026,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "50.278",
         og_number: "50.2.378",
         number: 50,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 377,
@@ -3034,7 +3034,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "50.279",
         og_number: "50.3.379",
         number: 50,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 378,
@@ -3042,7 +3042,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "50.280",
         og_number: "50.4.380",
         number: 50,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 379,
@@ -3050,7 +3050,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "50.281",
         og_number: "50.5.381",
         number: 50,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 380,
@@ -3058,7 +3058,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "50.282",
         og_number: "50.6.382",
         number: 50,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 381,
@@ -3066,7 +3066,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "50.283",
         og_number: "50.7.383",
         number: 50,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 382,
@@ -3074,7 +3074,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "50.284",
         og_number: "49.12.375",
         number: 50,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 383,
@@ -3082,7 +3082,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "50.285",
         og_number: "50.8.384",
         number: 50,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 384,
@@ -3090,7 +3090,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "50.286",
         og_number: "68.8.601",
         number: 50,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 385,
@@ -3098,7 +3098,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "50.287",
         og_number: "65.17.561",
         number: 50,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 386,
@@ -3106,7 +3106,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "50.288",
         og_number: "72.13.642",
         number: 50,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 387,
@@ -3114,7 +3114,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "51.289",
         og_number: "51.1.387",
         number: 51,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 388,
@@ -3122,7 +3122,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "51.290",
         og_number: "51.2.388",
         number: 51,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 389,
@@ -3130,7 +3130,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "51.291",
         og_number: "51.3.389",
         number: 51,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 390,
@@ -3138,7 +3138,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "51.292",
         og_number: "51.4.390",
         number: 51,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 391,
@@ -3146,7 +3146,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "51.293",
         og_number: "51.5.391",
         number: 51,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 392,
@@ -3154,7 +3154,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "51.294",
         og_number: "51.6.392",
         number: 51,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 393,
@@ -3162,7 +3162,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "51.295",
         og_number: "51.7.393",
         number: 51,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 394,
@@ -3170,7 +3170,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "51.296",
         og_number: "51.8.394",
         number: 51,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 395,
@@ -3178,7 +3178,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "51.297",
         og_number: "51.9.395",
         number: 51,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 396,
@@ -3186,7 +3186,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "51.298",
         og_number: "47.9.355",
         number: 51,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 397,
@@ -3194,7 +3194,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "51.299",
         og_number: "51.10.396",
         number: 51,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 398,
@@ -3202,7 +3202,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "51.300",
         og_number: "51.11.397",
         number: 51,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 399,
@@ -3210,7 +3210,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "51.301",
         og_number: "63.10.520",
         number: 51,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 400,
@@ -3218,7 +3218,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "51.302",
         og_number: "65.13.557",
         number: 51,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 401,
@@ -3226,7 +3226,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "51.303",
         og_number: "67.14.590",
         number: 51,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 402,
@@ -3234,7 +3234,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "51.304",
         og_number: "74.8.657",
         number: 51,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 403,
@@ -3242,7 +3242,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "52.305",
         og_number: "52.1.406",
         number: 52,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 404,
@@ -3250,7 +3250,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "52.306",
         og_number: "52.2.407",
         number: 52,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 405,
@@ -3258,7 +3258,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "52.307",
         og_number: "52.3.408",
         number: 52,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 406,
@@ -3266,7 +3266,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "52.308",
         og_number: "52.4.409",
         number: 52,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 407,
@@ -3274,7 +3274,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "52.309",
         og_number: "52.5.410",
         number: 52,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 408,
@@ -3282,7 +3282,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "52.310",
         og_number: "52.6.411",
         number: 52,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 409,
@@ -3290,7 +3290,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "52.311",
         og_number: "52.7.412",
         number: 52,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 410,
@@ -3298,7 +3298,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "52.312",
         og_number: "52.8.413",
         number: 52,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 411,
@@ -3306,7 +3306,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "52.313",
         og_number: "52.9.414",
         number: 52,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 412,
@@ -3314,7 +3314,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "52.314",
         og_number: "53.13.427",
         number: 52,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 413,
@@ -3322,7 +3322,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "52.315",
         og_number: "50.9.385",
         number: 52,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 414,
@@ -3330,7 +3330,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "52.316",
         og_number: "54.13.440",
         number: 52,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 415,
@@ -3338,7 +3338,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "52.317",
         og_number: "66.12.575",
         number: 52,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 416,
@@ -3346,7 +3346,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "52.318",
         og_number: "63.17.527",
         number: 52,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 417,
@@ -3354,7 +3354,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "52.319",
         og_number: "68.11.604",
         number: 52,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 418,
@@ -3362,7 +3362,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "52.320",
         og_number: "74.9.658",
         number: 52,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 419,
@@ -3370,7 +3370,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "53.321",
         og_number: "53.1.415",
         number: 53,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 420,
@@ -3378,7 +3378,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "53.322",
         og_number: "53.2.416",
         number: 53,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 421,
@@ -3386,7 +3386,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "53.323",
         og_number: "53.3.417",
         number: 53,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 422,
@@ -3394,7 +3394,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "53.324",
         og_number: "53.4.418",
         number: 53,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 423,
@@ -3402,7 +3402,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "53.325",
         og_number: "53.5.419",
         number: 53,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 424,
@@ -3410,7 +3410,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "53.326",
         og_number: "53.6.420",
         number: 53,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 425,
@@ -3418,7 +3418,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "53.327",
         og_number: "53.7.421",
         number: 53,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 426,
@@ -3426,7 +3426,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "53.328",
         og_number: "53.8.422",
         number: 53,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 427,
@@ -3434,7 +3434,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "53.329",
         og_number: "53.9.423",
         number: 53,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 428,
@@ -3442,7 +3442,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "53.330",
         og_number: "51.15.401",
         number: 53,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 429,
@@ -3450,7 +3450,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "53.331",
         og_number: "53.10.424",
         number: 53,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 430,
@@ -3458,7 +3458,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "53.332",
         og_number: "49.11.374",
         number: 53,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 431,
@@ -3466,7 +3466,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "53.333",
         og_number: "66.9.572",
         number: 53,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 432,
@@ -3474,7 +3474,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "53.334",
         og_number: "65.16.560",
         number: 53,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 433,
@@ -3482,7 +3482,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "53.335",
         og_number: "64.15.542",
         number: 53,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 434,
@@ -3490,7 +3490,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "53.336",
         og_number: "74.10.659",
         number: 53,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 435,
@@ -3498,7 +3498,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "54.337",
         og_number: "54.1.428",
         number: 54,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 436,
@@ -3506,7 +3506,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "54.338",
         og_number: "54.2.429",
         number: 54,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 437,
@@ -3514,7 +3514,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "54.339",
         og_number: "54.3.430",
         number: 54,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 438,
@@ -3522,7 +3522,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "54.340",
         og_number: "54.4.431",
         number: 54,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 439,
@@ -3530,7 +3530,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "54.341",
         og_number: "54.5.432",
         number: 54,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 440,
@@ -3538,7 +3538,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "54.342",
         og_number: "54.6.433",
         number: 54,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 441,
@@ -3546,7 +3546,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "54.343",
         og_number: "54.7.434",
         number: 54,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 442,
@@ -3554,7 +3554,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "54.344",
         og_number: "54.8.435",
         number: 54,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 443,
@@ -3562,7 +3562,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "54.345",
         og_number: "54.9.436",
         number: 54,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 444,
@@ -3570,7 +3570,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "54.346",
         og_number: "49.10.373",
         number: 54,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 445,
@@ -3578,7 +3578,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "54.347",
         og_number: "54.10.437",
         number: 54,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 446,
@@ -3586,7 +3586,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "54.348",
         og_number: "51.18.404",
         number: 54,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 447,
@@ -3594,7 +3594,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "54.349",
         og_number: "64.11.538",
         number: 54,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 448,
@@ -3602,7 +3602,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "54.350",
         og_number: "67.13.589",
         number: 54,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 449,
@@ -3610,7 +3610,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "54.351",
         og_number: "68.9.602",
         number: 54,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 450,
@@ -3618,7 +3618,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "54.352",
         og_number: "73.7.649",
         number: 54,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 451,
@@ -3626,7 +3626,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "55.353",
         og_number: "55.1.441",
         number: 55,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 452,
@@ -3634,7 +3634,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "55.354",
         og_number: "55.2.442",
         number: 55,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 453,
@@ -3642,7 +3642,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "55.355",
         og_number: "55.3.443",
         number: 55,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 454,
@@ -3650,7 +3650,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "55.356",
         og_number: "55.4.444",
         number: 55,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 455,
@@ -3658,7 +3658,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "55.357",
         og_number: "55.5.445",
         number: 55,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 456,
@@ -3666,7 +3666,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "55.358",
         og_number: "55.6.446",
         number: 55,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 457,
@@ -3674,7 +3674,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "55.359",
         og_number: "55.7.447",
         number: 55,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 458,
@@ -3682,7 +3682,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "55.360",
         og_number: "51.16.402",
         number: 55,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 459,
@@ -3690,7 +3690,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "55.361",
         og_number: "55.8.448",
         number: 55,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 460,
@@ -3698,7 +3698,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "55.362",
         og_number: "64.10.537",
         number: 55,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 461,
@@ -3706,7 +3706,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "55.363",
         og_number: "65.15.559",
         number: 55,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 462,
@@ -3714,7 +3714,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "55.364",
         og_number: "72.11.640",
         number: 55,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 463,
@@ -3722,7 +3722,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "56.365",
         og_number: "56.1.451",
         number: 56,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 464,
@@ -3730,7 +3730,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "56.366",
         og_number: "56.2.452",
         number: 56,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 465,
@@ -3738,7 +3738,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "56.367",
         og_number: "56.3.453",
         number: 56,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 466,
@@ -3746,7 +3746,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "56.368",
         og_number: "56.4.454",
         number: 56,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 467,
@@ -3754,7 +3754,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "56.369",
         og_number: "56.5.455",
         number: 56,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 468,
@@ -3762,7 +3762,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "56.370",
         og_number: "56.6.456",
         number: 56,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 469,
@@ -3770,7 +3770,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "56.371",
         og_number: "56.7.457",
         number: 56,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 470,
@@ -3778,7 +3778,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "56.372",
         og_number: "54.12.439",
         number: 56,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 471,
@@ -3786,7 +3786,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "56.373",
         og_number: "59.10.487",
         number: 56,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 472,
@@ -3794,7 +3794,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "56.374",
         og_number: "64.14.541",
         number: 56,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 473,
@@ -3802,7 +3802,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "56.375",
         og_number: "66.10.573",
         number: 56,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 474,
@@ -3810,7 +3810,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "56.376",
         og_number: "72.10.639",
         number: 56,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 475,
@@ -3818,7 +3818,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "57.377",
         og_number: "57.1.458",
         number: 57,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 476,
@@ -3826,7 +3826,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "57.378",
         og_number: "57.2.459",
         number: 57,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 477,
@@ -3834,7 +3834,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "57.379",
         og_number: "57.3.460",
         number: 57,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 478,
@@ -3842,7 +3842,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "57.380",
         og_number: "57.4.461",
         number: 57,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 479,
@@ -3850,7 +3850,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "57.381",
         og_number: "57.5.462",
         number: 57,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 480,
@@ -3858,7 +3858,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "57.382",
         og_number: "57.6.463",
         number: 57,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 481,
@@ -3866,7 +3866,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "57.383",
         og_number: "57.7.464",
         number: 57,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 482,
@@ -3874,7 +3874,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "57.384",
         og_number: "57.8.465",
         number: 57,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 483,
@@ -3882,7 +3882,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "57.385",
         og_number: "57.9.466",
         number: 57,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 484,
@@ -3890,7 +3890,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "57.386",
         og_number: "57.10.467",
         number: 57,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 485,
@@ -3898,7 +3898,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "57.387",
         og_number: "51.17.403",
         number: 57,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 486,
@@ -3906,7 +3906,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "57.388",
         og_number: "51.13.399",
         number: 57,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 487,
@@ -3914,7 +3914,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "57.389",
         og_number: "67.15.591",
         number: 57,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 488,
@@ -3922,7 +3922,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "57.390",
         og_number: "64.13.540",
         number: 57,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 489,
@@ -3930,7 +3930,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "57.391",
         og_number: "63.11.521",
         number: 57,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 490,
@@ -3938,7 +3938,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "57.392",
         og_number: "72.9.638",
         number: 57,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 491,
@@ -3946,7 +3946,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "58.393",
         og_number: "58.1.471",
         number: 58,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 492,
@@ -3954,7 +3954,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "58.394",
         og_number: "58.2.472",
         number: 58,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 493,
@@ -3962,7 +3962,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "58.395",
         og_number: "58.3.473",
         number: 58,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 494,
@@ -3970,7 +3970,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "58.396",
         og_number: "58.4.474",
         number: 58,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 495,
@@ -3978,7 +3978,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "58.397",
         og_number: "58.5.475",
         number: 58,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 496,
@@ -3986,7 +3986,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "58.398",
         og_number: "58.6.476",
         number: 58,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 497,
@@ -3994,7 +3994,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "58.399",
         og_number: "58.7.477",
         number: 58,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 498,
@@ -4002,7 +4002,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "58.400",
         og_number: "53.12.426",
         number: 58,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 499,
@@ -4010,7 +4010,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "58.401",
         og_number: "55.10.450",
         number: 58,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 500,
@@ -4018,7 +4018,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "58.402",
         og_number: "63.15.525",
         number: 58,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 501,
@@ -4026,7 +4026,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "58.403",
         og_number: "66.11.574",
         number: 58,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 502,
@@ -4034,7 +4034,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "58.404",
         og_number: "71.8.628",
         number: 58,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 503,
@@ -4042,7 +4042,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "59.405",
         og_number: "59.1.478",
         number: 59,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 504,
@@ -4050,7 +4050,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "59.406",
         og_number: "59.2.479",
         number: 59,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 505,
@@ -4058,7 +4058,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "59.407",
         og_number: "59.3.480",
         number: 59,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 506,
@@ -4066,7 +4066,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "59.408",
         og_number: "59.4.481",
         number: 59,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 507,
@@ -4074,7 +4074,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "59.409",
         og_number: "59.5.482",
         number: 59,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 508,
@@ -4082,7 +4082,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "59.410",
         og_number: "59.6.483",
         number: 59,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 509,
@@ -4090,7 +4090,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "59.411",
         og_number: "59.7.484",
         number: 59,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 510,
@@ -4098,7 +4098,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "59.412",
         og_number: "51.14.400",
         number: 59,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 511,
@@ -4106,7 +4106,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "59.413",
         og_number: "59.8.485",
         number: 59,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 512,
@@ -4114,7 +4114,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "59.414",
         og_number: "63.12.522",
         number: 59,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 513,
@@ -4122,7 +4122,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "59.415",
         og_number: "65.14.558",
         number: 59,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 514,
@@ -4130,7 +4130,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "59.416",
         og_number: "71.7.627",
         number: 59,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 515,
@@ -4138,7 +4138,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "60.417",
         og_number: "60.1.488",
         number: 60,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 516,
@@ -4146,7 +4146,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "60.418",
         og_number: "60.2.489",
         number: 60,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 517,
@@ -4154,7 +4154,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "60.419",
         og_number: "60.3.490",
         number: 60,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 518,
@@ -4162,7 +4162,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "60.420",
         og_number: "60.4.491",
         number: 60,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 519,
@@ -4170,7 +4170,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "60.421",
         og_number: "60.5.492",
         number: 60,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 520,
@@ -4178,7 +4178,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "60.422",
         og_number: "60.6.493",
         number: 60,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 521,
@@ -4186,7 +4186,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "60.423",
         og_number: "60.7.494",
         number: 60,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 522,
@@ -4194,7 +4194,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "60.424",
         og_number: "60.8.495",
         number: 60,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 523,
@@ -4202,7 +4202,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "60.425",
         og_number: "60.9.496",
         number: 60,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 524,
@@ -4210,7 +4210,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "60.426",
         og_number: "54.11.438",
         number: 60,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 525,
@@ -4218,7 +4218,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "60.427",
         og_number: "57.13.470",
         number: 60,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 526,
@@ -4226,7 +4226,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "60.428",
         og_number: "53.11.425",
         number: 60,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 527,
@@ -4234,7 +4234,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "60.429",
         og_number: "64.17.544",
         number: 60,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 528,
@@ -4242,7 +4242,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "60.430",
         og_number: "68.10.603",
         number: 60,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 529,
@@ -4250,7 +4250,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "60.431",
         og_number: "63.16.526",
         number: 60,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 530,
@@ -4258,7 +4258,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "60.432",
         og_number: "72.12.641",
         number: 60,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 531,
@@ -4266,7 +4266,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "61.433",
         og_number: "61.1.497",
         number: 61,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 532,
@@ -4274,7 +4274,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "61.434",
         og_number: "61.2.498",
         number: 61,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 533,
@@ -4282,7 +4282,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "61.435",
         og_number: "61.3.499",
         number: 61,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 534,
@@ -4290,7 +4290,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "61.436",
         og_number: "61.4.500",
         number: 61,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 535,
@@ -4298,7 +4298,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "61.437",
         og_number: "61.5.501",
         number: 61,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 536,
@@ -4306,7 +4306,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "61.438",
         og_number: "57.12.469",
         number: 61,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 537,
@@ -4314,7 +4314,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "61.439",
         og_number: "64.16.543",
         number: 61,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 538,
@@ -4322,7 +4322,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "61.440",
         og_number: "73.6.648",
         number: 61,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 539,
@@ -4330,7 +4330,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "62.441",
         og_number: "62.1.502",
         number: 62,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 540,
@@ -4338,7 +4338,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "62.442",
         og_number: "62.2.503",
         number: 62,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 541,
@@ -4346,7 +4346,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "62.443",
         og_number: "62.3.504",
         number: 62,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 542,
@@ -4354,7 +4354,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "62.444",
         og_number: "62.4.505",
         number: 62,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 543,
@@ -4362,7 +4362,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "62.445",
         og_number: "62.5.506",
         number: 62,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 544,
@@ -4370,7 +4370,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "62.446",
         og_number: "62.6.507",
         number: 62,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 545,
@@ -4378,7 +4378,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "62.447",
         og_number: "62.7.508",
         number: 62,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 546,
@@ -4386,7 +4386,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "62.448",
         og_number: "62.8.509",
         number: 62,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 547,
@@ -4394,7 +4394,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "62.449",
         og_number: "62.9.510",
         number: 62,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 548,
@@ -4402,7 +4402,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "62.450",
         og_number: "59.9.486",
         number: 62,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 549,
@@ -4410,7 +4410,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "62.451",
         og_number: "55.9.449",
         number: 62,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 550,
@@ -4418,7 +4418,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "62.452",
         og_number: "57.11.468",
         number: 62,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 551,
@@ -4426,7 +4426,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "62.453",
         og_number: "63.13.523",
         number: 62,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 552,
@@ -4434,7 +4434,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "62.454",
         og_number: "63.14.524",
         number: 62,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 553,
@@ -4442,7 +4442,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "62.455",
         og_number: "64.12.539",
         number: 62,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 554,
@@ -4450,7 +4450,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "62.456",
         og_number: "74.11.660",
         number: 62,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 555,
@@ -4458,7 +4458,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "63.457",
         og_number: "63.1.511",
         number: 63,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 556,
@@ -4466,7 +4466,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "63.458",
         og_number: "63.2.512",
         number: 63,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 557,
@@ -4474,7 +4474,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "63.459",
         og_number: "63.3.513",
         number: 63,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 558,
@@ -4482,7 +4482,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "63.460",
         og_number: "63.4.514",
         number: 63,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 559,
@@ -4490,7 +4490,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "63.461",
         og_number: "63.5.515",
         number: 63,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 560,
@@ -4498,7 +4498,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "63.462",
         og_number: "63.6.516",
         number: 63,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 561,
@@ -4506,7 +4506,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "63.463",
         og_number: "63.7.517",
         number: 63,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 562,
@@ -4514,7 +4514,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "63.464",
         og_number: "63.8.518",
         number: 63,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 563,
@@ -4522,7 +4522,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "63.465",
         og_number: "63.9.519",
         number: 63,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 564,
@@ -4530,7 +4530,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "63.466",
         og_number: "65.12.556",
         number: 63,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 565,
@@ -4538,7 +4538,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "63.467",
         og_number: "51.12.398",
         number: 63,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 566,
@@ -4546,7 +4546,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "63.468",
         og_number: "69.7.611",
         number: 63,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 567,
@@ -4554,7 +4554,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "64.469",
         og_number: "64.1.528",
         number: 64,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 568,
@@ -4562,7 +4562,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "64.470",
         og_number: "64.2.529",
         number: 64,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 569,
@@ -4570,7 +4570,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "64.471",
         og_number: "64.3.530",
         number: 64,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 570,
@@ -4578,7 +4578,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "64.472",
         og_number: "64.4.531",
         number: 64,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 571,
@@ -4586,7 +4586,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "64.473",
         og_number: "64.5.532",
         number: 64,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 572,
@@ -4594,7 +4594,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "64.474",
         og_number: "64.6.533",
         number: 64,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 573,
@@ -4602,7 +4602,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "64.475",
         og_number: "64.7.534",
         number: 64,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 574,
@@ -4610,7 +4610,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "64.476",
         og_number: "64.8.535",
         number: 64,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 575,
@@ -4618,7 +4618,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "64.477",
         og_number: "64.9.536",
         number: 64,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 576,
@@ -4626,7 +4626,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "64.478",
         og_number: "67.11.587",
         number: 64,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 577,
@@ -4634,7 +4634,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "64.479",
         og_number: "51.19.405",
         number: 64,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 578,
@@ -4642,7 +4642,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "64.480",
         og_number: "69.10.614",
         number: 64,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 579,
@@ -4650,7 +4650,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "65.481",
         og_number: "65.1.545",
         number: 65,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 580,
@@ -4658,7 +4658,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "65.482",
         og_number: "65.2.546",
         number: 65,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 581,
@@ -4666,7 +4666,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "65.483",
         og_number: "65.3.547",
         number: 65,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 582,
@@ -4674,7 +4674,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "65.484",
         og_number: "65.4.548",
         number: 65,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 583,
@@ -4682,7 +4682,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "65.485",
         og_number: "65.5.549",
         number: 65,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 584,
@@ -4690,7 +4690,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "65.486",
         og_number: "65.6.550",
         number: 65,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 585,
@@ -4698,7 +4698,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "65.487",
         og_number: "65.7.551",
         number: 65,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 586,
@@ -4706,7 +4706,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "65.488",
         og_number: "65.8.552",
         number: 65,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 587,
@@ -4714,7 +4714,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "65.489",
         og_number: "47.7.353",
         number: 65,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 588,
@@ -4722,7 +4722,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "65.490",
         og_number: "69.6.610",
         number: 65,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 589,
@@ -4730,7 +4730,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "66.491",
         og_number: "66.1.564",
         number: 66,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 590,
@@ -4738,7 +4738,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "66.492",
         og_number: "66.2.565",
         number: 66,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 591,
@@ -4746,7 +4746,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "66.493",
         og_number: "66.3.566",
         number: 66,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 592,
@@ -4754,7 +4754,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "66.494",
         og_number: "66.4.567",
         number: 66,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 593,
@@ -4762,7 +4762,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "66.495",
         og_number: "66.5.568",
         number: 66,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 594,
@@ -4770,7 +4770,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "66.496",
         og_number: "66.6.569",
         number: 66,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 595,
@@ -4778,7 +4778,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "66.497",
         og_number: "66.7.570",
         number: 66,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 596,
@@ -4786,7 +4786,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "66.498",
         og_number: "65.11.555",
         number: 66,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 597,
@@ -4794,7 +4794,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "66.499",
         og_number: "49.9.372",
         number: 66,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 598,
@@ -4802,7 +4802,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "66.500",
         og_number: "69.9.613",
         number: 66,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 599,
@@ -4810,7 +4810,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "67.501",
         og_number: "67.1.577",
         number: 67,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 600,
@@ -4818,7 +4818,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "67.502",
         og_number: "67.2.578",
         number: 67,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 601,
@@ -4826,7 +4826,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "67.503",
         og_number: "67.3.579",
         number: 67,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 602,
@@ -4834,7 +4834,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "67.504",
         og_number: "67.4.580",
         number: 67,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 603,
@@ -4842,7 +4842,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "67.505",
         og_number: "67.5.581",
         number: 67,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 604,
@@ -4850,7 +4850,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "67.506",
         og_number: "67.6.582",
         number: 67,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 605,
@@ -4858,7 +4858,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "67.507",
         og_number: "67.7.583",
         number: 67,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 606,
@@ -4866,7 +4866,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "67.508",
         og_number: "67.8.584",
         number: 67,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 607,
@@ -4874,7 +4874,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "67.509",
         og_number: "47.11.357",
         number: 67,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 608,
@@ -4882,7 +4882,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "67.510",
         og_number: "69.8.612",
         number: 67,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 609,
@@ -4890,7 +4890,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "68.511",
         og_number: "68.1.594",
         number: 68,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 610,
@@ -4898,7 +4898,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "68.512",
         og_number: "68.2.595",
         number: 68,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 611,
@@ -4906,7 +4906,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "68.513",
         og_number: "68.3.596",
         number: 68,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 612,
@@ -4914,7 +4914,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "68.514",
         og_number: "68.4.597",
         number: 68,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 613,
@@ -4922,7 +4922,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "68.515",
         og_number: "68.5.598",
         number: 68,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 614,
@@ -4930,7 +4930,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "68.516",
         og_number: "68.6.599",
         number: 68,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 615,
@@ -4938,7 +4938,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "68.517",
         og_number: "68.7.600",
         number: 68,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 616,
@@ -4946,7 +4946,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "68.518",
         og_number: "67.12.588",
         number: 68,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 617,
@@ -4954,7 +4954,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "68.519",
         og_number: "49.13.376",
         number: 68,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 618,
@@ -4962,7 +4962,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "68.520",
         og_number: "69.11.615",
         number: 68,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 619,
@@ -4970,7 +4970,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "69.521",
         og_number: "69.1.605",
         number: 69,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 620,
@@ -4978,7 +4978,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "69.522",
         og_number: "69.2.606",
         number: 69,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 621,
@@ -4986,7 +4986,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "69.523",
         og_number: "69.3.607",
         number: 69,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 622,
@@ -4994,7 +4994,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "69.524",
         og_number: "69.4.608",
         number: 69,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 623,
@@ -5002,7 +5002,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "69.525",
         og_number: "69.5.609",
         number: 69,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 624,
@@ -5010,7 +5010,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "69.526",
         og_number: "47.8.354",
         number: 69,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 625,
@@ -5018,7 +5018,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "70.527",
         og_number: "70.1.616",
         number: 70,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 626,
@@ -5026,7 +5026,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "70.528",
         og_number: "70.2.617",
         number: 70,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 627,
@@ -5034,7 +5034,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "70.529",
         og_number: "70.3.618",
         number: 70,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 628,
@@ -5042,7 +5042,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "70.530",
         og_number: "70.4.619",
         number: 70,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 629,
@@ -5050,7 +5050,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "70.531",
         og_number: "70.5.620",
         number: 70,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 630,
@@ -5058,7 +5058,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "70.532",
         og_number: "48.6.363",
         number: 70,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 631,
@@ -5066,7 +5066,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "71.533",
         og_number: "71.1.621",
         number: 71,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 632,
@@ -5074,7 +5074,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "71.534",
         og_number: "71.2.622",
         number: 71,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 633,
@@ -5082,7 +5082,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "71.535",
         og_number: "71.3.623",
         number: 71,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 634,
@@ -5090,7 +5090,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "71.536",
         og_number: "71.4.624",
         number: 71,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 635,
@@ -5098,7 +5098,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "71.537",
         og_number: "71.5.625",
         number: 71,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 636,
@@ -5106,7 +5106,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "71.538",
         og_number: "65.10.554",
         number: 71,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 637,
@@ -5114,7 +5114,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "72.539",
         og_number: "72.1.630",
         number: 72,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 638,
@@ -5122,7 +5122,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "72.540",
         og_number: "72.2.631",
         number: 72,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 639,
@@ -5130,7 +5130,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "72.541",
         og_number: "72.3.632",
         number: 72,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 640,
@@ -5138,7 +5138,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "72.542",
         og_number: "72.4.633",
         number: 72,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 641,
@@ -5146,7 +5146,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "72.543",
         og_number: "72.5.634",
         number: 72,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 642,
@@ -5154,7 +5154,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "72.544",
         og_number: "72.6.635",
         number: 72,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 643,
@@ -5162,7 +5162,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "72.545",
         og_number: "72.7.636",
         number: 72,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 644,
@@ -5170,7 +5170,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "72.546",
         og_number: "65.19.563",
         number: 72,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 645,
@@ -5178,7 +5178,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "72.547",
         og_number: "67.10.586",
         number: 72,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 646,
@@ -5186,7 +5186,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "73.548",
         og_number: "73.1.643",
         number: 73,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 647,
@@ -5194,7 +5194,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "73.549",
         og_number: "73.2.644",
         number: 73,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 648,
@@ -5202,7 +5202,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "73.550",
         og_number: "73.3.645",
         number: 73,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 649,
@@ -5210,7 +5210,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "73.551",
         og_number: "73.4.646",
         number: 73,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 650,
@@ -5218,7 +5218,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "73.552",
         og_number: "73.5.647",
         number: 73,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 651,
@@ -5226,7 +5226,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "73.553",
         og_number: "67.17.593",
         number: 73,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 652,
@@ -5234,7 +5234,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "74.554",
         og_number: "74.1.650",
         number: 74,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 653,
@@ -5242,7 +5242,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "74.555",
         og_number: "74.2.651",
         number: 74,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 654,
@@ -5250,7 +5250,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "74.556",
         og_number: "74.3.652",
         number: 74,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 655,
@@ -5258,7 +5258,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "74.557",
         og_number: "74.4.653",
         number: 74,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 656,
@@ -5266,7 +5266,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "74.558",
         og_number: "74.5.654",
         number: 74,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 657,
@@ -5274,7 +5274,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "74.559",
         og_number: "74.6.655",
         number: 74,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 658,
@@ -5282,7 +5282,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "74.560",
         og_number: "74.7.656",
         number: 74,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 659,
@@ -5290,7 +5290,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "74.561",
         og_number: "67.16.592",
         number: 74,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 660,
@@ -5298,7 +5298,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "74.562",
         og_number: "65.18.562",
         number: 74,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 661,
@@ -5306,7 +5306,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "75.1",
         og_number: "75.1.661",
         number: 75,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 662,
@@ -5314,7 +5314,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "75.2",
         og_number: "75.2.662",
         number: 75,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 663,
@@ -5322,7 +5322,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "75.3",
         og_number: "75.3.663",
         number: 75,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 664,
@@ -5330,7 +5330,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "75.4",
         og_number: "75.4.664",
         number: 75,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 665,
@@ -5338,7 +5338,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "75.5",
         og_number: "75.5.665",
         number: 75,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 666,
@@ -5346,7 +5346,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "75.6",
         og_number: "79.4.686",
         number: 75,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 667,
@@ -5354,7 +5354,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "76.7",
         og_number: "76.1.668",
         number: 76,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 668,
@@ -5362,7 +5362,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "76.8",
         og_number: "76.2.669",
         number: 76,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 669,
@@ -5370,7 +5370,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "76.9",
         og_number: "76.3.670",
         number: 76,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 670,
@@ -5378,7 +5378,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "76.10",
         og_number: "77.4.675",
         number: 76,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 671,
@@ -5386,7 +5386,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "76.11",
         og_number: "76.4.671",
         number: 76,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 672,
@@ -5394,7 +5394,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "76.12",
         og_number: "80.4.691",
         number: 76,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 673,
@@ -5402,7 +5402,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "77.13",
         og_number: "77.1.672",
         number: 77,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 674,
@@ -5410,7 +5410,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "77.14",
         og_number: "77.2.673",
         number: 77,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 675,
@@ -5418,7 +5418,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "77.15",
         og_number: "77.3.674",
         number: 77,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 676,
@@ -5426,7 +5426,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "77.16",
         og_number: "75.7.667",
         number: 77,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 677,
@@ -5434,7 +5434,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "77.17",
         og_number: "77.5.676",
         number: 77,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 678,
@@ -5442,7 +5442,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "77.18",
         og_number: "79.5.687",
         number: 77,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 679,
@@ -5450,7 +5450,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "78.19",
         og_number: "78.1.679",
         number: 78,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 680,
@@ -5458,7 +5458,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "78.20",
         og_number: "78.2.680",
         number: 78,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 681,
@@ -5466,7 +5466,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "78.21",
         og_number: "78.3.681",
         number: 78,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 682,
@@ -5474,7 +5474,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "78.22",
         og_number: "77.7.678",
         number: 78,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 683,
@@ -5482,7 +5482,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "78.23",
         og_number: "78.4.682",
         number: 78,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 684,
@@ -5490,7 +5490,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "78.24",
         og_number: "80.5.692",
         number: 78,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 685,
@@ -5498,7 +5498,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "79.25",
         og_number: "79.1.683",
         number: 79,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 686,
@@ -5506,7 +5506,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "79.26",
         og_number: "79.2.684",
         number: 79,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 687,
@@ -5514,7 +5514,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "79.27",
         og_number: "79.3.685",
         number: 79,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 688,
@@ -5522,7 +5522,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "79.28",
         og_number: "75.6.666",
         number: 79,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 689,
@@ -5530,7 +5530,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "80.29",
         og_number: "80.1.688",
         number: 80,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 690,
@@ -5538,7 +5538,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "80.30",
         og_number: "80.2.689",
         number: 80,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 691,
@@ -5546,7 +5546,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "80.31",
         og_number: "80.3.690",
         number: 80,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 692,
@@ -5554,7 +5554,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "80.32",
         og_number: "77.6.677",
         number: 80,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 693,
@@ -5562,7 +5562,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "81.33",
         og_number: "81.1.693",
         number: 81,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 694,
@@ -5570,7 +5570,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "81.34",
         og_number: "81.2.694",
         number: 81,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 695,
@@ -5578,7 +5578,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "81.35",
         og_number: "81.3.695",
         number: 81,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 696,
@@ -5586,7 +5586,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "81.36",
         og_number: "81.4.696",
         number: 81,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 697,
@@ -5594,7 +5594,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "81.37",
         og_number: "81.5.697",
         number: 81,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 698,
@@ -5602,7 +5602,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "81.38",
         og_number: "82.4.702",
         number: 81,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 699,
@@ -5610,7 +5610,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "82.39",
         og_number: "82.1.699",
         number: 82,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 700,
@@ -5618,7 +5618,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "82.40",
         og_number: "82.2.700",
         number: 82,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 701,
@@ -5626,7 +5626,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "82.41",
         og_number: "82.3.701",
         number: 82,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 702,
@@ -5634,7 +5634,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "82.42",
         og_number: "81.6.698",
         number: 82,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 703,
@@ -5642,7 +5642,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "83.43",
         og_number: "83.1.703",
         number: 83,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 704,
@@ -5650,7 +5650,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "83.44",
         og_number: "83.2.704",
         number: 83,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 705,
@@ -5658,7 +5658,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "83.45",
         og_number: "83.3.705",
         number: 83,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 706,
@@ -5666,7 +5666,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "83.46",
         og_number: "83.4.706",
         number: 83,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 707,
@@ -5674,7 +5674,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "83.47",
         og_number: "83.5.707",
         number: 83,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 708,
@@ -5682,7 +5682,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "83.48",
         og_number: "83.6.708",
         number: 83,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 709,
@@ -5690,7 +5690,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "83.49",
         og_number: "83.7.709",
         number: 83,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 710,
@@ -5698,7 +5698,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "83.50",
         og_number: "87.6.738",
         number: 83,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 711,
@@ -5706,7 +5706,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "84.51",
         og_number: "84.1.713",
         number: 84,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 712,
@@ -5714,7 +5714,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "84.52",
         og_number: "84.2.714",
         number: 84,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 713,
@@ -5722,7 +5722,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "84.53",
         og_number: "84.3.715",
         number: 84,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 714,
@@ -5730,7 +5730,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "84.54",
         og_number: "84.4.716",
         number: 84,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 715,
@@ -5738,7 +5738,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "84.55",
         og_number: "84.5.717",
         number: 84,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 716,
@@ -5746,7 +5746,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "84.56",
         og_number: "83.9.711",
         number: 84,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 717,
@@ -5754,7 +5754,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "84.57",
         og_number: "84.6.718",
         number: 84,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 718,
@@ -5762,7 +5762,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "84.58",
         og_number: "87.7.739",
         number: 84,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 719,
@@ -5770,7 +5770,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "85.59",
         og_number: "85.1.720",
         number: 85,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 720,
@@ -5778,7 +5778,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "85.60",
         og_number: "85.2.721",
         number: 85,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 721,
@@ -5786,7 +5786,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "85.61",
         og_number: "85.3.722",
         number: 85,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 722,
@@ -5794,7 +5794,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "85.62",
         og_number: "85.4.723",
         number: 85,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 723,
@@ -5802,7 +5802,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "85.63",
         og_number: "85.5.724",
         number: 85,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 724,
@@ -5810,7 +5810,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "85.64",
         og_number: "85.6.725",
         number: 85,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 725,
@@ -5818,7 +5818,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "85.65",
         og_number: "83.10.712",
         number: 85,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 726,
@@ -5826,7 +5826,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "85.66",
         og_number: "87.8.740",
         number: 85,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 727,
@@ -5834,7 +5834,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "86.67",
         og_number: "86.1.727",
         number: 86,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 728,
@@ -5842,7 +5842,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "86.68",
         og_number: "86.2.728",
         number: 86,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 729,
@@ -5850,7 +5850,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "86.69",
         og_number: "86.3.729",
         number: 86,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 730,
@@ -5858,7 +5858,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "86.70",
         og_number: "86.4.730",
         number: 86,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 731,
@@ -5866,7 +5866,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "86.71",
         og_number: "86.5.731",
         number: 86,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 732,
@@ -5874,7 +5874,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "86.72",
         og_number: "85.7.726",
         number: 86,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 733,
@@ -5882,7 +5882,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "86.73",
         og_number: "84.7.719",
         number: 86,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 734,
@@ -5890,7 +5890,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "86.74",
         og_number: "87.9.741",
         number: 86,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 735,
@@ -5898,7 +5898,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "87.75",
         og_number: "87.1.733",
         number: 87,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 736,
@@ -5906,7 +5906,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "87.76",
         og_number: "87.2.734",
         number: 87,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 737,
@@ -5914,7 +5914,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "87.77",
         og_number: "87.3.735",
         number: 87,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 738,
@@ -5922,7 +5922,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "87.78",
         og_number: "87.4.736",
         number: 87,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 739,
@@ -5930,7 +5930,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "87.79",
         og_number: "87.5.737",
         number: 87,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 740,
@@ -5938,7 +5938,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "87.80",
         og_number: "83.8.710",
         number: 87,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 741,
@@ -5946,7 +5946,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "88.81",
         og_number: "88.1.742",
         number: 88,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 742,
@@ -5954,7 +5954,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "88.82",
         og_number: "88.2.743",
         number: 88,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 743,
@@ -5962,7 +5962,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "88.83",
         og_number: "88.3.744",
         number: 88,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 744,
@@ -5970,7 +5970,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "88.84",
         og_number: "88.4.745",
         number: 88,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 745,
@@ -5978,7 +5978,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "88.85",
         og_number: "88.5.746",
         number: 88,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 746,
@@ -5986,7 +5986,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "88.86",
         og_number: "86.6.732",
         number: 88,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 747,
@@ -5994,7 +5994,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "89.87",
         og_number: "89.1.747",
         number: 89,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 748,
@@ -6002,7 +6002,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "89.88",
         og_number: "89.2.748",
         number: 89,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 749,
@@ -6010,7 +6010,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "89.89",
         og_number: "89.3.749",
         number: 89,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 750,
@@ -6018,7 +6018,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "89.90",
         og_number: "89.4.750",
         number: 89,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 751,
@@ -6026,7 +6026,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "89.91",
         og_number: "89.5.751",
         number: 89,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 752,
@@ -6034,7 +6034,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "89.92",
         og_number: "89.6.752",
         number: 89,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 753,
@@ -6042,7 +6042,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "89.93",
         og_number: "89.7.753",
         number: 89,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 754,
@@ -6050,7 +6050,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "89.94",
         og_number: "97.6.810",
         number: 89,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 755,
@@ -6058,7 +6058,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "90.95",
         og_number: "90.1.757",
         number: 90,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 756,
@@ -6066,7 +6066,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "90.96",
         og_number: "90.2.758",
         number: 90,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 757,
@@ -6074,7 +6074,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "90.97",
         og_number: "90.3.759",
         number: 90,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 758,
@@ -6082,7 +6082,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "90.98",
         og_number: "90.4.760",
         number: 90,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 759,
@@ -6090,7 +6090,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "90.99",
         og_number: "90.5.761",
         number: 90,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 760,
@@ -6098,7 +6098,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "90.100",
         og_number: "90.6.762",
         number: 90,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 761,
@@ -6106,7 +6106,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "90.101",
         og_number: "89.10.756",
         number: 90,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 762,
@@ -6114,7 +6114,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "90.102",
         og_number: "97.8.812",
         number: 90,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 763,
@@ -6122,7 +6122,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "91.103",
         og_number: "91.1.764",
         number: 91,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 764,
@@ -6130,7 +6130,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "91.104",
         og_number: "91.2.765",
         number: 91,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 765,
@@ -6138,7 +6138,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "91.105",
         og_number: "91.3.766",
         number: 91,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 766,
@@ -6146,7 +6146,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "91.106",
         og_number: "91.4.767",
         number: 91,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 767,
@@ -6154,7 +6154,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "91.107",
         og_number: "91.5.768",
         number: 91,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 768,
@@ -6162,7 +6162,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "91.108",
         og_number: "93.6.781",
         number: 91,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 769,
@@ -6170,7 +6170,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "91.109",
         og_number: "91.6.769",
         number: 91,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 770,
@@ -6178,7 +6178,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "91.110",
         og_number: "98.6.819",
         number: 91,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 771,
@@ -6186,7 +6186,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "92.111",
         og_number: "92.1.771",
         number: 92,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 772,
@@ -6194,7 +6194,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "92.112",
         og_number: "92.2.772",
         number: 92,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 773,
@@ -6202,7 +6202,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "92.113",
         og_number: "92.3.773",
         number: 92,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 774,
@@ -6210,7 +6210,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "92.114",
         og_number: "92.4.774",
         number: 92,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 775,
@@ -6218,7 +6218,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "92.115",
         og_number: "92.5.775",
         number: 92,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 776,
@@ -6226,7 +6226,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "92.116",
         og_number: "94.6.791",
         number: 92,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 777,
@@ -6234,7 +6234,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "92.117",
         og_number: "91.7.770",
         number: 92,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 778,
@@ -6242,7 +6242,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "92.118",
         og_number: "98.8.821",
         number: 92,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 779,
@@ -6250,7 +6250,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "93.119",
         og_number: "93.1.776",
         number: 93,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 780,
@@ -6258,7 +6258,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "93.120",
         og_number: "93.2.777",
         number: 93,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 781,
@@ -6266,7 +6266,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "93.121",
         og_number: "93.3.778",
         number: 93,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 782,
@@ -6274,7 +6274,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "93.122",
         og_number: "93.4.779",
         number: 93,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 783,
@@ -6282,7 +6282,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "93.123",
         og_number: "93.5.780",
         number: 93,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 784,
@@ -6290,7 +6290,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "93.124",
         og_number: "89.9.755",
         number: 93,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 785,
@@ -6298,7 +6298,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "93.125",
         og_number: "93.7.782",
         number: 93,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 786,
@@ -6306,7 +6306,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "93.126",
         og_number: "97.7.811",
         number: 93,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 787,
@@ -6314,7 +6314,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "94.127",
         og_number: "94.1.786",
         number: 94,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 788,
@@ -6322,7 +6322,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "94.128",
         og_number: "94.2.787",
         number: 94,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 789,
@@ -6330,7 +6330,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "94.129",
         og_number: "94.3.788",
         number: 94,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 790,
@@ -6338,7 +6338,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "94.130",
         og_number: "94.4.789",
         number: 94,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 791,
@@ -6346,7 +6346,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "94.131",
         og_number: "94.5.790",
         number: 94,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 792,
@@ -6354,7 +6354,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "94.132",
         og_number: "90.7.763",
         number: 94,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 793,
@@ -6362,7 +6362,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "94.133",
         og_number: "93.10.785",
         number: 94,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 794,
@@ -6370,7 +6370,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "94.134",
         og_number: "97.9.813",
         number: 94,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 795,
@@ -6378,7 +6378,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "95.135",
         og_number: "95.1.793",
         number: 95,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 796,
@@ -6386,7 +6386,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "95.136",
         og_number: "95.2.794",
         number: 95,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 797,
@@ -6394,7 +6394,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "95.137",
         og_number: "95.3.795",
         number: 95,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 798,
@@ -6402,7 +6402,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "95.138",
         og_number: "95.4.796",
         number: 95,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 799,
@@ -6410,7 +6410,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "95.139",
         og_number: "95.5.797",
         number: 95,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 800,
@@ -6418,7 +6418,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "95.140",
         og_number: "93.9.784",
         number: 95,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 801,
@@ -6426,7 +6426,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "95.141",
         og_number: "95.6.798",
         number: 95,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 802,
@@ -6434,7 +6434,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "95.142",
         og_number: "98.7.820",
         number: 95,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 803,
@@ -6442,7 +6442,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "96.143",
         og_number: "96.1.800",
         number: 96,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 804,
@@ -6450,7 +6450,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "96.144",
         og_number: "96.2.801",
         number: 96,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 805,
@@ -6458,7 +6458,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "96.145",
         og_number: "96.3.802",
         number: 96,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 806,
@@ -6466,7 +6466,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "96.146",
         og_number: "96.4.803",
         number: 96,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 807,
@@ -6474,7 +6474,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "96.147",
         og_number: "96.5.804",
         number: 96,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 808,
@@ -6482,7 +6482,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "96.148",
         og_number: "94.7.792",
         number: 96,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 809,
@@ -6490,7 +6490,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "96.149",
         og_number: "95.7.799",
         number: 96,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 810,
@@ -6498,7 +6498,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "96.150",
         og_number: "98.9.822",
         number: 96,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 811,
@@ -6506,7 +6506,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "97.151",
         og_number: "97.1.805",
         number: 97,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 812,
@@ -6514,7 +6514,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "97.152",
         og_number: "97.2.806",
         number: 97,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 813,
@@ -6522,7 +6522,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "97.153",
         og_number: "97.3.807",
         number: 97,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 814,
@@ -6530,7 +6530,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "97.154",
         og_number: "97.4.808",
         number: 97,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 815,
@@ -6538,7 +6538,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "97.155",
         og_number: "97.5.809",
         number: 97,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 816,
@@ -6546,7 +6546,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "97.156",
         og_number: "89.8.754",
         number: 97,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 817,
@@ -6554,7 +6554,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "98.157",
         og_number: "98.1.814",
         number: 98,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 818,
@@ -6562,7 +6562,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "98.158",
         og_number: "98.2.815",
         number: 98,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 819,
@@ -6570,7 +6570,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "98.159",
         og_number: "98.3.816",
         number: 98,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 820,
@@ -6578,7 +6578,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "98.160",
         og_number: "98.4.817",
         number: 98,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 821,
@@ -6586,7 +6586,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "98.161",
         og_number: "98.5.818",
         number: 98,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 822,
@@ -6594,7 +6594,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "98.162",
         og_number: "93.8.783",
         number: 98,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 823,
@@ -6602,7 +6602,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "99.163",
         og_number: "99.1.823",
         number: 99,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 824,
@@ -6610,7 +6610,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "99.164",
         og_number: "99.2.824",
         number: 99,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 825,
@@ -6618,7 +6618,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "99.165",
         og_number: "99.3.825",
         number: 99,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 826,
@@ -6626,7 +6626,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "99.166",
         og_number: "99.4.826",
         number: 99,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 827,
@@ -6634,7 +6634,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "99.167",
         og_number: "99.5.827",
         number: 99,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 828,
@@ -6642,7 +6642,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "99.168",
         og_number: "99.6.828",
         number: 99,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 829,
@@ -6650,7 +6650,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "99.169",
         og_number: "99.7.829",
         number: 99,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 830,
@@ -6658,7 +6658,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "99.170",
         og_number: "107.6.888",
         number: 99,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 831,
@@ -6666,7 +6666,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "100.171",
         og_number: "100.1.836",
         number: 100,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 832,
@@ -6674,7 +6674,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "100.172",
         og_number: "100.2.837",
         number: 100,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 833,
@@ -6682,7 +6682,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "100.173",
         og_number: "100.3.838",
         number: 100,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 834,
@@ -6690,7 +6690,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "100.174",
         og_number: "100.4.839",
         number: 100,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 835,
@@ -6698,7 +6698,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "100.175",
         og_number: "100.5.840",
         number: 100,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 836,
@@ -6706,7 +6706,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "100.176",
         og_number: "100.6.841",
         number: 100,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 837,
@@ -6714,7 +6714,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "100.177",
         og_number: "99.12.834",
         number: 100,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 838,
@@ -6722,7 +6722,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "100.178",
         og_number: "108.6.897",
         number: 100,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 839,
@@ -6730,7 +6730,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "101.179",
         og_number: "101.1.845",
         number: 101,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 840,
@@ -6738,7 +6738,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "101.180",
         og_number: "101.2.846",
         number: 101,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 841,
@@ -6746,7 +6746,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "101.181",
         og_number: "101.3.847",
         number: 101,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 842,
@@ -6754,7 +6754,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "101.182",
         og_number: "101.4.848",
         number: 101,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 843,
@@ -6762,7 +6762,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "101.183",
         og_number: "101.5.849",
         number: 101,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 844,
@@ -6770,7 +6770,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "101.184",
         og_number: "99.9.831",
         number: 101,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 845,
@@ -6778,7 +6778,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "101.185",
         og_number: "105.6.876",
         number: 101,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 846,
@@ -6786,7 +6786,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "101.186",
         og_number: "108.7.898",
         number: 101,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 847,
@@ -6794,7 +6794,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "102.187",
         og_number: "102.1.852",
         number: 102,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 848,
@@ -6802,7 +6802,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "102.188",
         og_number: "102.2.853",
         number: 102,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 849,
@@ -6810,7 +6810,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "102.189",
         og_number: "102.3.854",
         number: 102,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 850,
@@ -6818,7 +6818,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "102.190",
         og_number: "102.4.855",
         number: 102,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 851,
@@ -6826,7 +6826,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "102.191",
         og_number: "102.5.856",
         number: 102,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 852,
@@ -6834,7 +6834,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "102.192",
         og_number: "100.7.842",
         number: 102,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 853,
@@ -6842,7 +6842,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "102.193",
         og_number: "105.7.877",
         number: 102,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 854,
@@ -6850,7 +6850,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "102.194",
         og_number: "107.7.889",
         number: 102,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 855,
@@ -6858,7 +6858,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "103.195",
         og_number: "103.1.859",
         number: 103,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 856,
@@ -6866,7 +6866,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "103.196",
         og_number: "103.2.860",
         number: 103,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 857,
@@ -6874,7 +6874,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "103.197",
         og_number: "103.3.861",
         number: 103,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 858,
@@ -6882,7 +6882,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "103.198",
         og_number: "103.4.862",
         number: 103,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 859,
@@ -6890,7 +6890,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "103.199",
         og_number: "103.5.863",
         number: 103,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 860,
@@ -6898,7 +6898,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "103.200",
         og_number: "99.11.833",
         number: 103,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 861,
@@ -6906,7 +6906,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "103.201",
         og_number: "103.6.864",
         number: 103,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 862,
@@ -6914,7 +6914,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "103.202",
         og_number: "108.9.900",
         number: 103,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 863,
@@ -6922,7 +6922,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "104.203",
         og_number: "104.1.866",
         number: 104,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 864,
@@ -6930,7 +6930,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "104.204",
         og_number: "104.2.867",
         number: 104,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 865,
@@ -6938,7 +6938,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "104.205",
         og_number: "104.3.868",
         number: 104,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 866,
@@ -6946,7 +6946,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "104.206",
         og_number: "104.4.869",
         number: 104,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 867,
@@ -6954,7 +6954,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "104.207",
         og_number: "104.5.870",
         number: 104,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 868,
@@ -6962,7 +6962,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "104.208",
         og_number: "100.9.844",
         number: 104,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 869,
@@ -6970,7 +6970,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "104.209",
         og_number: "103.7.865",
         number: 104,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 870,
@@ -6978,7 +6978,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "104.210",
         og_number: "107.9.891",
         number: 104,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 871,
@@ -6986,7 +6986,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "105.211",
         og_number: "105.1.871",
         number: 105,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 872,
@@ -6994,7 +6994,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "105.212",
         og_number: "105.2.872",
         number: 105,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 873,
@@ -7002,7 +7002,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "105.213",
         og_number: "105.3.873",
         number: 105,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 874,
@@ -7010,7 +7010,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "105.214",
         og_number: "105.4.874",
         number: 105,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 875,
@@ -7018,7 +7018,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "105.215",
         og_number: "105.5.875",
         number: 105,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 876,
@@ -7026,7 +7026,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "105.216",
         og_number: "99.10.832",
         number: 105,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 877,
@@ -7034,7 +7034,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "105.217",
         og_number: "101.6.850",
         number: 105,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 878,
@@ -7042,7 +7042,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "105.218",
         og_number: "107.8.890",
         number: 105,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 879,
@@ -7050,7 +7050,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "106.219",
         og_number: "106.1.878",
         number: 106,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 880,
@@ -7058,7 +7058,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "106.220",
         og_number: "106.2.879",
         number: 106,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 881,
@@ -7066,7 +7066,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "106.221",
         og_number: "106.3.880",
         number: 106,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 882,
@@ -7074,7 +7074,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "106.222",
         og_number: "106.4.881",
         number: 106,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 883,
@@ -7082,7 +7082,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "106.223",
         og_number: "106.5.882",
         number: 106,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 884,
@@ -7090,7 +7090,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "106.224",
         og_number: "100.8.843",
         number: 106,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 885,
@@ -7098,7 +7098,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "106.225",
         og_number: "101.7.851",
         number: 106,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 886,
@@ -7106,7 +7106,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "106.226",
         og_number: "108.8.899",
         number: 106,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 887,
@@ -7114,7 +7114,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "107.227",
         og_number: "107.1.883",
         number: 107,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 888,
@@ -7122,7 +7122,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "107.228",
         og_number: "107.2.884",
         number: 107,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 889,
@@ -7130,7 +7130,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "107.229",
         og_number: "107.3.885",
         number: 107,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 890,
@@ -7138,7 +7138,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "107.230",
         og_number: "107.4.886",
         number: 107,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 891,
@@ -7146,7 +7146,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "107.231",
         og_number: "107.5.887",
         number: 107,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 892,
@@ -7154,7 +7154,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "107.232",
         og_number: "99.8.830",
         number: 107,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 893,
@@ -7162,7 +7162,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "108.233",
         og_number: "108.1.892",
         number: 108,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 894,
@@ -7170,7 +7170,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "108.234",
         og_number: "108.2.893",
         number: 108,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 895,
@@ -7178,7 +7178,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "108.235",
         og_number: "108.3.894",
         number: 108,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 896,
@@ -7186,7 +7186,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "108.236",
         og_number: "108.4.895",
         number: 108,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 897,
@@ -7194,7 +7194,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "108.237",
         og_number: "108.5.896",
         number: 108,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 898,
@@ -7202,7 +7202,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "108.238",
         og_number: "99.13.835",
         number: 108,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 899,
@@ -7210,7 +7210,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "109.239",
         og_number: "109.1.901",
         number: 109,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 900,
@@ -7218,7 +7218,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "109.240",
         og_number: "109.2.902",
         number: 109,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 901,
@@ -7226,7 +7226,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "109.241",
         og_number: "109.3.903",
         number: 109,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 902,
@@ -7234,7 +7234,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "109.242",
         og_number: "109.4.904",
         number: 109,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 903,
@@ -7242,7 +7242,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "109.243",
         og_number: "109.5.905",
         number: 109,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 904,
@@ -7250,7 +7250,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "109.244",
         og_number: "102.6.857",
         number: 109,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 905,
@@ -7258,7 +7258,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "110.245",
         og_number: "110.1.906",
         number: 110,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 906,
@@ -7266,7 +7266,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "110.246",
         og_number: "110.2.907",
         number: 110,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 907,
@@ -7274,7 +7274,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "110.247",
         og_number: "110.3.908",
         number: 110,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 908,
@@ -7282,7 +7282,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "110.248",
         og_number: "110.4.909",
         number: 110,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 909,
@@ -7290,7 +7290,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "110.249",
         og_number: "110.5.910",
         number: 110,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 910,
@@ -7298,7 +7298,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "110.250",
         og_number: "102.7.858",
         number: 110,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 911,
@@ -7306,7 +7306,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "111.251",
         og_number: "111.1.911",
         number: 111,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 912,
@@ -7314,7 +7314,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "111.252",
         og_number: "111.2.912",
         number: 111,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 913,
@@ -7322,7 +7322,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "111.253",
         og_number: "111.3.913",
         number: 111,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 914,
@@ -7330,7 +7330,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "111.254",
         og_number: "111.4.914",
         number: 111,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 915,
@@ -7338,7 +7338,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "111.255",
         og_number: "111.5.915",
         number: 111,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 916,
@@ -7346,7 +7346,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "111.256",
         og_number: "111.6.916",
         number: 111,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 917,
@@ -7354,7 +7354,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "111.257",
         og_number: "115.7.947",
         number: 111,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 918,
@@ -7362,7 +7362,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "111.258",
         og_number: "121.6.990",
         number: 111,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 919,
@@ -7370,7 +7370,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "112.259",
         og_number: "112.1.922",
         number: 112,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 920,
@@ -7378,7 +7378,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "112.260",
         og_number: "112.2.923",
         number: 112,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 921,
@@ -7386,7 +7386,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "112.261",
         og_number: "112.3.924",
         number: 112,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 922,
@@ -7394,7 +7394,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "112.262",
         og_number: "112.4.925",
         number: 112,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 923,
@@ -7402,7 +7402,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "112.263",
         og_number: "112.5.926",
         number: 112,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 924,
@@ -7410,7 +7410,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "112.264",
         og_number: "111.9.919",
         number: 112,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 925,
@@ -7418,7 +7418,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "112.265",
         og_number: "116.6.956",
         number: 112,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 926,
@@ -7426,7 +7426,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "112.266",
         og_number: "121.8.992",
         number: 112,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 927,
@@ -7434,7 +7434,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "113.267",
         og_number: "113.1.929",
         number: 113,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 928,
@@ -7442,7 +7442,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "113.268",
         og_number: "113.2.930",
         number: 113,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 929,
@@ -7450,7 +7450,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "113.269",
         og_number: "113.3.931",
         number: 113,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 930,
@@ -7458,7 +7458,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "113.270",
         og_number: "113.4.932",
         number: 113,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 931,
@@ -7466,7 +7466,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "113.271",
         og_number: "113.5.933",
         number: 113,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 932,
@@ -7474,7 +7474,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "113.272",
         og_number: "113.6.934",
         number: 113,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 933,
@@ -7482,7 +7482,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "113.273",
         og_number: "115.10.950",
         number: 113,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 934,
@@ -7490,7 +7490,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "113.274",
         og_number: "121.7.991",
         number: 113,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 935,
@@ -7498,7 +7498,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "114.275",
         og_number: "114.1.936",
         number: 114,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 936,
@@ -7506,7 +7506,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "114.276",
         og_number: "114.2.937",
         number: 114,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 937,
@@ -7514,7 +7514,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "114.277",
         og_number: "114.3.938",
         number: 114,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 938,
@@ -7522,7 +7522,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "114.278",
         og_number: "114.4.939",
         number: 114,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 939,
@@ -7530,7 +7530,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "114.279",
         og_number: "114.5.940",
         number: 114,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 940,
@@ -7538,7 +7538,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "114.280",
         og_number: "113.7.935",
         number: 114,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 941,
@@ -7546,7 +7546,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "114.281",
         og_number: "116.7.957",
         number: 114,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 942,
@@ -7554,7 +7554,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "114.282",
         og_number: "121.9.993",
         number: 114,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 943,
@@ -7562,7 +7562,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "115.283",
         og_number: "115.1.941",
         number: 115,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 944,
@@ -7570,7 +7570,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "115.284",
         og_number: "115.2.942",
         number: 115,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 945,
@@ -7578,7 +7578,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "115.285",
         og_number: "115.3.943",
         number: 115,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 946,
@@ -7586,7 +7586,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "115.286",
         og_number: "115.4.944",
         number: 115,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 947,
@@ -7594,7 +7594,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "115.287",
         og_number: "115.5.945",
         number: 115,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 948,
@@ -7602,7 +7602,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "115.288",
         og_number: "115.6.946",
         number: 115,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 949,
@@ -7610,7 +7610,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "115.289",
         og_number: "111.7.917",
         number: 115,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 950,
@@ -7618,7 +7618,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "115.290",
         og_number: "119.6.976",
         number: 115,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 951,
@@ -7626,7 +7626,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "116.291",
         og_number: "116.1.951",
         number: 116,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 952,
@@ -7634,7 +7634,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "116.292",
         og_number: "116.2.952",
         number: 116,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 953,
@@ -7642,7 +7642,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "116.293",
         og_number: "116.3.953",
         number: 116,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 954,
@@ -7650,7 +7650,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "116.294",
         og_number: "116.4.954",
         number: 116,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 955,
@@ -7658,7 +7658,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "116.295",
         og_number: "116.5.955",
         number: 116,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 956,
@@ -7666,7 +7666,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "116.296",
         og_number: "115.9.949",
         number: 116,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 957,
@@ -7674,7 +7674,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "116.297",
         og_number: "112.6.927",
         number: 116,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 958,
@@ -7682,7 +7682,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "116.298",
         og_number: "120.6.983",
         number: 116,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 959,
@@ -7690,7 +7690,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "117.299",
         og_number: "117.1.958",
         number: 117,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 960,
@@ -7698,7 +7698,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "117.300",
         og_number: "117.2.959",
         number: 117,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 961,
@@ -7706,7 +7706,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "117.301",
         og_number: "117.3.960",
         number: 117,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 962,
@@ -7714,7 +7714,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "117.302",
         og_number: "117.4.961",
         number: 117,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 963,
@@ -7722,7 +7722,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "117.303",
         og_number: "117.5.962",
         number: 117,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 964,
@@ -7730,7 +7730,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "117.304",
         og_number: "117.6.963",
         number: 117,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 965,
@@ -7738,7 +7738,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "117.305",
         og_number: "111.10.920",
         number: 117,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 966,
@@ -7746,7 +7746,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "117.306",
         og_number: "120.7.984",
         number: 117,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 967,
@@ -7754,7 +7754,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "118.307",
         og_number: "118.1.965",
         number: 118,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 968,
@@ -7762,7 +7762,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "118.308",
         og_number: "118.2.966",
         number: 118,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 969,
@@ -7770,7 +7770,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "118.309",
         og_number: "118.3.967",
         number: 118,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 970,
@@ -7778,7 +7778,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "118.310",
         og_number: "118.4.968",
         number: 118,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 971,
@@ -7786,7 +7786,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "118.311",
         og_number: "118.5.969",
         number: 118,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 972,
@@ -7794,7 +7794,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "118.312",
         og_number: "117.7.964",
         number: 118,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 973,
@@ -7802,7 +7802,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "118.313",
         og_number: "112.7.928",
         number: 118,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 974,
@@ -7810,7 +7810,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "118.314",
         og_number: "119.7.977",
         number: 118,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 975,
@@ -7818,7 +7818,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "119.315",
         og_number: "119.1.971",
         number: 119,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 976,
@@ -7826,7 +7826,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "119.316",
         og_number: "119.2.972",
         number: 119,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 977,
@@ -7834,7 +7834,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "119.317",
         og_number: "119.3.973",
         number: 119,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 978,
@@ -7842,7 +7842,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "119.318",
         og_number: "119.4.974",
         number: 119,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 979,
@@ -7850,7 +7850,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "119.319",
         og_number: "119.5.975",
         number: 119,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 980,
@@ -7858,7 +7858,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "119.320",
         og_number: "111.8.918",
         number: 119,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 981,
@@ -7866,7 +7866,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "120.321",
         og_number: "120.1.978",
         number: 120,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 982,
@@ -7874,7 +7874,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "120.322",
         og_number: "120.2.979",
         number: 120,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 983,
@@ -7882,7 +7882,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "120.323",
         og_number: "120.3.980",
         number: 120,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 984,
@@ -7890,7 +7890,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "120.324",
         og_number: "120.4.981",
         number: 120,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 985,
@@ -7898,7 +7898,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "120.325",
         og_number: "120.5.982",
         number: 120,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 986,
@@ -7906,7 +7906,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "120.326",
         og_number: "111.11.921",
         number: 120,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 987,
@@ -7914,7 +7914,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "121.327",
         og_number: "121.1.985",
         number: 121,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 988,
@@ -7922,7 +7922,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "121.328",
         og_number: "121.2.986",
         number: 121,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 989,
@@ -7930,7 +7930,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "121.329",
         og_number: "121.3.987",
         number: 121,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 990,
@@ -7938,7 +7938,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "121.330",
         og_number: "121.4.988",
         number: 121,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 991,
@@ -7946,7 +7946,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "121.331",
         og_number: "121.5.989",
         number: 121,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 992,
@@ -7954,7 +7954,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "121.332",
         og_number: "115.8.948",
         number: 121,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 993,
@@ -7962,7 +7962,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "122.333",
         og_number: "122.1.994",
         number: 122,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 994,
@@ -7970,7 +7970,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "122.334",
         og_number: "122.2.995",
         number: 122,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 995,
@@ -7978,7 +7978,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "122.335",
         og_number: "122.3.996",
         number: 122,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 996,
@@ -7986,7 +7986,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "122.336",
         og_number: "122.4.997",
         number: 122,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 997,
@@ -7994,7 +7994,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "122.337",
         og_number: "122.5.998",
         number: 122,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 998,
@@ -8002,7 +8002,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "122.338",
         og_number: "118.6.970",
         number: 122,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 999,
@@ -8010,7 +8010,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "123.339",
         og_number: "123.1.999",
         number: 123,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 1000,
@@ -8018,7 +8018,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "123.340",
         og_number: "123.2.1000",
         number: 123,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 1001,
@@ -8026,7 +8026,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "123.341",
         og_number: "123.3.1001",
         number: 123,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1002,
@@ -8034,7 +8034,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "123.342",
         og_number: "123.4.1002",
         number: 123,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1003,
@@ -8042,7 +8042,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "123.343",
         og_number: "123.5.1003",
         number: 123,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1004,
@@ -8050,7 +8050,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "123.344",
         og_number: "123.6.1004",
         number: 123,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1005,
@@ -8058,7 +8058,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "123.345",
         og_number: "123.7.1005",
         number: 123,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1006,
@@ -8066,7 +8066,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "123.346",
         og_number: "123.8.1006",
         number: 123,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1007,
@@ -8074,7 +8074,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "123.347",
         og_number: "123.9.1007",
         number: 123,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1008,
@@ -8082,7 +8082,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "123.348",
         og_number: "123.10.1008",
         number: 123,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 1009,
@@ -8090,7 +8090,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "123.349",
         og_number: "123.11.1009",
         number: 123,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 1010,
@@ -8098,7 +8098,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "123.350",
         og_number: "139.10.1188",
         number: 123,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 1011,
@@ -8106,7 +8106,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "124.351",
         og_number: "124.1.1018",
         number: 124,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 1012,
@@ -8114,7 +8114,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "124.352",
         og_number: "124.2.1019",
         number: 124,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 1013,
@@ -8122,7 +8122,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "124.353",
         og_number: "124.3.1020",
         number: 124,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1014,
@@ -8130,7 +8130,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "124.354",
         og_number: "124.4.1021",
         number: 124,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1015,
@@ -8138,7 +8138,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "124.355",
         og_number: "124.5.1022",
         number: 124,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1016,
@@ -8146,7 +8146,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "124.356",
         og_number: "124.6.1023",
         number: 124,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1017,
@@ -8154,7 +8154,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "124.357",
         og_number: "124.7.1024",
         number: 124,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1018,
@@ -8162,7 +8162,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "124.358",
         og_number: "124.8.1025",
         number: 124,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1019,
@@ -8170,7 +8170,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "124.359",
         og_number: "124.9.1026",
         number: 124,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1020,
@@ -8178,7 +8178,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "124.360",
         og_number: "123.15.1013",
         number: 124,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 1021,
@@ -8186,7 +8186,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "124.361",
         og_number: "124.10.1027",
         number: 124,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 1022,
@@ -8194,7 +8194,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "124.362",
         og_number: "140.10.1205",
         number: 124,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 1023,
@@ -8202,7 +8202,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "125.363",
         og_number: "125.1.1031",
         number: 125,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 1024,
@@ -8210,7 +8210,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "125.364",
         og_number: "125.2.1032",
         number: 125,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 1025,
@@ -8218,7 +8218,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "125.365",
         og_number: "125.3.1033",
         number: 125,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1026,
@@ -8226,7 +8226,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "125.366",
         og_number: "125.4.1034",
         number: 125,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1027,
@@ -8234,7 +8234,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "125.367",
         og_number: "125.5.1035",
         number: 125,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1028,
@@ -8242,7 +8242,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "125.368",
         og_number: "125.6.1036",
         number: 125,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1029,
@@ -8250,7 +8250,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "125.369",
         og_number: "125.7.1037",
         number: 125,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1030,
@@ -8258,7 +8258,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "125.370",
         og_number: "125.8.1038",
         number: 125,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1031,
@@ -8266,7 +8266,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "125.371",
         og_number: "125.9.1039",
         number: 125,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1032,
@@ -8274,7 +8274,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "125.372",
         og_number: "125.10.1040",
         number: 125,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 1033,
@@ -8282,7 +8282,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "125.373",
         og_number: "123.18.1016",
         number: 125,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 1034,
@@ -8290,7 +8290,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "125.374",
         og_number: "140.17.1212",
         number: 125,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 1035,
@@ -8298,7 +8298,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "126.375",
         og_number: "126.1.1044",
         number: 126,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 1036,
@@ -8306,7 +8306,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "126.376",
         og_number: "126.2.1045",
         number: 126,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 1037,
@@ -8314,7 +8314,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "126.377",
         og_number: "126.3.1046",
         number: 126,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1038,
@@ -8322,7 +8322,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "126.378",
         og_number: "126.4.1047",
         number: 126,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1039,
@@ -8330,7 +8330,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "126.379",
         og_number: "126.5.1048",
         number: 126,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1040,
@@ -8338,7 +8338,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "126.380",
         og_number: "126.6.1049",
         number: 126,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1041,
@@ -8346,7 +8346,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "126.381",
         og_number: "126.7.1050",
         number: 126,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1042,
@@ -8354,7 +8354,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "126.382",
         og_number: "126.8.1051",
         number: 126,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1043,
@@ -8362,7 +8362,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "126.383",
         og_number: "126.9.1052",
         number: 126,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1044,
@@ -8370,7 +8370,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "126.384",
         og_number: "125.13.1043",
         number: 126,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 1045,
@@ -8378,7 +8378,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "126.385",
         og_number: "124.13.1030",
         number: 126,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 1046,
@@ -8386,7 +8386,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "126.386",
         og_number: "139.17.1195",
         number: 126,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 1047,
@@ -8394,7 +8394,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "127.387",
         og_number: "127.1.1053",
         number: 127,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 1048,
@@ -8402,7 +8402,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "127.388",
         og_number: "127.2.1054",
         number: 127,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 1049,
@@ -8410,7 +8410,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "127.389",
         og_number: "127.3.1055",
         number: 127,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1050,
@@ -8418,7 +8418,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "127.390",
         og_number: "127.4.1056",
         number: 127,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1051,
@@ -8426,7 +8426,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "127.391",
         og_number: "127.5.1057",
         number: 127,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1052,
@@ -8434,7 +8434,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "127.392",
         og_number: "127.6.1058",
         number: 127,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1053,
@@ -8442,7 +8442,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "127.393",
         og_number: "127.7.1059",
         number: 127,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1054,
@@ -8450,7 +8450,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "127.394",
         og_number: "127.8.1060",
         number: 127,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1055,
@@ -8458,7 +8458,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "127.395",
         og_number: "127.9.1061",
         number: 127,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1056,
@@ -8466,7 +8466,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "127.396",
         og_number: "127.10.1062",
         number: 127,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 1057,
@@ -8474,7 +8474,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "127.397",
         og_number: "123.17.1015",
         number: 127,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 1058,
@@ -8482,7 +8482,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "127.398",
         og_number: "140.15.1210",
         number: 127,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 1059,
@@ -8490,7 +8490,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "128.399",
         og_number: "128.1.1066",
         number: 128,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 1060,
@@ -8498,7 +8498,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "128.400",
         og_number: "128.2.1067",
         number: 128,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 1061,
@@ -8506,7 +8506,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "128.401",
         og_number: "128.3.1068",
         number: 128,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1062,
@@ -8514,7 +8514,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "128.402",
         og_number: "128.4.1069",
         number: 128,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1063,
@@ -8522,7 +8522,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "128.403",
         og_number: "128.5.1070",
         number: 128,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1064,
@@ -8530,7 +8530,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "128.404",
         og_number: "128.6.1071",
         number: 128,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1065,
@@ -8538,7 +8538,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "128.405",
         og_number: "128.7.1072",
         number: 128,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1066,
@@ -8546,7 +8546,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "128.406",
         og_number: "128.8.1073",
         number: 128,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1067,
@@ -8554,7 +8554,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "128.407",
         og_number: "128.9.1074",
         number: 128,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1068,
@@ -8562,7 +8562,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "128.408",
         og_number: "127.13.1065",
         number: 128,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 1069,
@@ -8570,7 +8570,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "128.409",
         og_number: "124.12.1029",
         number: 128,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 1070,
@@ -8578,7 +8578,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "128.410",
         og_number: "139.15.1193",
         number: 128,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 1071,
@@ -8586,7 +8586,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "129.411",
         og_number: "129.1.1075",
         number: 129,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 1072,
@@ -8594,7 +8594,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "129.412",
         og_number: "129.2.1076",
         number: 129,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 1073,
@@ -8602,7 +8602,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "129.413",
         og_number: "129.3.1077",
         number: 129,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1074,
@@ -8610,7 +8610,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "129.414",
         og_number: "129.4.1078",
         number: 129,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1075,
@@ -8618,7 +8618,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "129.415",
         og_number: "129.5.1079",
         number: 129,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1076,
@@ -8626,7 +8626,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "129.416",
         og_number: "129.6.1080",
         number: 129,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1077,
@@ -8634,7 +8634,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "129.417",
         og_number: "129.7.1081",
         number: 129,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1078,
@@ -8642,7 +8642,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "129.418",
         og_number: "129.8.1082",
         number: 129,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1079,
@@ -8650,7 +8650,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "129.419",
         og_number: "129.9.1083",
         number: 129,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1080,
@@ -8658,7 +8658,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "129.420",
         og_number: "129.10.1084",
         number: 129,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 1081,
@@ -8666,7 +8666,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "129.421",
         og_number: "123.16.1014",
         number: 129,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 1082,
@@ -8674,7 +8674,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "129.422",
         og_number: "139.11.1189",
         number: 129,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 1083,
@@ -8682,7 +8682,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "130.423",
         og_number: "130.1.1088",
         number: 130,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 1084,
@@ -8690,7 +8690,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "130.424",
         og_number: "130.2.1089",
         number: 130,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 1085,
@@ -8698,7 +8698,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "130.425",
         og_number: "130.3.1090",
         number: 130,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1086,
@@ -8706,7 +8706,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "130.426",
         og_number: "130.4.1091",
         number: 130,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1087,
@@ -8714,7 +8714,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "130.427",
         og_number: "130.5.1092",
         number: 130,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1088,
@@ -8722,7 +8722,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "130.428",
         og_number: "130.6.1093",
         number: 130,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1089,
@@ -8730,7 +8730,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "130.429",
         og_number: "130.7.1094",
         number: 130,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1090,
@@ -8738,7 +8738,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "130.430",
         og_number: "130.8.1095",
         number: 130,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1091,
@@ -8746,7 +8746,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "130.431",
         og_number: "130.9.1096",
         number: 130,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1092,
@@ -8754,7 +8754,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "130.432",
         og_number: "129.13.1087",
         number: 130,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 1093,
@@ -8762,7 +8762,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "130.433",
         og_number: "124.11.1028",
         number: 130,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 1094,
@@ -8770,7 +8770,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "130.434",
         og_number: "140.11.1206",
         number: 130,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 1095,
@@ -8778,7 +8778,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "131.435",
         og_number: "131.1.1097",
         number: 131,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 1096,
@@ -8786,7 +8786,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "131.436",
         og_number: "131.2.1098",
         number: 131,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 1097,
@@ -8794,7 +8794,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "131.437",
         og_number: "131.3.1099",
         number: 131,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1098,
@@ -8802,7 +8802,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "131.438",
         og_number: "131.4.1100",
         number: 131,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1099,
@@ -8810,7 +8810,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "131.439",
         og_number: "131.5.1101",
         number: 131,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1100,
@@ -8818,7 +8818,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "131.440",
         og_number: "131.6.1102",
         number: 131,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1101,
@@ -8826,7 +8826,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "131.441",
         og_number: "131.7.1103",
         number: 131,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1102,
@@ -8834,7 +8834,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "131.442",
         og_number: "131.8.1104",
         number: 131,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1103,
@@ -8842,7 +8842,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "131.443",
         og_number: "131.9.1105",
         number: 131,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1104,
@@ -8850,7 +8850,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "131.444",
         og_number: "123.14.1012",
         number: 131,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 1105,
@@ -8858,7 +8858,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "131.445",
         og_number: "132.10.1119",
         number: 131,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 1106,
@@ -8866,7 +8866,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "131.446",
         og_number: "139.13.1191",
         number: 131,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 1107,
@@ -8874,7 +8874,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "132.447",
         og_number: "132.1.1110",
         number: 132,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 1108,
@@ -8882,7 +8882,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "132.448",
         og_number: "132.2.1111",
         number: 132,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 1109,
@@ -8890,7 +8890,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "132.449",
         og_number: "132.3.1112",
         number: 132,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1110,
@@ -8898,7 +8898,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "132.450",
         og_number: "132.4.1113",
         number: 132,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1111,
@@ -8906,7 +8906,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "132.451",
         og_number: "132.5.1114",
         number: 132,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1112,
@@ -8914,7 +8914,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "132.452",
         og_number: "132.6.1115",
         number: 132,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1113,
@@ -8922,7 +8922,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "132.453",
         og_number: "132.7.1116",
         number: 132,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1114,
@@ -8930,7 +8930,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "132.454",
         og_number: "132.8.1117",
         number: 132,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1115,
@@ -8938,7 +8938,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "132.455",
         og_number: "132.9.1118",
         number: 132,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1116,
@@ -8946,7 +8946,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "132.456",
         og_number: "123.13.1011",
         number: 132,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 1117,
@@ -8954,7 +8954,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "132.457",
         og_number: "131.10.1106",
         number: 132,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 1118,
@@ -8962,7 +8962,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "132.458",
         og_number: "140.13.1208",
         number: 132,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 1119,
@@ -8970,7 +8970,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "133.459",
         og_number: "133.1.1123",
         number: 133,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 1120,
@@ -8978,7 +8978,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "133.460",
         og_number: "133.2.1124",
         number: 133,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 1121,
@@ -8986,7 +8986,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "133.461",
         og_number: "133.3.1125",
         number: 133,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1122,
@@ -8994,7 +8994,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "133.462",
         og_number: "133.4.1126",
         number: 133,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1123,
@@ -9002,7 +9002,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "133.463",
         og_number: "133.5.1127",
         number: 133,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1124,
@@ -9010,7 +9010,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "133.464",
         og_number: "133.6.1128",
         number: 133,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1125,
@@ -9018,7 +9018,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "133.465",
         og_number: "133.7.1129",
         number: 133,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1126,
@@ -9026,7 +9026,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "133.466",
         og_number: "133.8.1130",
         number: 133,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1127,
@@ -9034,7 +9034,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "133.467",
         og_number: "133.9.1131",
         number: 133,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1128,
@@ -9042,7 +9042,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "133.468",
         og_number: "125.12.1042",
         number: 133,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 1129,
@@ -9050,7 +9050,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "133.469",
         og_number: "132.13.1122",
         number: 133,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 1130,
@@ -9058,7 +9058,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "133.470",
         og_number: "140.14.1209",
         number: 133,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 1131,
@@ -9066,7 +9066,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "134.471",
         og_number: "134.1.1132",
         number: 134,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 1132,
@@ -9074,7 +9074,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "134.472",
         og_number: "134.2.1133",
         number: 134,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 1133,
@@ -9082,7 +9082,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "134.473",
         og_number: "134.3.1134",
         number: 134,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1134,
@@ -9090,7 +9090,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "134.474",
         og_number: "134.4.1135",
         number: 134,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1135,
@@ -9098,7 +9098,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "134.475",
         og_number: "134.5.1136",
         number: 134,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1136,
@@ -9106,7 +9106,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "134.476",
         og_number: "134.6.1137",
         number: 134,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1137,
@@ -9114,7 +9114,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "134.477",
         og_number: "134.7.1138",
         number: 134,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1138,
@@ -9122,7 +9122,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "134.478",
         og_number: "134.8.1139",
         number: 134,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1139,
@@ -9130,7 +9130,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "134.479",
         og_number: "134.9.1140",
         number: 134,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1140,
@@ -9138,7 +9138,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "134.480",
         og_number: "125.11.1041",
         number: 134,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 1141,
@@ -9146,7 +9146,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "134.481",
         og_number: "131.13.1109",
         number: 134,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 1142,
@@ -9154,7 +9154,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "134.482",
         og_number: "139.14.1192",
         number: 134,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 1143,
@@ -9162,7 +9162,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "135.483",
         og_number: "135.1.1143",
         number: 135,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 1144,
@@ -9170,7 +9170,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "135.484",
         og_number: "135.2.1144",
         number: 135,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 1145,
@@ -9178,7 +9178,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "135.485",
         og_number: "135.3.1145",
         number: 135,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1146,
@@ -9186,7 +9186,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "135.486",
         og_number: "135.4.1146",
         number: 135,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1147,
@@ -9194,7 +9194,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "135.487",
         og_number: "135.5.1147",
         number: 135,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1148,
@@ -9202,7 +9202,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "135.488",
         og_number: "135.6.1148",
         number: 135,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1149,
@@ -9210,7 +9210,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "135.489",
         og_number: "135.7.1149",
         number: 135,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1150,
@@ -9218,7 +9218,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "135.490",
         og_number: "135.8.1150",
         number: 135,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1151,
@@ -9226,7 +9226,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "135.491",
         og_number: "135.9.1151",
         number: 135,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1152,
@@ -9234,7 +9234,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "135.492",
         og_number: "127.12.1064",
         number: 135,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 1153,
@@ -9242,7 +9242,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "135.493",
         og_number: "132.12.1121",
         number: 135,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 1154,
@@ -9250,7 +9250,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "135.494",
         og_number: "140.12.1207",
         number: 135,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 1155,
@@ -9258,7 +9258,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "136.495",
         og_number: "136.1.1152",
         number: 136,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 1156,
@@ -9266,7 +9266,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "136.496",
         og_number: "136.2.1153",
         number: 136,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 1157,
@@ -9274,7 +9274,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "136.497",
         og_number: "136.3.1154",
         number: 136,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1158,
@@ -9282,7 +9282,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "136.498",
         og_number: "136.4.1155",
         number: 136,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1159,
@@ -9290,7 +9290,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "136.499",
         og_number: "136.5.1156",
         number: 136,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1160,
@@ -9298,7 +9298,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "136.500",
         og_number: "136.6.1157",
         number: 136,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1161,
@@ -9306,7 +9306,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "136.501",
         og_number: "136.7.1158",
         number: 136,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1162,
@@ -9314,7 +9314,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "136.502",
         og_number: "136.8.1159",
         number: 136,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1163,
@@ -9322,7 +9322,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "136.503",
         og_number: "136.9.1160",
         number: 136,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1164,
@@ -9330,7 +9330,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "136.504",
         og_number: "127.11.1063",
         number: 136,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 1165,
@@ -9338,7 +9338,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "136.505",
         og_number: "131.12.1108",
         number: 136,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 1166,
@@ -9346,7 +9346,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "136.506",
         og_number: "139.12.1190",
         number: 136,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 1167,
@@ -9354,7 +9354,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "137.507",
         og_number: "137.1.1161",
         number: 137,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 1168,
@@ -9362,7 +9362,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "137.508",
         og_number: "137.2.1162",
         number: 137,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 1169,
@@ -9370,7 +9370,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "137.509",
         og_number: "137.3.1163",
         number: 137,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1170,
@@ -9378,7 +9378,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "137.510",
         og_number: "137.4.1164",
         number: 137,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1171,
@@ -9386,7 +9386,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "137.511",
         og_number: "137.5.1165",
         number: 137,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1172,
@@ -9394,7 +9394,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "137.512",
         og_number: "137.6.1166",
         number: 137,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1173,
@@ -9402,7 +9402,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "137.513",
         og_number: "137.7.1167",
         number: 137,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1174,
@@ -9410,7 +9410,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "137.514",
         og_number: "137.8.1168",
         number: 137,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1175,
@@ -9418,7 +9418,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "137.515",
         og_number: "137.9.1169",
         number: 137,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1176,
@@ -9426,7 +9426,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "137.516",
         og_number: "129.12.1086",
         number: 137,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 1177,
@@ -9434,7 +9434,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "137.517",
         og_number: "132.11.1120",
         number: 137,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 1178,
@@ -9442,7 +9442,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "137.518",
         og_number: "139.16.1194",
         number: 137,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 1179,
@@ -9450,7 +9450,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "138.519",
         og_number: "138.1.1170",
         number: 138,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 1180,
@@ -9458,7 +9458,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "138.520",
         og_number: "138.2.1171",
         number: 138,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 1181,
@@ -9466,7 +9466,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "138.521",
         og_number: "138.3.1172",
         number: 138,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1182,
@@ -9474,7 +9474,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "138.522",
         og_number: "138.4.1173",
         number: 138,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1183,
@@ -9482,7 +9482,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "138.523",
         og_number: "138.5.1174",
         number: 138,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1184,
@@ -9490,7 +9490,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "138.524",
         og_number: "138.6.1175",
         number: 138,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1185,
@@ -9498,7 +9498,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "138.525",
         og_number: "138.7.1176",
         number: 138,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1186,
@@ -9506,7 +9506,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "138.526",
         og_number: "138.8.1177",
         number: 138,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1187,
@@ -9514,7 +9514,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "138.527",
         og_number: "138.9.1178",
         number: 138,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1188,
@@ -9522,7 +9522,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "138.528",
         og_number: "129.11.1085",
         number: 138,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 1189,
@@ -9530,7 +9530,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "138.529",
         og_number: "131.11.1107",
         number: 138,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 1190,
@@ -9538,7 +9538,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "138.530",
         og_number: "140.16.1211",
         number: 138,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 1191,
@@ -9546,7 +9546,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "139.531",
         og_number: "139.1.1179",
         number: 139,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 1192,
@@ -9554,7 +9554,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "139.532",
         og_number: "139.2.1180",
         number: 139,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 1193,
@@ -9562,7 +9562,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "139.533",
         og_number: "139.3.1181",
         number: 139,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1194,
@@ -9570,7 +9570,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "139.534",
         og_number: "139.4.1182",
         number: 139,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1195,
@@ -9578,7 +9578,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "139.535",
         og_number: "139.5.1183",
         number: 139,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1196,
@@ -9586,7 +9586,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "139.536",
         og_number: "139.6.1184",
         number: 139,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1197,
@@ -9594,7 +9594,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "139.537",
         og_number: "139.7.1185",
         number: 139,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1198,
@@ -9602,7 +9602,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "139.538",
         og_number: "139.8.1186",
         number: 139,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1199,
@@ -9610,7 +9610,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "139.539",
         og_number: "139.9.1187",
         number: 139,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1200,
@@ -9618,7 +9618,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "139.540",
         og_number: "123.12.1010",
         number: 139,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 1201,
@@ -9626,7 +9626,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "140.541",
         og_number: "140.1.1196",
         number: 140,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 1202,
@@ -9634,7 +9634,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "140.542",
         og_number: "140.2.1197",
         number: 140,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 1203,
@@ -9642,7 +9642,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "140.543",
         og_number: "140.3.1198",
         number: 140,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1204,
@@ -9650,7 +9650,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "140.544",
         og_number: "140.4.1199",
         number: 140,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1205,
@@ -9658,7 +9658,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "140.545",
         og_number: "140.5.1200",
         number: 140,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1206,
@@ -9666,7 +9666,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "140.546",
         og_number: "140.6.1201",
         number: 140,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1207,
@@ -9674,7 +9674,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "140.547",
         og_number: "140.7.1202",
         number: 140,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1208,
@@ -9682,7 +9682,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "140.548",
         og_number: "140.8.1203",
         number: 140,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1209,
@@ -9690,7 +9690,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "140.549",
         og_number: "140.9.1204",
         number: 140,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1210,
@@ -9698,7 +9698,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "140.550",
         og_number: "123.19.1017",
         number: 140,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 1211,
@@ -9706,7 +9706,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "141.551",
         og_number: "141.1.1213",
         number: 141,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 1212,
@@ -9714,7 +9714,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "141.552",
         og_number: "141.2.1214",
         number: 141,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 1213,
@@ -9722,7 +9722,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "141.553",
         og_number: "141.3.1215",
         number: 141,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1214,
@@ -9730,7 +9730,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "141.554",
         og_number: "141.4.1216",
         number: 141,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1215,
@@ -9738,7 +9738,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "141.555",
         og_number: "141.5.1217",
         number: 141,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1216,
@@ -9746,7 +9746,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "141.556",
         og_number: "141.6.1218",
         number: 141,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1217,
@@ -9754,7 +9754,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "141.557",
         og_number: "141.7.1219",
         number: 141,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1218,
@@ -9762,7 +9762,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "141.558",
         og_number: "141.8.1220",
         number: 141,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1219,
@@ -9770,7 +9770,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "141.559",
         og_number: "141.9.1221",
         number: 141,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1220,
@@ -9778,7 +9778,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "141.560",
         og_number: "134.10.1141",
         number: 141,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 1221,
@@ -9786,7 +9786,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "142.561",
         og_number: "142.1.1222",
         number: 142,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 1222,
@@ -9794,7 +9794,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "142.562",
         og_number: "142.2.1223",
         number: 142,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 1223,
@@ -9802,7 +9802,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "142.563",
         og_number: "142.3.1224",
         number: 142,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1224,
@@ -9810,7 +9810,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "142.564",
         og_number: "142.4.1225",
         number: 142,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1225,
@@ -9818,7 +9818,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "142.565",
         og_number: "142.5.1226",
         number: 142,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1226,
@@ -9826,7 +9826,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "142.566",
         og_number: "142.6.1227",
         number: 142,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1227,
@@ -9834,7 +9834,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "142.567",
         og_number: "142.7.1228",
         number: 142,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1228,
@@ -9842,7 +9842,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "142.568",
         og_number: "142.8.1229",
         number: 142,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1229,
@@ -9850,7 +9850,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "142.569",
         og_number: "142.9.1230",
         number: 142,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1230,
@@ -9858,7 +9858,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "142.570",
         og_number: "134.11.1142",
         number: 142,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 1231,
@@ -9866,7 +9866,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "143.1",
         og_number: "143.1.1231",
         number: 143,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 1232,
@@ -9874,7 +9874,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "143.2",
         og_number: "143.2.1232",
         number: 143,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 1233,
@@ -9882,7 +9882,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "143.3",
         og_number: "143.3.1233",
         number: 143,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 1234,
@@ -9890,7 +9890,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "144.4",
         og_number: "144.1.1234",
         number: 144,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 1235,
@@ -9898,7 +9898,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "144.5",
         og_number: "144.2.1235",
         number: 144,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 1236,
@@ -9906,7 +9906,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "144.6",
         og_number: "145.3.1239",
         number: 144,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 1237,
@@ -9914,7 +9914,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "145.7",
         og_number: "145.1.1237",
         number: 145,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 1238,
@@ -9922,7 +9922,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "145.8",
         og_number: "145.2.1238",
         number: 145,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 1239,
@@ -9930,7 +9930,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "145.9",
         og_number: "144.3.1236",
         number: 145,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 1240,
@@ -9938,7 +9938,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "146.10",
         og_number: "146.1.1240",
         number: 146,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 1241,
@@ -9946,7 +9946,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "146.11",
         og_number: "146.2.1241",
         number: 146,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 1242,
@@ -9954,7 +9954,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "146.12",
         og_number: "146.3.1242",
         number: 146,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 1243,
@@ -9962,7 +9962,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "147.13",
         og_number: "147.1.1243",
         number: 147,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 1244,
@@ -9970,7 +9970,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "147.14",
         og_number: "147.2.1244",
         number: 147,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 1245,
@@ -9978,7 +9978,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "147.15",
         og_number: "147.3.1245",
         number: 147,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1246,
@@ -9986,7 +9986,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "147.16",
         og_number: "147.4.1246",
         number: 147,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 1247,
@@ -9994,7 +9994,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "148.17",
         og_number: "148.1.1247",
         number: 148,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 1248,
@@ -10002,7 +10002,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "148.18",
         og_number: "148.2.1248",
         number: 148,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 1249,
@@ -10010,7 +10010,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "148.19",
         og_number: "148.3.1249",
         number: 148,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1250,
@@ -10018,7 +10018,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "148.20",
         og_number: "148.4.1250",
         number: 148,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 1251,
@@ -10026,7 +10026,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "149.21",
         og_number: "149.1.1251",
         number: 149,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 1252,
@@ -10034,7 +10034,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "149.22",
         og_number: "149.2.1252",
         number: 149,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 1253,
@@ -10042,7 +10042,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "149.23",
         og_number: "149.3.1253",
         number: 149,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1254,
@@ -10050,7 +10050,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "149.24",
         og_number: "149.4.1254",
         number: 149,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 1255,
@@ -10058,7 +10058,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "150.25",
         og_number: "150.1.1255",
         number: 150,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 1256,
@@ -10066,7 +10066,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "150.26",
         og_number: "150.2.1256",
         number: 150,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 1257,
@@ -10074,7 +10074,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "150.27",
         og_number: "150.3.1257",
         number: 150,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1258,
@@ -10082,7 +10082,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "150.28",
         og_number: "150.4.1258",
         number: 150,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 1259,
@@ -10090,7 +10090,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "151.29",
         og_number: "151.1.1259",
         number: 151,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 1260,
@@ -10098,7 +10098,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "151.30",
         og_number: "151.2.1260",
         number: 151,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 1261,
@@ -10106,7 +10106,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "151.31",
         og_number: "151.3.1261",
         number: 151,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1262,
@@ -10114,7 +10114,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "151.32",
         og_number: "153.4.1270",
         number: 151,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 1263,
@@ -10122,7 +10122,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "152.33",
         og_number: "152.1.1263",
         number: 152,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 1264,
@@ -10130,7 +10130,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "152.34",
         og_number: "152.2.1264",
         number: 152,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 1265,
@@ -10138,7 +10138,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "152.35",
         og_number: "152.3.1265",
         number: 152,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1266,
@@ -10146,7 +10146,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "152.36",
         og_number: "154.4.1274",
         number: 152,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 1267,
@@ -10154,7 +10154,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "153.37",
         og_number: "153.1.1267",
         number: 153,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 1268,
@@ -10162,7 +10162,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "153.38",
         og_number: "153.2.1268",
         number: 153,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 1269,
@@ -10170,7 +10170,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "153.39",
         og_number: "153.3.1269",
         number: 153,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1270,
@@ -10178,7 +10178,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "153.40",
         og_number: "151.4.1262",
         number: 153,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 1271,
@@ -10186,7 +10186,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "154.41",
         og_number: "154.1.1271",
         number: 154,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 1272,
@@ -10194,7 +10194,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "154.42",
         og_number: "154.2.1272",
         number: 154,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 1273,
@@ -10202,7 +10202,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "154.43",
         og_number: "154.3.1273",
         number: 154,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1274,
@@ -10210,7 +10210,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "154.44",
         og_number: "152.4.1266",
         number: 154,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 1275,
@@ -10218,7 +10218,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "155.45",
         og_number: "155.1.1275",
         number: 155,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 1276,
@@ -10226,7 +10226,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "155.46",
         og_number: "155.2.1276",
         number: 155,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 1277,
@@ -10234,7 +10234,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "155.47",
         og_number: "155.3.1277",
         number: 155,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1278,
@@ -10242,7 +10242,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "155.48",
         og_number: "155.4.1278",
         number: 155,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 1279,
@@ -10250,7 +10250,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "156.49",
         og_number: "156.1.1279",
         number: 156,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 1280,
@@ -10258,7 +10258,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "156.50",
         og_number: "156.2.1280",
         number: 156,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 1281,
@@ -10266,7 +10266,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "156.51",
         og_number: "156.3.1281",
         number: 156,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1282,
@@ -10274,7 +10274,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "156.52",
         og_number: "156.4.1282",
         number: 156,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 1283,
@@ -10282,7 +10282,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "157.53",
         og_number: "157.1.1284",
         number: 157,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 1284,
@@ -10290,7 +10290,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "157.54",
         og_number: "157.2.1285",
         number: 157,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 1285,
@@ -10298,7 +10298,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "157.55",
         og_number: "157.3.1286",
         number: 157,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1286,
@@ -10306,7 +10306,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "157.56",
         og_number: "157.4.1287",
         number: 157,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 1287,
@@ -10314,7 +10314,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "158.57",
         og_number: "158.1.1289",
         number: 158,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 1288,
@@ -10322,7 +10322,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "158.58",
         og_number: "158.2.1290",
         number: 158,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 1289,
@@ -10330,7 +10330,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "158.59",
         og_number: "158.3.1291",
         number: 158,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1290,
@@ -10338,7 +10338,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "158.60",
         og_number: "156.5.1283",
         number: 158,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 1291,
@@ -10346,7 +10346,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "159.61",
         og_number: "159.1.1292",
         number: 159,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 1292,
@@ -10354,7 +10354,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "159.62",
         og_number: "159.2.1293",
         number: 159,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 1293,
@@ -10362,7 +10362,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "159.63",
         og_number: "159.3.1294",
         number: 159,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1294,
@@ -10370,7 +10370,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "159.64",
         og_number: "157.5.1288",
         number: 159,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 1295,
@@ -10378,7 +10378,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "160.65",
         og_number: "160.1.1295",
         number: 160,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 1296,
@@ -10386,7 +10386,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "160.66",
         og_number: "160.2.1296",
         number: 160,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 1297,
@@ -10394,7 +10394,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "160.67",
         og_number: "160.3.1297",
         number: 160,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1298,
@@ -10402,7 +10402,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "160.68",
         og_number: "160.4.1298",
         number: 160,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 1299,
@@ -10410,7 +10410,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "161.69",
         og_number: "161.1.1300",
         number: 161,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 1300,
@@ -10418,7 +10418,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "161.70",
         og_number: "161.2.1301",
         number: 161,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 1301,
@@ -10426,7 +10426,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "161.71",
         og_number: "161.3.1302",
         number: 161,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1302,
@@ -10434,7 +10434,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "161.72",
         og_number: "160.5.1299",
         number: 161,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 1303,
@@ -10442,7 +10442,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "162.73",
         og_number: "162.1.1303",
         number: 162,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 1304,
@@ -10450,7 +10450,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "162.74",
         og_number: "162.2.1304",
         number: 162,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 1305,
@@ -10458,7 +10458,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "162.75",
         og_number: "162.3.1305",
         number: 162,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1306,
@@ -10466,7 +10466,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "162.76",
         og_number: "162.4.1306",
         number: 162,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1307,
@@ -10474,7 +10474,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "162.77",
         og_number: "162.5.1307",
         number: 162,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1308,
@@ -10482,7 +10482,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "162.78",
         og_number: "162.6.1308",
         number: 162,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 1309,
@@ -10490,7 +10490,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "163.79",
         og_number: "163.1.1310",
         number: 163,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 1310,
@@ -10498,7 +10498,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "163.80",
         og_number: "163.2.1311",
         number: 163,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 1311,
@@ -10506,7 +10506,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "163.81",
         og_number: "163.3.1312",
         number: 163,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1312,
@@ -10514,7 +10514,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "163.82",
         og_number: "163.4.1313",
         number: 163,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1313,
@@ -10522,7 +10522,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "163.83",
         og_number: "163.5.1314",
         number: 163,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1314,
@@ -10530,7 +10530,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "163.84",
         og_number: "162.7.1309",
         number: 163,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 1315,
@@ -10538,7 +10538,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "164.85",
         og_number: "164.1.1315",
         number: 164,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 1316,
@@ -10546,7 +10546,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "164.86",
         og_number: "164.2.1316",
         number: 164,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 1317,
@@ -10554,7 +10554,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "164.87",
         og_number: "164.3.1317",
         number: 164,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1318,
@@ -10562,7 +10562,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "164.88",
         og_number: "164.4.1318",
         number: 164,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1319,
@@ -10570,7 +10570,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "164.89",
         og_number: "164.5.1319",
         number: 164,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1320,
@@ -10578,7 +10578,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "164.90",
         og_number: "164.6.1320",
         number: 164,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 1321,
@@ -10586,7 +10586,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "165.91",
         og_number: "165.1.1322",
         number: 165,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 1322,
@@ -10594,7 +10594,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "165.92",
         og_number: "165.2.1323",
         number: 165,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 1323,
@@ -10602,7 +10602,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "165.93",
         og_number: "165.3.1324",
         number: 165,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1324,
@@ -10610,7 +10610,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "165.94",
         og_number: "165.4.1325",
         number: 165,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1325,
@@ -10618,7 +10618,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "165.95",
         og_number: "165.5.1326",
         number: 165,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1326,
@@ -10626,7 +10626,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "165.96",
         og_number: "164.7.1321",
         number: 165,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 1327,
@@ -10634,7 +10634,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "166.97",
         og_number: "166.1.1327",
         number: 166,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 1328,
@@ -10642,7 +10642,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "166.98",
         og_number: "166.2.1328",
         number: 166,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 1329,
@@ -10650,7 +10650,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "166.99",
         og_number: "166.3.1329",
         number: 166,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1330,
@@ -10658,7 +10658,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "166.100",
         og_number: "166.4.1330",
         number: 166,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1331,
@@ -10666,7 +10666,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "166.101",
         og_number: "166.5.1331",
         number: 166,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1332,
@@ -10674,7 +10674,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "166.102",
         og_number: "166.6.1332",
         number: 166,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 1333,
@@ -10682,7 +10682,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "167.103",
         og_number: "167.1.1334",
         number: 167,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 1334,
@@ -10690,7 +10690,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "167.104",
         og_number: "167.2.1335",
         number: 167,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 1335,
@@ -10698,7 +10698,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "167.105",
         og_number: "167.3.1336",
         number: 167,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1336,
@@ -10706,7 +10706,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "167.106",
         og_number: "167.4.1337",
         number: 167,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1337,
@@ -10714,7 +10714,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "167.107",
         og_number: "167.5.1338",
         number: 167,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1338,
@@ -10722,7 +10722,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "167.108",
         og_number: "166.7.1333",
         number: 167,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 1339,
@@ -10730,7 +10730,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "168.109",
         og_number: "168.1.1339",
         number: 168,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 1340,
@@ -10738,7 +10738,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "168.110",
         og_number: "168.2.1340",
         number: 168,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 1341,
@@ -10746,7 +10746,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "168.111",
         og_number: "168.3.1341",
         number: 168,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1342,
@@ -10754,7 +10754,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "168.112",
         og_number: "168.4.1342",
         number: 168,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 1343,
@@ -10762,7 +10762,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "169.113",
         og_number: "169.1.1344",
         number: 169,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 1344,
@@ -10770,7 +10770,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "169.114",
         og_number: "169.2.1345",
         number: 169,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 1345,
@@ -10778,7 +10778,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "169.115",
         og_number: "169.3.1346",
         number: 169,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1346,
@@ -10786,7 +10786,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "169.116",
         og_number: "171.4.1353",
         number: 169,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 1347,
@@ -10794,7 +10794,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "170.117",
         og_number: "170.1.1347",
         number: 170,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 1348,
@@ -10802,7 +10802,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "170.118",
         og_number: "170.2.1348",
         number: 170,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 1349,
@@ -10810,7 +10810,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "170.119",
         og_number: "170.3.1349",
         number: 170,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1350,
@@ -10818,7 +10818,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "170.120",
         og_number: "172.5.1359",
         number: 170,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 1351,
@@ -10826,7 +10826,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "171.121",
         og_number: "171.1.1350",
         number: 171,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 1352,
@@ -10834,7 +10834,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "171.122",
         og_number: "171.2.1351",
         number: 171,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 1353,
@@ -10842,7 +10842,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "171.123",
         og_number: "171.3.1352",
         number: 171,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1354,
@@ -10850,7 +10850,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "171.124",
         og_number: "172.4.1358",
         number: 171,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 1355,
@@ -10858,7 +10858,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "172.125",
         og_number: "172.1.1355",
         number: 172,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 1356,
@@ -10866,7 +10866,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "172.126",
         og_number: "172.2.1356",
         number: 172,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 1357,
@@ -10874,7 +10874,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "172.127",
         og_number: "172.3.1357",
         number: 172,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1358,
@@ -10882,7 +10882,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "172.128",
         og_number: "171.5.1354",
         number: 172,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 1359,
@@ -10890,7 +10890,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "173.129",
         og_number: "173.1.1360",
         number: 173,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 1360,
@@ -10898,7 +10898,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "173.130",
         og_number: "173.2.1361",
         number: 173,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 1361,
@@ -10906,7 +10906,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "173.131",
         og_number: "173.3.1362",
         number: 173,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1362,
@@ -10914,7 +10914,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "173.132",
         og_number: "168.5.1343",
         number: 173,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 1363,
@@ -10922,7 +10922,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "174.133",
         og_number: "174.1.1363",
         number: 174,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 1364,
@@ -10930,7 +10930,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "174.134",
         og_number: "174.2.1364",
         number: 174,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 1365,
@@ -10938,7 +10938,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "174.135",
         og_number: "174.3.1365",
         number: 174,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1366,
@@ -10946,7 +10946,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "174.136",
         og_number: "174.4.1366",
         number: 174,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 1367,
@@ -10954,7 +10954,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "175.137",
         og_number: "175.1.1367",
         number: 175,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 1368,
@@ -10962,7 +10962,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "175.138",
         og_number: "175.2.1368",
         number: 175,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 1369,
@@ -10970,7 +10970,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "175.139",
         og_number: "175.3.1369",
         number: 175,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1370,
@@ -10978,7 +10978,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "175.140",
         og_number: "175.4.1370",
         number: 175,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1371,
@@ -10986,7 +10986,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "175.141",
         og_number: "175.5.1371",
         number: 175,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1372,
@@ -10994,7 +10994,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "175.142",
         og_number: "175.6.1372",
         number: 175,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 1373,
@@ -11002,7 +11002,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "176.143",
         og_number: "176.1.1374",
         number: 176,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 1374,
@@ -11010,7 +11010,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "176.144",
         og_number: "176.2.1375",
         number: 176,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 1375,
@@ -11018,7 +11018,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "176.145",
         og_number: "176.3.1376",
         number: 176,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1376,
@@ -11026,7 +11026,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "176.146",
         og_number: "176.4.1377",
         number: 176,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1377,
@@ -11034,7 +11034,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "176.147",
         og_number: "176.5.1378",
         number: 176,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1378,
@@ -11042,7 +11042,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "176.148",
         og_number: "175.7.1373",
         number: 176,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 1379,
@@ -11050,7 +11050,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "177.149",
         og_number: "177.1.1379",
         number: 177,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 1380,
@@ -11058,7 +11058,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "177.150",
         og_number: "177.2.1380",
         number: 177,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 1381,
@@ -11066,7 +11066,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "177.151",
         og_number: "177.3.1381",
         number: 177,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1382,
@@ -11074,7 +11074,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "177.152",
         og_number: "177.4.1382",
         number: 177,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1383,
@@ -11082,7 +11082,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "177.153",
         og_number: "177.5.1383",
         number: 177,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1384,
@@ -11090,7 +11090,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "177.154",
         og_number: "177.6.1384",
         number: 177,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 1385,
@@ -11098,7 +11098,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "178.155",
         og_number: "178.1.1386",
         number: 178,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 1386,
@@ -11106,7 +11106,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "178.156",
         og_number: "178.2.1387",
         number: 178,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 1387,
@@ -11114,7 +11114,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "178.157",
         og_number: "178.3.1388",
         number: 178,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1388,
@@ -11122,7 +11122,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "178.158",
         og_number: "178.4.1389",
         number: 178,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1389,
@@ -11130,7 +11130,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "178.159",
         og_number: "178.5.1390",
         number: 178,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1390,
@@ -11138,7 +11138,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "178.160",
         og_number: "180.6.1401",
         number: 178,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 1391,
@@ -11146,7 +11146,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "179.161",
         og_number: "179.1.1391",
         number: 179,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 1392,
@@ -11154,7 +11154,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "179.162",
         og_number: "179.2.1392",
         number: 179,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 1393,
@@ -11162,7 +11162,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "179.163",
         og_number: "179.3.1393",
         number: 179,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1394,
@@ -11170,7 +11170,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "179.164",
         og_number: "179.4.1394",
         number: 179,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1395,
@@ -11178,7 +11178,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "179.165",
         og_number: "179.5.1395",
         number: 179,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1396,
@@ -11186,7 +11186,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "179.166",
         og_number: "181.7.1409",
         number: 179,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 1397,
@@ -11194,7 +11194,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "180.167",
         og_number: "180.1.1396",
         number: 180,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 1398,
@@ -11202,7 +11202,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "180.168",
         og_number: "180.2.1397",
         number: 180,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 1399,
@@ -11210,7 +11210,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "180.169",
         og_number: "180.3.1398",
         number: 180,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1400,
@@ -11218,7 +11218,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "180.170",
         og_number: "180.4.1399",
         number: 180,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1401,
@@ -11226,7 +11226,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "180.171",
         og_number: "180.5.1400",
         number: 180,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1402,
@@ -11234,7 +11234,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "180.172",
         og_number: "181.6.1408",
         number: 180,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 1403,
@@ -11242,7 +11242,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "181.173",
         og_number: "181.1.1403",
         number: 181,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 1404,
@@ -11250,7 +11250,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "181.174",
         og_number: "181.2.1404",
         number: 181,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 1405,
@@ -11258,7 +11258,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "181.175",
         og_number: "181.3.1405",
         number: 181,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1406,
@@ -11266,7 +11266,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "181.176",
         og_number: "181.4.1406",
         number: 181,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1407,
@@ -11274,7 +11274,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "181.177",
         og_number: "181.5.1407",
         number: 181,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1408,
@@ -11282,7 +11282,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "181.178",
         og_number: "180.7.1402",
         number: 181,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 1409,
@@ -11290,7 +11290,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "182.179",
         og_number: "182.1.1410",
         number: 182,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 1410,
@@ -11298,7 +11298,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "182.180",
         og_number: "182.2.1411",
         number: 182,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 1411,
@@ -11306,7 +11306,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "182.181",
         og_number: "182.3.1412",
         number: 182,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1412,
@@ -11314,7 +11314,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "182.182",
         og_number: "182.4.1413",
         number: 182,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1413,
@@ -11322,7 +11322,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "182.183",
         og_number: "182.5.1414",
         number: 182,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1414,
@@ -11330,7 +11330,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "182.184",
         og_number: "177.7.1385",
         number: 182,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 1415,
@@ -11338,7 +11338,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "183.185",
         og_number: "183.1.1415",
         number: 183,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 1416,
@@ -11346,7 +11346,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "183.186",
         og_number: "183.2.1416",
         number: 183,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 1417,
@@ -11354,7 +11354,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "183.187",
         og_number: "183.3.1417",
         number: 183,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1418,
@@ -11362,7 +11362,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "183.188",
         og_number: "183.4.1418",
         number: 183,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1419,
@@ -11370,7 +11370,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "183.189",
         og_number: "183.5.1419",
         number: 183,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1420,
@@ -11378,7 +11378,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "183.190",
         og_number: "183.6.1420",
         number: 183,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 1421,
@@ -11386,7 +11386,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "184.191",
         og_number: "184.1.1424",
         number: 184,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 1422,
@@ -11394,7 +11394,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "184.192",
         og_number: "184.2.1425",
         number: 184,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 1423,
@@ -11402,7 +11402,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "184.193",
         og_number: "184.3.1426",
         number: 184,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1424,
@@ -11410,7 +11410,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "184.194",
         og_number: "184.4.1427",
         number: 184,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1425,
@@ -11418,7 +11418,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "184.195",
         og_number: "184.5.1428",
         number: 184,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1426,
@@ -11426,7 +11426,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "184.196",
         og_number: "183.9.1423",
         number: 184,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 1427,
@@ -11434,7 +11434,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "185.197",
         og_number: "185.1.1429",
         number: 185,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 1428,
@@ -11442,7 +11442,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "185.198",
         og_number: "185.2.1430",
         number: 185,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 1429,
@@ -11450,7 +11450,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "185.199",
         og_number: "185.3.1431",
         number: 185,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1430,
@@ -11458,7 +11458,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "185.200",
         og_number: "185.4.1432",
         number: 185,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1431,
@@ -11466,7 +11466,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "185.201",
         og_number: "185.5.1433",
         number: 185,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1432,
@@ -11474,7 +11474,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "185.202",
         og_number: "183.7.1421",
         number: 185,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 1433,
@@ -11482,7 +11482,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "186.203",
         og_number: "186.1.1434",
         number: 186,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 1434,
@@ -11490,7 +11490,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "186.204",
         og_number: "186.2.1435",
         number: 186,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 1435,
@@ -11498,7 +11498,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "186.205",
         og_number: "186.3.1436",
         number: 186,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1436,
@@ -11506,7 +11506,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "186.206",
         og_number: "186.4.1437",
         number: 186,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1437,
@@ -11514,7 +11514,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "186.207",
         og_number: "186.5.1438",
         number: 186,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1438,
@@ -11522,7 +11522,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "186.208",
         og_number: "183.8.1422",
         number: 186,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 1439,
@@ -11530,7 +11530,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "187.209",
         og_number: "187.1.1439",
         number: 187,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 1440,
@@ -11538,7 +11538,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "187.210",
         og_number: "187.2.1440",
         number: 187,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 1441,
@@ -11546,7 +11546,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "187.211",
         og_number: "187.3.1441",
         number: 187,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1442,
@@ -11554,7 +11554,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "187.212",
         og_number: "187.4.1442",
         number: 187,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1443,
@@ -11562,7 +11562,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "187.213",
         og_number: "187.5.1443",
         number: 187,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1444,
@@ -11570,7 +11570,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "187.214",
         og_number: "187.6.1444",
         number: 187,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 1445,
@@ -11578,7 +11578,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "188.215",
         og_number: "188.1.1446",
         number: 188,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 1446,
@@ -11586,7 +11586,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "188.216",
         og_number: "188.2.1447",
         number: 188,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 1447,
@@ -11594,7 +11594,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "188.217",
         og_number: "188.3.1448",
         number: 188,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1448,
@@ -11602,7 +11602,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "188.218",
         og_number: "188.4.1449",
         number: 188,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1449,
@@ -11610,7 +11610,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "188.219",
         og_number: "188.5.1450",
         number: 188,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1450,
@@ -11618,7 +11618,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "188.220",
         og_number: "187.7.1445",
         number: 188,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 1451,
@@ -11626,7 +11626,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "189.221",
         og_number: "189.1.1451",
         number: 189,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 1452,
@@ -11634,7 +11634,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "189.222",
         og_number: "189.2.1452",
         number: 189,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 1453,
@@ -11642,7 +11642,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "189.223",
         og_number: "189.3.1453",
         number: 189,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1454,
@@ -11650,7 +11650,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "189.224",
         og_number: "189.4.1454",
         number: 189,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1455,
@@ -11658,7 +11658,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "189.225",
         og_number: "189.5.1455",
         number: 189,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1456,
@@ -11666,7 +11666,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "189.226",
         og_number: "189.6.1456",
         number: 189,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 1457,
@@ -11674,7 +11674,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "190.227",
         og_number: "190.1.1458",
         number: 190,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 1458,
@@ -11682,7 +11682,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "190.228",
         og_number: "190.2.1459",
         number: 190,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 1459,
@@ -11690,7 +11690,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "190.229",
         og_number: "190.3.1460",
         number: 190,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1460,
@@ -11698,7 +11698,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "190.230",
         og_number: "190.4.1461",
         number: 190,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1461,
@@ -11706,7 +11706,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "190.231",
         og_number: "190.5.1462",
         number: 190,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1462,
@@ -11714,7 +11714,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "190.232",
         og_number: "189.7.1457",
         number: 190,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 1463,
@@ -11722,7 +11722,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "191.233",
         og_number: "191.1.1463",
         number: 191,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 1464,
@@ -11730,7 +11730,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "191.234",
         og_number: "191.2.1464",
         number: 191,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 1465,
@@ -11738,7 +11738,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "191.235",
         og_number: "191.3.1465",
         number: 191,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1466,
@@ -11746,7 +11746,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "191.236",
         og_number: "191.4.1466",
         number: 191,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1467,
@@ -11754,7 +11754,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "191.237",
         og_number: "191.5.1467",
         number: 191,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1468,
@@ -11762,7 +11762,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "191.238",
         og_number: "191.6.1468",
         number: 191,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1469,
@@ -11770,7 +11770,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "191.239",
         og_number: "191.7.1469",
         number: 191,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1470,
@@ -11778,7 +11778,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "191.240",
         og_number: "191.8.1470",
         number: 191,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1471,
@@ -11786,7 +11786,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "191.241",
         og_number: "191.9.1471",
         number: 191,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1472,
@@ -11794,7 +11794,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "191.242",
         og_number: "191.10.1472",
         number: 191,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 1473,
@@ -11802,7 +11802,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "192.243",
         og_number: "192.1.1476",
         number: 192,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 1474,
@@ -11810,7 +11810,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "192.244",
         og_number: "192.2.1477",
         number: 192,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 1475,
@@ -11818,7 +11818,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "192.245",
         og_number: "192.3.1478",
         number: 192,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1476,
@@ -11826,7 +11826,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "192.246",
         og_number: "192.4.1479",
         number: 192,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1477,
@@ -11834,7 +11834,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "192.247",
         og_number: "192.5.1480",
         number: 192,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1478,
@@ -11842,7 +11842,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "192.248",
         og_number: "192.6.1481",
         number: 192,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1479,
@@ -11850,7 +11850,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "192.249",
         og_number: "192.7.1482",
         number: 192,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1480,
@@ -11858,7 +11858,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "192.250",
         og_number: "192.8.1483",
         number: 192,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1481,
@@ -11866,7 +11866,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "192.251",
         og_number: "192.9.1484",
         number: 192,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1482,
@@ -11874,7 +11874,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "192.252",
         og_number: "191.13.1475",
         number: 192,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 1483,
@@ -11882,7 +11882,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "193.253",
         og_number: "193.1.1485",
         number: 193,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 1484,
@@ -11890,7 +11890,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "193.254",
         og_number: "193.2.1486",
         number: 193,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 1485,
@@ -11898,7 +11898,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "193.255",
         og_number: "193.3.1487",
         number: 193,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1486,
@@ -11906,7 +11906,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "193.256",
         og_number: "193.4.1488",
         number: 193,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1487,
@@ -11914,7 +11914,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "193.257",
         og_number: "193.5.1489",
         number: 193,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1488,
@@ -11922,7 +11922,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "193.258",
         og_number: "193.6.1490",
         number: 193,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1489,
@@ -11930,7 +11930,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "193.259",
         og_number: "193.7.1491",
         number: 193,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1490,
@@ -11938,7 +11938,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "193.260",
         og_number: "193.8.1492",
         number: 193,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1491,
@@ -11946,7 +11946,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "193.261",
         og_number: "193.9.1493",
         number: 193,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1492,
@@ -11954,7 +11954,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "193.262",
         og_number: "191.11.1473",
         number: 193,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 1493,
@@ -11962,7 +11962,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "194.263",
         og_number: "194.1.1494",
         number: 194,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 1494,
@@ -11970,7 +11970,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "194.264",
         og_number: "194.2.1495",
         number: 194,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 1495,
@@ -11978,7 +11978,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "194.265",
         og_number: "194.3.1496",
         number: 194,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1496,
@@ -11986,7 +11986,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "194.266",
         og_number: "194.4.1497",
         number: 194,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1497,
@@ -11994,7 +11994,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "194.267",
         og_number: "194.5.1498",
         number: 194,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1498,
@@ -12002,7 +12002,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "194.268",
         og_number: "194.6.1499",
         number: 194,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1499,
@@ -12010,7 +12010,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "194.269",
         og_number: "194.7.1500",
         number: 194,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1500,
@@ -12018,7 +12018,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "194.270",
         og_number: "194.8.1501",
         number: 194,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1501,
@@ -12026,7 +12026,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "194.271",
         og_number: "194.9.1502",
         number: 194,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1502,
@@ -12034,7 +12034,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "194.272",
         og_number: "191.12.1474",
         number: 194,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 1503,
@@ -12042,7 +12042,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "195.1",
         og_number: "195.1.1503",
         number: 195,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 1504,
@@ -12050,7 +12050,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "195.2",
         og_number: "195.2.1504",
         number: 195,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 1505,
@@ -12058,7 +12058,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "195.3",
         og_number: "197.3.1510",
         number: 195,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 1506,
@@ -12066,7 +12066,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "196.4",
         og_number: "196.1.1506",
         number: 196,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 1507,
@@ -12074,7 +12074,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "196.5",
         og_number: "196.2.1507",
         number: 196,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 1508,
@@ -12082,7 +12082,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "196.6",
         og_number: "195.3.1505",
         number: 196,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 1509,
@@ -12090,7 +12090,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "197.7",
         og_number: "197.1.1508",
         number: 197,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 1510,
@@ -12098,7 +12098,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "197.8",
         og_number: "197.2.1509",
         number: 197,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 1511,
@@ -12106,7 +12106,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "198.9",
         og_number: "198.1.1511",
         number: 198,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 1512,
@@ -12114,7 +12114,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "198.10",
         og_number: "198.2.1512",
         number: 198,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 1513,
@@ -12122,7 +12122,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "198.11",
         og_number: "199.3.1515",
         number: 198,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 1514,
@@ -12130,7 +12130,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "199.12",
         og_number: "199.1.1513",
         number: 199,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 1515,
@@ -12138,7 +12138,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "199.13",
         og_number: "199.2.1514",
         number: 199,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 1516,
@@ -12146,7 +12146,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "200.14",
         og_number: "200.1.1516",
         number: 200,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 1517,
@@ -12154,7 +12154,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "200.15",
         og_number: "200.2.1517",
         number: 200,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 1518,
@@ -12162,7 +12162,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "200.16",
         og_number: "200.3.1518",
         number: 200,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1519,
@@ -12170,7 +12170,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "200.17",
         og_number: "204.4.1533",
         number: 200,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 1520,
@@ -12178,7 +12178,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "201.18",
         og_number: "201.1.1520",
         number: 201,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 1521,
@@ -12186,7 +12186,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "201.19",
         og_number: "201.2.1521",
         number: 201,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 1522,
@@ -12194,7 +12194,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "201.20",
         og_number: "201.3.1522",
         number: 201,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1523,
@@ -12202,7 +12202,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "201.21",
         og_number: "204.5.1534",
         number: 201,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 1524,
@@ -12210,7 +12210,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "202.22",
         og_number: "202.1.1524",
         number: 202,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 1525,
@@ -12218,7 +12218,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "202.23",
         og_number: "202.2.1525",
         number: 202,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 1526,
@@ -12226,7 +12226,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "202.24",
         og_number: "202.3.1526",
         number: 202,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1527,
@@ -12234,7 +12234,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "202.25",
         og_number: "200.4.1519",
         number: 202,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 1528,
@@ -12242,7 +12242,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "203.26",
         og_number: "203.1.1527",
         number: 203,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 1529,
@@ -12250,7 +12250,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "203.27",
         og_number: "203.2.1528",
         number: 203,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 1530,
@@ -12258,7 +12258,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "203.28",
         og_number: "203.3.1529",
         number: 203,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1531,
@@ -12266,7 +12266,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "203.29",
         og_number: "201.4.1523",
         number: 203,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 1532,
@@ -12274,7 +12274,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "204.30",
         og_number: "204.1.1530",
         number: 204,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 1533,
@@ -12282,7 +12282,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "204.31",
         og_number: "204.2.1531",
         number: 204,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 1534,
@@ -12290,7 +12290,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "204.32",
         og_number: "204.3.1532",
         number: 204,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1535,
@@ -12298,7 +12298,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "205.33",
         og_number: "205.1.1535",
         number: 205,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 1536,
@@ -12306,7 +12306,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "205.34",
         og_number: "205.2.1536",
         number: 205,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 1537,
@@ -12314,7 +12314,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "205.35",
         og_number: "205.3.1537",
         number: 205,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1538,
@@ -12322,7 +12322,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "205.36",
         og_number: "206.4.1541",
         number: 205,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 1539,
@@ -12330,7 +12330,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "206.37",
         og_number: "206.1.1538",
         number: 206,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 1540,
@@ -12338,7 +12338,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "206.38",
         og_number: "206.2.1539",
         number: 206,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 1541,
@@ -12346,7 +12346,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "206.39",
         og_number: "206.3.1540",
         number: 206,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1542,
@@ -12354,7 +12354,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "207.40",
         og_number: "207.1.1542",
         number: 207,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 1543,
@@ -12362,7 +12362,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "207.41",
         og_number: "207.2.1543",
         number: 207,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 1544,
@@ -12370,7 +12370,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "207.42",
         og_number: "207.3.1544",
         number: 207,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1545,
@@ -12378,7 +12378,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "207.43",
         og_number: "211.4.1559",
         number: 207,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 1546,
@@ -12386,7 +12386,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "208.44",
         og_number: "208.1.1546",
         number: 208,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 1547,
@@ -12394,7 +12394,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "208.45",
         og_number: "208.2.1547",
         number: 208,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 1548,
@@ -12402,7 +12402,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "208.46",
         og_number: "208.3.1548",
         number: 208,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1549,
@@ -12410,7 +12410,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "208.47",
         og_number: "211.5.1560",
         number: 208,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 1550,
@@ -12418,7 +12418,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "209.48",
         og_number: "209.1.1550",
         number: 209,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 1551,
@@ -12426,7 +12426,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "209.49",
         og_number: "209.2.1551",
         number: 209,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 1552,
@@ -12434,7 +12434,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "209.50",
         og_number: "209.3.1552",
         number: 209,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1553,
@@ -12442,7 +12442,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "209.51",
         og_number: "207.4.1545",
         number: 209,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 1554,
@@ -12450,7 +12450,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "210.52",
         og_number: "210.1.1553",
         number: 210,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 1555,
@@ -12458,7 +12458,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "210.53",
         og_number: "210.2.1554",
         number: 210,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 1556,
@@ -12466,7 +12466,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "210.54",
         og_number: "210.3.1555",
         number: 210,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1557,
@@ -12474,7 +12474,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "210.55",
         og_number: "208.4.1549",
         number: 210,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 1558,
@@ -12482,7 +12482,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "211.56",
         og_number: "211.1.1556",
         number: 211,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 1559,
@@ -12490,7 +12490,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "211.57",
         og_number: "211.2.1557",
         number: 211,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 1560,
@@ -12498,7 +12498,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "211.58",
         og_number: "211.3.1558",
         number: 211,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1561,
@@ -12506,7 +12506,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "212.59",
         og_number: "212.1.1561",
         number: 212,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 1562,
@@ -12514,7 +12514,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "212.60",
         og_number: "212.2.1562",
         number: 212,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 1563,
@@ -12522,7 +12522,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "212.61",
         og_number: "212.3.1563",
         number: 212,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1564,
@@ -12530,7 +12530,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "212.62",
         og_number: "214.4.1570",
         number: 212,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 1565,
@@ -12538,7 +12538,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "213.63",
         og_number: "213.1.1564",
         number: 213,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 1566,
@@ -12546,7 +12546,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "213.64",
         og_number: "213.2.1565",
         number: 213,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 1567,
@@ -12554,7 +12554,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "213.65",
         og_number: "213.3.1566",
         number: 213,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1568,
@@ -12562,7 +12562,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "213.66",
         og_number: "214.5.1571",
         number: 213,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 1569,
@@ -12570,7 +12570,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "214.67",
         og_number: "214.1.1567",
         number: 214,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 1570,
@@ -12578,7 +12578,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "214.68",
         og_number: "214.2.1568",
         number: 214,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 1571,
@@ -12586,7 +12586,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "214.69",
         og_number: "214.3.1569",
         number: 214,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1572,
@@ -12594,7 +12594,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "215.70",
         og_number: "215.1.1572",
         number: 215,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 1573,
@@ -12602,7 +12602,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "215.71",
         og_number: "215.2.1573",
         number: 215,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 1574,
@@ -12610,7 +12610,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "215.72",
         og_number: "215.3.1574",
         number: 215,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1575,
@@ -12618,7 +12618,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "215.73",
         og_number: "217.4.1583",
         number: 215,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 1576,
@@ -12626,7 +12626,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "216.74",
         og_number: "216.1.1577",
         number: 216,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 1577,
@@ -12634,7 +12634,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "216.75",
         og_number: "216.2.1578",
         number: 216,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 1578,
@@ -12642,7 +12642,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "216.76",
         og_number: "216.3.1579",
         number: 216,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1579,
@@ -12650,7 +12650,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "216.77",
         og_number: "215.4.1575",
         number: 216,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 1580,
@@ -12658,7 +12658,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "217.78",
         og_number: "217.1.1580",
         number: 217,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 1581,
@@ -12666,7 +12666,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "217.79",
         og_number: "217.2.1581",
         number: 217,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 1582,
@@ -12674,7 +12674,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "217.80",
         og_number: "217.3.1582",
         number: 217,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1583,
@@ -12682,7 +12682,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "218.81",
         og_number: "218.1.1585",
         number: 218,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 1584,
@@ -12690,7 +12690,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "218.82",
         og_number: "218.2.1586",
         number: 218,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 1585,
@@ -12698,7 +12698,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "218.83",
         og_number: "218.3.1587",
         number: 218,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1586,
@@ -12706,7 +12706,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "218.84",
         og_number: "217.5.1584",
         number: 218,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 1587,
@@ -12714,7 +12714,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "219.85",
         og_number: "219.1.1588",
         number: 219,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 1588,
@@ -12722,7 +12722,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "219.86",
         og_number: "219.2.1589",
         number: 219,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 1589,
@@ -12730,7 +12730,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "219.87",
         og_number: "219.3.1590",
         number: 219,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1590,
@@ -12738,7 +12738,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "219.88",
         og_number: "215.5.1576",
         number: 219,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 1591,
@@ -12746,7 +12746,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "220.89",
         og_number: "220.1.1591",
         number: 220,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 1592,
@@ -12754,7 +12754,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "220.90",
         og_number: "220.2.1592",
         number: 220,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 1593,
@@ -12762,7 +12762,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "220.91",
         og_number: "220.3.1593",
         number: 220,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1594,
@@ -12770,7 +12770,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "221.92",
         og_number: "221.1.1594",
         number: 221,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 1595,
@@ -12778,7 +12778,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "221.93",
         og_number: "221.2.1595",
         number: 221,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 1596,
@@ -12786,7 +12786,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "221.94",
         og_number: "221.3.1596",
         number: 221,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1597,
@@ -12794,7 +12794,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "221.95",
         og_number: "221.4.1597",
         number: 221,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1598,
@@ -12802,7 +12802,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "221.96",
         og_number: "221.5.1598",
         number: 221,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1599,
@@ -12810,7 +12810,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "221.97",
         og_number: "229.6.1643",
         number: 221,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 1600,
@@ -12818,7 +12818,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "222.98",
         og_number: "222.1.1601",
         number: 222,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 1601,
@@ -12826,7 +12826,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "222.99",
         og_number: "222.2.1602",
         number: 222,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 1602,
@@ -12834,7 +12834,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "222.100",
         og_number: "222.3.1603",
         number: 222,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1603,
@@ -12842,7 +12842,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "222.101",
         og_number: "222.4.1604",
         number: 222,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1604,
@@ -12850,7 +12850,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "222.102",
         og_number: "222.5.1605",
         number: 222,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1605,
@@ -12858,7 +12858,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "222.103",
         og_number: "229.9.1646",
         number: 222,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 1606,
@@ -12866,7 +12866,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "223.104",
         og_number: "223.1.1606",
         number: 223,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 1607,
@@ -12874,7 +12874,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "223.105",
         og_number: "223.2.1607",
         number: 223,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 1608,
@@ -12882,7 +12882,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "223.106",
         og_number: "223.3.1608",
         number: 223,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1609,
@@ -12890,7 +12890,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "223.107",
         og_number: "223.4.1609",
         number: 223,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1610,
@@ -12898,7 +12898,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "223.108",
         og_number: "223.5.1610",
         number: 223,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1611,
@@ -12906,7 +12906,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "223.109",
         og_number: "229.8.1645",
         number: 223,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 1612,
@@ -12914,7 +12914,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "224.110",
         og_number: "224.1.1611",
         number: 224,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 1613,
@@ -12922,7 +12922,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "224.111",
         og_number: "224.2.1612",
         number: 224,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 1614,
@@ -12930,7 +12930,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "224.112",
         og_number: "224.3.1613",
         number: 224,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1615,
@@ -12938,7 +12938,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "224.113",
         og_number: "224.4.1614",
         number: 224,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1616,
@@ -12946,7 +12946,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "224.114",
         og_number: "224.5.1615",
         number: 224,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1617,
@@ -12954,7 +12954,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "224.115",
         og_number: "229.7.1644",
         number: 224,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 1618,
@@ -12962,7 +12962,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "225.116",
         og_number: "225.1.1618",
         number: 225,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 1619,
@@ -12970,7 +12970,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "225.117",
         og_number: "225.2.1619",
         number: 225,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 1620,
@@ -12978,7 +12978,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "225.118",
         og_number: "225.3.1620",
         number: 225,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1621,
@@ -12986,7 +12986,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "225.119",
         og_number: "225.4.1621",
         number: 225,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1622,
@@ -12994,7 +12994,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "225.120",
         og_number: "225.5.1622",
         number: 225,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1623,
@@ -13002,7 +13002,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "225.121",
         og_number: "221.6.1599",
         number: 225,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 1624,
@@ -13010,7 +13010,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "226.122",
         og_number: "226.1.1623",
         number: 226,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 1625,
@@ -13018,7 +13018,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "226.123",
         og_number: "226.2.1624",
         number: 226,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 1626,
@@ -13026,7 +13026,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "226.124",
         og_number: "226.3.1625",
         number: 226,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1627,
@@ -13034,7 +13034,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "226.125",
         og_number: "226.4.1626",
         number: 226,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1628,
@@ -13042,7 +13042,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "226.126",
         og_number: "226.5.1627",
         number: 226,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1629,
@@ -13050,7 +13050,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "226.127",
         og_number: "221.7.1600",
         number: 226,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 1630,
@@ -13058,7 +13058,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "227.128",
         og_number: "227.1.1628",
         number: 227,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 1631,
@@ -13066,7 +13066,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "227.129",
         og_number: "227.2.1629",
         number: 227,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 1632,
@@ -13074,7 +13074,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "227.130",
         og_number: "227.3.1630",
         number: 227,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1633,
@@ -13082,7 +13082,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "227.131",
         og_number: "227.4.1631",
         number: 227,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1634,
@@ -13090,7 +13090,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "227.132",
         og_number: "227.5.1632",
         number: 227,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1635,
@@ -13098,7 +13098,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "227.133",
         og_number: "224.6.1616",
         number: 227,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 1636,
@@ -13106,7 +13106,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "228.134",
         og_number: "228.1.1633",
         number: 228,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 1637,
@@ -13114,7 +13114,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "228.135",
         og_number: "228.2.1634",
         number: 228,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 1638,
@@ -13122,7 +13122,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "228.136",
         og_number: "228.3.1635",
         number: 228,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1639,
@@ -13130,7 +13130,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "228.137",
         og_number: "228.4.1636",
         number: 228,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1640,
@@ -13138,7 +13138,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "228.138",
         og_number: "228.5.1637",
         number: 228,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1641,
@@ -13146,7 +13146,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "228.139",
         og_number: "224.7.1617",
         number: 228,
-        type_: 4,
+        type_: MagneticType::AntiTranslation,
     },
     MagneticSpacegroupType {
         uni_number: 1642,
@@ -13154,7 +13154,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "229.140",
         og_number: "229.1.1638",
         number: 229,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 1643,
@@ -13162,7 +13162,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "229.141",
         og_number: "229.2.1639",
         number: 229,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 1644,
@@ -13170,7 +13170,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "229.142",
         og_number: "229.3.1640",
         number: 229,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1645,
@@ -13178,7 +13178,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "229.143",
         og_number: "229.4.1641",
         number: 229,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1646,
@@ -13186,7 +13186,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "229.144",
         og_number: "229.5.1642",
         number: 229,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1647,
@@ -13194,7 +13194,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "230.145",
         og_number: "230.1.1647",
         number: 230,
-        type_: 1,
+        type_: MagneticType::Ordinary,
     },
     MagneticSpacegroupType {
         uni_number: 1648,
@@ -13202,7 +13202,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "230.146",
         og_number: "230.2.1648",
         number: 230,
-        type_: 2,
+        type_: MagneticType::Grey,
     },
     MagneticSpacegroupType {
         uni_number: 1649,
@@ -13210,7 +13210,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "230.147",
         og_number: "230.3.1649",
         number: 230,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1650,
@@ -13218,7 +13218,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "230.148",
         og_number: "230.4.1650",
         number: 230,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
     MagneticSpacegroupType {
         uni_number: 1651,
@@ -13226,7 +13226,7 @@ pub static MAGNETIC_SPACEGROUP_TYPES: [MagneticSpacegroupType; 1652] = [
         bns_number: "230.149",
         og_number: "230.5.1651",
         number: 230,
-        type_: 3,
+        type_: MagneticType::BlackWhite,
     },
 ];
 

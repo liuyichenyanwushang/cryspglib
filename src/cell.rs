@@ -7,7 +7,7 @@
 
 use crate::debug;
 use crate::mathfunc::{
-    Mat3, Vec3, VecDBL, mat_alloc_vecdbl, mat_cast_matrix_3d_to_3i, mat_copy_matrix_d3, mat_dabs,
+    Mat3, Vec3, VecDBL, mat_cast_matrix_3d_to_3i, mat_dabs,
     mat_dmod1, mat_get_determinant_d3, mat_get_determinant_i3,
     mat_inverse_matrix_d3, mat_multiply_matrix_d3, mat_multiply_matrix_vector_d3,
     mat_multiply_matrix_vector_id3, mat_nint, mat_norm_squared_d3,
@@ -112,7 +112,7 @@ impl Cell {
     /// 设置 Cell 数据
     /// 对应 C: cel_set_cell
     pub fn set_cell(&mut self, lattice: &Mat3, position: &[Vec3], types: &[i32]) {
-        mat_copy_matrix_d3(&mut self.lattice, lattice);
+        self.lattice = *lattice;
         for i in 0..self.size {
             for j in 0..3 {
                 // 确保位置在 [-0.5, 0.5) 区间内，或者 [0, 1) 取决于 mat_nint 实现
@@ -132,7 +132,7 @@ impl Cell {
         types: &[i32],
         aperiodic_axis: Option<AperiodicAxis>,
     ) {
-        mat_copy_matrix_d3(&mut self.lattice, lattice);
+        self.lattice = *lattice;
         for i in 0..self.size {
             for j in 0..3 {
                 if aperiodic_axis.map_or(true, |ap| j != ap.axis_index()) {
@@ -349,7 +349,7 @@ fn trim_cell(
     let position_vec_dbl = translate_atoms_in_trimmed_lattice(cell, &tmp_mat_int)?;
 
     // 复制晶格和非周期轴信息
-    mat_copy_matrix_d3(&mut trimmed_cell.lattice, trimmed_lattice);
+    trimmed_cell.lattice = *trimmed_lattice;
     trimmed_cell.aperiodic_axis = cell.aperiodic_axis;
 
     // 获取重叠表
@@ -477,7 +477,7 @@ fn set_positions_and_tensors(
 /// 将原子转换到 trimmed lattice 坐标系
 /// 对应 C: translate_atoms_in_trimmed_lattice
 fn translate_atoms_in_trimmed_lattice(cell: &Cell, tmat_p_i: &[[i32; 3]; 3]) -> Option<VecDBL> {
-    let mut position = mat_alloc_vecdbl(cell.size);
+    let mut position = VecDBL::new(cell.size);
 
     for i in 0..cell.size {
         // 假设 mat_multiply_matrix_vector_id3 返回计算后的向量

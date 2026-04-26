@@ -8,7 +8,7 @@ use crate::debug;
 use crate::delaunay::{del_delaunay_reduce, del_layer_delaunay_reduce};
 use crate::mathfunc::{
     Mat3, Mat3I, Vec3, mat_cast_matrix_3d_to_3i, mat_cast_matrix_3i_to_3d,
-    mat_check_identity_matrix_i3, mat_copy_matrix_i3, mat_copy_vector_d3,
+    mat_check_identity_matrix_i3,
     mat_dabs, mat_dmod1, mat_get_determinant_d3, mat_get_determinant_i3, mat_get_metric,
     mat_get_similar_matrix_d3, mat_inverse_matrix_d3, mat_is_int_matrix, mat_multiply_matrix_d3,
     mat_multiply_matrix_di3, mat_multiply_matrix_vector_d3, mat_multiply_matrix_vector_id3,
@@ -79,7 +79,7 @@ pub struct MagneticSymmetry {
     pub size: usize,
     pub rot: Vec<Mat3I>,
     pub trans: Vec<Vec3>,
-    pub timerev: Vec<i32>,
+    pub timerev: Vec<bool>,
 }
 
 impl MagneticSymmetry {
@@ -88,7 +88,7 @@ impl MagneticSymmetry {
             size,
             rot: vec![[[0; 3]; 3]; size],
             trans: vec![[0.0; 3]; size],
-            timerev: vec![0; size],
+            timerev: vec![false; size],
         }
     }
 }
@@ -156,8 +156,8 @@ pub fn sym_reduce_pure_translation(
     let mut symmetry = Symmetry::new(multi);
 
     for i in 0..multi {
-        mat_copy_matrix_i3(&mut symmetry.rot[i], &IDENTITY);
-        mat_copy_vector_d3(&mut symmetry.trans[i], &pure_trans[i]);
+        symmetry.rot[i] = IDENTITY;
+        symmetry.trans[i] = pure_trans[i];
     }
 
     let symmetry_reduced = reduce_operation(cell, &symmetry, symprec, angle_tolerance, true)?;
@@ -189,7 +189,7 @@ fn reduce_operation(
 
     let point_symmetry = if is_pure_trans {
         let mut ps = PointSymmetry::new(1);
-        mat_copy_matrix_i3(&mut ps.rot[0], &IDENTITY);
+        ps.rot[0] = IDENTITY;
         ps
     } else {
         let ps = get_lattice_symmetry(primitive, symprec, angle_symprec);
@@ -238,23 +238,23 @@ fn get_translation(rot: &Mat3I, cell: &Cell, symprec: f64, is_identity: bool) ->
     let min_atom_index = min_atom_index as usize;
 
     let origin = mat_multiply_matrix_vector_id3(rot, &cell.position[min_atom_index]);
-    let mut is_found = vec![false; cell.size];
 
-    let num_trans = search_translation_part(
-        &mut is_found,
+    let Some((is_found, num_trans)) = search_translation_part(
         cell,
         rot,
         min_atom_index,
         &origin,
         symprec,
         is_identity,
-    );
+    ) else {
+        return None;
+    };
 
-    if num_trans <= 0 {
+    if num_trans == 0 {
         return None;
     }
 
-    let mut trans = Vec::with_capacity(num_trans as usize);
+    let mut trans = Vec::with_capacity(num_trans);
     for i in 0..cell.size {
         if is_found[i] {
             let mut t = [0.0; 3];
@@ -270,19 +270,15 @@ fn get_translation(rot: &Mat3I, cell: &Cell, symprec: f64, is_identity: bool) ->
 }
 
 fn search_translation_part(
-    atoms_found: &mut [bool],
     cell: &Cell,
     rot: &Mat3I,
     min_atom_index: usize,
     origin: &Vec3,
     symprec: f64,
     is_identity: bool,
-) -> i32 {
-    let mut checker = match OverlapChecker::new(cell) {
-        Some(c) => c,
-        None => return -1,
-    };
-
+) -> Option<(Vec<bool>, usize)> {
+    let mut checker = OverlapChecker::new(cell)?;
+    let mut atoms_found = vec![false; cell.size];
     let mut num_trans = 0;
 
     for i in 0..cell.size {
@@ -300,16 +296,16 @@ fn search_translation_part(
 
         let is_overlap = checker.check_total_overlap(&trans, rot, symprec, is_identity);
         if is_overlap == -1 {
-            return -1;
+            return None;
         } else if is_overlap == 1 {
             atoms_found[i] = true;
             num_trans += 1;
             if is_identity {
-                num_trans += search_pure_translations(atoms_found, cell, &trans, symprec);
+                num_trans += search_pure_translations(&mut atoms_found, cell, &trans, symprec);
             }
         }
     }
-    num_trans
+    Some((atoms_found, num_trans))
 }
 
 fn search_pure_translations(
@@ -317,7 +313,7 @@ fn search_pure_translations(
     cell: &Cell,
     trans: &Vec3,
     symprec: f64,
-) -> i32 {
+) -> usize {
     let mut num_trans = 0;
     let copy_atoms_found = atoms_found.to_vec();
 
@@ -415,23 +411,23 @@ fn get_layer_translation(
     let min_atom_index = min_atom_index as usize;
 
     let origin = mat_multiply_matrix_vector_id3(rot, &cell.position[min_atom_index]);
-    let mut is_found = vec![false; cell.size];
 
-    let num_trans = search_layer_translation_part(
-        &mut is_found,
+    let Some((is_found, num_trans)) = search_layer_translation_part(
         cell,
         rot,
         min_atom_index,
         &origin,
         symprec,
         is_identity,
-    );
+    ) else {
+        return None;
+    };
 
-    if num_trans <= 0 {
+    if num_trans == 0 {
         return None;
     }
 
-    let mut trans = Vec::with_capacity(num_trans as usize);
+    let mut trans = Vec::with_capacity(num_trans);
     for i in 0..cell.size {
         if is_found[i] {
             let mut t = [0.0; 3];
@@ -448,19 +444,15 @@ fn get_layer_translation(
 }
 
 fn search_layer_translation_part(
-    atoms_found: &mut [bool],
     cell: &Cell,
     rot: &Mat3I,
     min_atom_index: usize,
     origin: &Vec3,
     symprec: f64,
     is_identity: bool,
-) -> i32 {
-    let mut checker = match OverlapChecker::new(cell) {
-        Some(c) => c,
-        None => return -1,
-    };
-
+) -> Option<(Vec<bool>, usize)> {
+    let mut checker = OverlapChecker::new(cell)?;
+    let mut atoms_found = vec![false; cell.size];
     let mut num_trans = 0;
 
     for i in 0..cell.size {
@@ -478,14 +470,14 @@ fn search_layer_translation_part(
 
         let is_overlap = checker.check_layer_total_overlap(&trans, rot, symprec, is_identity);
         if is_overlap == -1 {
-            return -1;
+            return None;
         } else if is_overlap == 1 {
             atoms_found[i] = true;
             num_trans += 1;
             if is_identity {
                 let aperiodic = cell.aperiodic_axis.unwrap();
                 num_trans += search_layer_pure_translations(
-                    atoms_found,
+                    &mut atoms_found,
                     cell,
                     &trans,
                     aperiodic,
@@ -494,7 +486,7 @@ fn search_layer_translation_part(
             }
         }
     }
-    num_trans
+    Some((atoms_found, num_trans))
 }
 
 fn search_layer_pure_translations(
@@ -503,7 +495,7 @@ fn search_layer_pure_translations(
     trans: &Vec3,
     aperiodic: AperiodicAxis,
     symprec: f64,
-) -> i32 {
+) -> usize {
     let mut num_trans = 0;
     let copy_atoms_found = atoms_found.to_vec();
 
@@ -581,8 +573,8 @@ fn get_space_group_operations(
     for i in 0..lattice_sym.size {
         if let Some(ref vecs) = trans_vecs[i] {
             for v in vecs {
-                mat_copy_vector_d3(&mut symmetry.trans[num_sym], v);
-                mat_copy_matrix_i3(&mut symmetry.rot[num_sym], &lattice_sym.rot[i]);
+                symmetry.trans[num_sym] = *v;
+                symmetry.rot[num_sym] = lattice_sym.rot[i];
                 num_sym += 1;
             }
         }
@@ -597,17 +589,14 @@ pub fn get_lattice_symmetry(cell: &Cell, symprec: f64, angle_symprec: f64) -> Po
     let mut lattice_sym = PointSymmetry::new(0); // Initially empty
     let aperiodic_axis = cell.aperiodic_axis;
 
-    let mut min_lattice = [[0.0; 3]; 3];
-    let success = if aperiodic_axis.is_none() {
-        del_delaunay_reduce(&mut min_lattice, &cell.lattice, symprec)
+    let Some(min_lattice) = (if aperiodic_axis.is_none() {
+        del_delaunay_reduce(&cell.lattice, symprec)
     } else {
-        del_layer_delaunay_reduce(&mut min_lattice, &cell.lattice, aperiodic_axis, symprec)
-    };
-
-    if !success {
+        del_layer_delaunay_reduce(&cell.lattice, aperiodic_axis, symprec)
+    }) else {
         debug::debug_print(format_args!("get_lattice_symmetry failed.\n"));
         return lattice_sym;
-    }
+    };
 
     let metric_orig = mat_get_metric(&min_lattice);
     let mut angle_tol = angle_symprec;
